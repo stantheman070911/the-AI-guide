@@ -20,24 +20,29 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 
 ### [Part 1: Build](en/part-1-build/README.md)
 
-1. [Stack Decision](en/part-1-build/01-stack-decision.md) — a compact, opinionated default stack for a solo founder or small team, and when it's actually worth adding more.
+1. [Stack Decision](en/part-1-build/01-stack-decision.md) — the smallest stack that safely ships a SaaS, with optional upgrades, specialized alternatives, and what to avoid.
 2. [The Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/README.md) — reusable CONSTITUTION/BRIEF/PLAN/LOG (+ RUNBOOK) documentation templates for keeping an AI coding agent aligned across a project's lifetime.
+3. [Working with Coding Agents](en/part-1-build/03-working-with-coding-agents.md) — what the evidence says, the working loop, context engineering, testing, review, and deployment.
+4. [Building with LLMs](en/part-1-build/04-building-with-llms.md) — model choice by evaluation, structured output, retrieval, cost, observability, and local models.
 
 ### [Part 2: Ship](en/part-2-ship/README.md)
 
-1. [Website Production Readiness Checklist](en/part-2-ship/01-production-readiness-checklist.md) — everything to check before a vibecoded site goes live: mobile, SEO, forms, performance, and more.
-2. [Security Remediation Playbook](en/part-2-ship/02-security-remediation-playbook.md) — fixes for the most common vulnerabilities AI-generated code introduces, from exposed API keys to missing authorization checks.
+1. [Website Production Readiness Checklist](en/part-2-ship/01-production-readiness-checklist.md) — everything to check before a vibecoded site goes live: mobile, SEO, forms, performance, accessibility, and more.
+2. [Security Remediation Playbook](en/part-2-ship/02-security-remediation-playbook.md) — fixes for the vulnerabilities AI-generated code most often introduces, organized by the OWASP Top 10:2025.
+3. [Securing AI Features and Coding Agents](en/part-2-ship/03-securing-ai-features-and-agents.md) — prompt injection, the lethal trifecta, tool permissions, MCP servers, and running agents safely.
 
 ### [Part 3: Craft](en/part-3-craft/README.md)
 
 1. [How to Not Look AI-Generated](en/part-3-craft/01-how-to-not-look-ai-generated.md) — a designer's guide to keeping authorship and a point of view in AI-assisted design work.
 2. [Copywriting Guide](en/part-3-craft/02-copywriting-guide.md) — ten classic copywriting lessons, eight additions for the AI and social era, and a pre-publish checklist.
+3. [Writing with AI](en/part-3-craft/03-writing-with-ai.md) — an editing workflow for AI-drafted prose and research without invented sources.
 
 ### [Appendix](en/appendix/README.md)
 
 * [A. Core Writing Principles](en/appendix/01-writing-principles.md) — the writing rules I give AI tools when asking them to write or edit prose.
 * [B. CLAUDE.md Preset — Rules for Coding](en/appendix/02-claude-md-coding-rules.md) — a starting `CLAUDE.md` with one prime directive and twelve coding rules.
 * [C. Skills and Tools I Use](en/appendix/03-skills-and-tools.md) — my running personal notes on the skills and tools I use. Less polished than the rest, updated as I learn.
+* [D. Evaluating Tools and Skills](en/appendix/04-evaluating-tools-and-skills.md) — trust tiers, a vetting checklist, and vetted choices by use case.
 
 ## Suggested reading paths
 
@@ -45,23 +50,29 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 | --- | --- |
 | New to shipping with AI | The whole guide in order, Part 1 through Part 3 |
 | Launching soon | [Checklist](en/part-2-ship/01-production-readiness-checklist.md) (P0 items first), then the [Security Playbook](en/part-2-ship/02-security-remediation-playbook.md) |
-| Starting a project with an AI coding agent | [The Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/README.md), then [Appendix B](en/appendix/02-claude-md-coding-rules.md) |
-| A designer or writer | [How to Not Look AI-Generated](en/part-3-craft/01-how-to-not-look-ai-generated.md), the [Copywriting Guide](en/part-3-craft/02-copywriting-guide.md), then [Appendix A](en/appendix/01-writing-principles.md) |
+| Starting a project with an AI coding agent | [Working with Coding Agents](en/part-1-build/03-working-with-coding-agents.md), [The Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/README.md), then [Appendix B](en/appendix/02-claude-md-coding-rules.md) |
+| Adding an AI feature to a product | [Building with LLMs](en/part-1-build/04-building-with-llms.md), then [Securing AI Features and Coding Agents](en/part-2-ship/03-securing-ai-features-and-agents.md) |
+| A designer or writer | [How to Not Look AI-Generated](en/part-3-craft/01-how-to-not-look-ai-generated.md), the [Copywriting Guide](en/part-3-craft/02-copywriting-guide.md), [Writing with AI](en/part-3-craft/03-writing-with-ai.md), then [Appendix A](en/appendix/01-writing-principles.md) |
 
 ## Quick lookup
 
 | Topic | Where |
 | --- | --- |
-| Which services to start with | [Stack Decision](en/part-1-build/01-stack-decision.md#1-recommended-core-stack) |
-| Background jobs and queues | [Stack Decision §5](en/part-1-build/01-stack-decision.md#5-background-jobs-the-one-capability-to-plan-deliberately) |
+| Which services to start with | [Stack Decision](en/part-1-build/01-stack-decision.md#1-default-stack) |
+| Background jobs and queues | [Stack Decision §6](en/part-1-build/01-stack-decision.md#6-background-jobs) |
+| Writing an AGENTS.md or CLAUDE.md | [Context engineering](en/part-1-build/03-working-with-coding-agents.md#context-engineering) · [Appendix B](en/appendix/02-claude-md-coding-rules.md) |
 | Keeping an AI agent aligned with requirements | [The Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/README.md) |
 | Writing testable acceptance criteria | [BRIEF template](en/part-1-build/02-holy-trinity-plus-one/BRIEF.md#acceptance-criteria) |
+| Choosing a model | [Building with LLMs](en/part-1-build/04-building-with-llms.md#choose-models-with-your-own-evaluation-set) |
+| Retrieval (RAG) | [Building with LLMs](en/part-1-build/04-building-with-llms.md#retrieval-rag) |
 | What to fix first before launch (P0/P1/P2) | [Checklist: the higher-level audit](en/part-2-ship/01-production-readiness-checklist.md#the-higher-level-audit) |
-| API keys and secrets | [Checklist §18](en/part-2-ship/01-production-readiness-checklist.md#18-secrets--api-keys) · [Playbook](en/part-2-ship/02-security-remediation-playbook.md#secrets--keys) |
-| Authentication and authorization | [Checklist §19](en/part-2-ship/01-production-readiness-checklist.md#19-authentication--authorization) · [Playbook](en/part-2-ship/02-security-remediation-playbook.md#authentication--authorization) |
-| Rate limiting and AI cost protection | [Checklist §22](en/part-2-ship/01-production-readiness-checklist.md#22-abuse-prevention--cost-protection) · [Playbook #16](en/part-2-ship/02-security-remediation-playbook.md#16-missing-rate-limiting---high) |
-| Security headers and CSRF | [Playbook](en/part-2-ship/02-security-remediation-playbook.md#security-headers--protections) |
-| AI-suggested packages that don't exist | [Playbook #17](en/part-2-ship/02-security-remediation-playbook.md#17-hallucinated-packages---high) |
+| API keys and secrets | [Checklist §18](en/part-2-ship/01-production-readiness-checklist.md#18-secrets--api-keys) · [Playbook](en/part-2-ship/02-security-remediation-playbook.md#secrets-and-keys) |
+| Authorization and database policies (RLS) | [Playbook](en/part-2-ship/02-security-remediation-playbook.md#a01-broken-access-control) |
+| Rate limiting and spend caps | [Checklist §22](en/part-2-ship/01-production-readiness-checklist.md#22-abuse-prevention--cost-protection) · [Playbook #19](en/part-2-ship/02-security-remediation-playbook.md#19-missing-rate-limits-and-spend-controls---high) |
+| Supply chain and CI/CD | [Playbook](en/part-2-ship/02-security-remediation-playbook.md#a03-software-supply-chain-failures) |
+| Prompt injection | [Securing AI Features and Coding Agents](en/part-2-ship/03-securing-ai-features-and-agents.md#the-lethal-trifecta) |
+| Vetting a skill or MCP server | [Appendix D](en/appendix/04-evaluating-tools-and-skills.md#vetting-checklist) |
+| Accessibility | [Design §23](en/part-3-craft/01-how-to-not-look-ai-generated.md#23-treat-accessibility-as-a-design-constraint) |
 | Testing whether a design looks generic | [Three final tests](en/part-3-craft/01-how-to-not-look-ai-generated.md#three-final-tests) |
 | Headlines, offers, and proof | [Copywriting Guide](en/part-3-craft/02-copywriting-guide.md) |
 
@@ -69,7 +80,8 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 
 * English pages live in [`en/`](en/) and Chinese pages in [`zh-TW/`](zh-TW/), at the same paths. Every page links to its other-language version at the top.
 * Each part has a short introduction, and each chapter stands alone. Read it in order like a book, or jump straight to a topic.
-* Parts 1–3 are meant to be a fairly settled reference. Appendix C is where I keep looser, evolving notes.
+* Chapters with product details carry a "Last verified" date. Principles come first; time-sensitive tables come after.
+* Parts 1–3 are meant to be a fairly settled reference. Appendix C is where I keep looser, evolving notes. Open questions are tracked in the [research backlog](RESEARCH_BACKLOG.md).
 
 ## Contributing
 

@@ -4,8 +4,9 @@ _Last updated: [YYYY-MM-DD]_
 _Role: what is verified true right now · governed by [`CONSTITUTION.md`](CONSTITUTION.md)_
 
 This document is what makes a brand-new agent session productive after 30 seconds of
-reading. It is **append-only and operational** — not a diary. Replace a stale line
-with the new true statement; do not narrate the journey that got there.
+reading. It is **operational, not a diary.** The current-state sections below are
+rewritten in place: replace a stale line with the new true statement. Session entries,
+like the good example, are appended and never rewritten.
 
 Bad entry (a diary):
 
@@ -28,6 +29,12 @@ Good entry (evidence):
 [Which branch is deployed, where, and whether it currently matches `main`/trunk.
 What the deployment does and does not yet carry — call out anything provisioned but
 not yet exercised end to end.]
+
+## Risk mode
+
+| Surface | Mode | Since |
+| --- | --- | --- |
+| [e.g. "checkout and billing"] | [Vibe / Engineering — see CONSTITUTION.md Law V] | [date] |
 
 ## Verification results
 

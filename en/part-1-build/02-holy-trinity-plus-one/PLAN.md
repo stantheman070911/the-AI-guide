@@ -67,8 +67,6 @@ indefinitely.
 [P-ID] — [Task title]
 
 Requirement:      BRIEF [REQ_ID]
-Status:           [not started | in progress | blocked | done — done items LEAVE this
-                   list; status lives in LOG.md, not here]
 Depends on:       [P-ID or none]
 Files likely affected: [path/*]
 Implementation:   [one or two lines — what changes]

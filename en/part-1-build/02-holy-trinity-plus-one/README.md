@@ -55,8 +55,8 @@ files with different owners.
   broadly; plan only the next few tasks precisely, and re-plan the next slice once the
   current one lands rather than trying to predict the whole project up front.
 - **LOG.md** is what makes a fresh agent session productive after 30 seconds of
-  reading, instead of re-deriving state from scratch. Keep it operational and mostly
-  append-only: replace stale facts with current ones, don't narrate the journey. Git
+  reading, instead of re-deriving state from scratch. Keep it operational: current-state
+  sections are rewritten in place, session entries are appended. Don't narrate the journey. Git
   already has the detailed history — LOG.md carries the *semantic* summary that Git
   can't: what's actually verified, what's blocking, what's next.
 
@@ -72,7 +72,8 @@ production.
   during implementation, but doesn't merge the resolution itself.
 - **PLAN.md** — human + agent, collaboratively. This is the normal working surface
   during implementation.
-- **LOG.md** — mostly agent-maintained, append-only.
+- **LOG.md** — mostly agent-maintained. Current state is updated in place; session
+  entries are appended, never rewritten.
 
 ## The missing piece most doc systems skip: verification
 
@@ -94,7 +95,7 @@ looks like:
    vague sense of "should work now."
 7. Review the diff for anything unintended.
 8. Commit.
-9. Update PLAN.md's status and append the result to LOG.md.
+9. Remove the finished item from PLAN.md's work queue and append the result to LOG.md.
 10. Only start the next item if the tree is clean.
 
 ## The completion trap, and how to close it
@@ -127,8 +128,8 @@ involved, the operating mode has to change: unrestricted agent permissions,
 unreviewed AI-authored tests, and out-of-scope edits stop being cheap mistakes and
 start being incidents.
 
-Record which mode a project — or a specific surface within it — is in, in
-CONSTITUTION.md, and let that decide how much latitude an agent gets: fast
+CONSTITUTION.md (Law V) defines the two modes; LOG.md records which mode each
+surface of the project is currently in. That decides how much latitude an agent gets: fast
 experimentation in vibe mode; mandatory acceptance criteria, tests, security review,
 and full diff review in engineering mode. Same documents, same agent, different risk
 budget.
@@ -157,7 +158,9 @@ or, less formally, **structured vibecoding**:
 4. Let `PLAN.md`'s work queue grow one bounded slice at a time, not all at once.
 5. Keep `LOG.md` current every session — it's the only reason a fresh session isn't
    starting from zero.
+6. Point the project's `AGENTS.md` or `CLAUDE.md` at these files, so every session
+   reads them first ([Working with Coding Agents](../03-working-with-coding-agents.md#context-engineering)).
 
 ---
 
-[← Stack Decision](../01-stack-decision.md) · [Part 1: Build](../README.md) · [Contents](../../../README.md#contents) · [Production Readiness Checklist →](../../part-2-ship/01-production-readiness-checklist.md)
+[← Stack Decision](../01-stack-decision.md) · [Part 1: Build](../README.md) · [Contents](../../../README.md#contents) · [Working with Coding Agents →](../03-working-with-coding-agents.md)

@@ -9,6 +9,7 @@
 * [附錄 A：核心撰寫原則](01-writing-principles.md)——我請 AI 工具撰寫或編修文字時提供的寫作規則。
 * [附錄 B：CLAUDE.md 預設範本——程式開發規則](02-claude-md-coding-rules.md)——一份起始 `CLAUDE.md`，包含一條首要指令與十二條程式開發規則。
 * [附錄 C：我使用的 Skills 與工具](03-skills-and-tools.md)——我持續更新的 Claude Code skills、外掛與命令列工具清單。
+* [附錄 D：評估工具與 Skills](04-evaluating-tools-and-skills.md)——信任等級、審查清單，以及依使用情境整理、通過審查的選擇。
 
 ---
 

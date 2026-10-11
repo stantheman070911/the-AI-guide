@@ -2,371 +2,231 @@
 
 # Security Remediation Playbook
 
-Detailed, actionable guidance for the highest-risk items in the [Production Readiness Checklist](01-production-readiness-checklist.md). Each entry lists the risk, the fix approach, and a verification checklist.
+Fixes for the highest-risk items in the [Production Readiness Checklist](01-production-readiness-checklist.md), grouped by the [OWASP Top 10:2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/). Each entry says how to find the problem, fix it, and prove the fix works. Risks specific to LLM features and coding agents are in [Securing AI Features and Coding Agents](03-securing-ai-features-and-agents.md).
 
-Severity legend: 🚨 Critical (fix before shipping) · 🔴 High (fix soon after) · 🟠 Medium (schedule it). These map onto the checklist's P0/P1/P2 scale — 🚨 and 🔴 items here are P0.
+Severity: 🚨 Critical (fix before shipping) · 🔴 High (fix soon after) · 🟠 Medium (schedule it). 🚨 and 🔴 items are P0 on the checklist's scale.
 
-## Authentication & Authorization
+Test only systems you own or are authorized to test.
 
-### 1. Client-Side Authentication — 🚨 Critical
+> Last verified: 2026-10-11.
 
-If the login check runs in browser JavaScript, any user can read the source and bypass it. Authentication logic belongs on the server; the client should receive only a session token after the server verifies credentials.
+## Why this matters more with AI-written code
 
-**Fix:**
+In Veracode's 2025 tests of more than 100 models on 80 security-sensitive tasks, 45% of generated code samples introduced a known vulnerability, and larger models did no better ([press release](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)). The agent will write the happy path. Access control, input handling, and failure behavior are where you review.
 
-* Audit the codebase for auth/authorization logic running client-side (password comparisons, role checks, token validation)
-* Move all credential validation and role decisions to server-side endpoints
-* Client submits credentials only, and receives a verified session token (JWT or secure cookie) in return
+## A01 Broken access control
 
-**Checklist:**
+### 1. Client-side authentication — 🚨 Critical
 
-* \[ \] No password comparisons in frontend JS
-* \[ \] No role/permission checks in browser code
-* \[ \] Auth logic moved to server/backend
+A login check in browser JavaScript can be read and skipped.
 
-### 2. Missing Authorization Checks (IDOR) — 🚨 Critical
+* **Detect:** Search frontend code for password comparisons, role checks, and token validation.
+* **Fix:** Verify credentials and decide roles on the server. The client receives only a session cookie or token.
+* **Verify:** Call every protected API directly, without the UI, as an anonymous user. Each call fails.
 
-Being logged in doesn't mean access to everything. Every endpoint that returns data must verify the requester owns or is permitted to access that specific resource.
+### 2. Missing object-level authorization (IDOR) — 🚨 Critical
 
-**Fix:**
+Logged in does not mean allowed. Any endpoint that takes an ID must check that the caller may access that object.
 
-* Audit every endpoint accepting an identifier (`userId`, `documentId`, `orderId`, etc.) for a server-side ownership/role check
-* Never assume authentication implies authorization
-* Reject unauthorized access with `403`; scope all ID-based queries to the authenticated user
+* **Detect:** List every route that accepts `userId`, `orderId`, `documentId`, or similar. Look for queries that filter by the ID alone.
+* **Fix:** Scope every query to the authenticated user or tenant (`WHERE id = $1 AND owner_id = $2`). Return `404` or `403` otherwise.
+* **Verify:** With two test accounts, request account B's objects while logged in as A. Every request fails, for reads and writes.
 
-**Checklist:**
+### 3. Missing function-level authorization — 🚨 Critical
 
-* \[ \] Every resource endpoint checks ownership
-* \[ \] IDs are not guessable/sequential without access control
-* \[ \] Server validates the user–resource relationship on every request
+Admin and write operations reachable by ordinary users.
 
-### 3. Broken Access Controls — 🚨 Critical
+* **Detect:** List all `POST`/`PUT`/`PATCH`/`DELETE` routes and admin pages. Note which check the role on the server.
+* **Fix:** Enforce role and ownership checks in server code for each operation. A hidden button is not a permission check.
+* **Verify:** Replay admin requests with a regular user's session. All return `403`.
 
-Authenticated users should only be able to modify or delete resources they own. Without this, any logged-in attacker can corrupt another user's data.
+### 4. Tenant isolation and database policies — 🚨 Critical
 
-**Fix:**
+The most common serious flaw in AI-built apps. Supabase and Firebase expose the database to the browser by design; the key in the client is public, and only row-level policies stand between it and your data. In CVE-2025-48757, a scan of 1,645 apps from Lovable's showcase found 170 with tables readable or writable by anyone ([record](https://cvemon.intruder.io/cves/CVE-2025-48757)).
 
-* Audit all write/update/delete routes (`POST`/`PUT`/`PATCH`/`DELETE`) for explicit server-side ownership checks
-* Enforce `resource.ownerId === user.id`, plus role-based checks for admin actions
-* Reject unauthorized operations with `403`
+* **Detect:** Run the Supabase Security Advisor (`supabase db advisors`, or the dashboard). Treat `rls_disabled_in_public`, `permissive_rls_policy` (`USING (true)`), `security_definer_view`, and `rls_references_user_metadata` as release blockers ([lint list](https://supabase.com/docs/guides/database/database-advisors)). For Firebase, review Security Rules for `allow read, write: if true`.
+* **Fix:** Enable RLS on every exposed table. Write policies against `auth.uid()` or a tenant ID from a trusted source, never from user-editable metadata. Keep the `service_role` key on the server only.
+* **Verify:** Using only the public URL and anon key, try to read and write each table with no session, then with account A against account B's rows. Add these as automated tests so a later migration cannot silently reopen them.
 
-**Checklist:**
+### 5. Authentication bypass paths — 🚨 Critical
 
-* \[ \] Delete/edit operations validate ownership server-side
-* \[ \] Admin-only routes are protected by role checks
-* \[ \] No resource can be modified by an unauthorized user
+Routes that skip authentication, or a single check that can be skipped. In CVE-2025-29927, a crafted `x-middleware-subrequest` header bypassed Next.js middleware entirely on self-hosted apps; apps that enforced auth only in middleware were exposed ([OSV](https://osv.dev/vulnerability/CVE-2025-29927)).
 
-### 4. Weak Session Handling — 🔴 High
+* **Detect:** Build a route inventory and mark which routes require auth. Test path variants: trailing slashes, encoding, case.
+* **Fix:** Check authorization next to the data access (route handler, server action, or database policy), not only in middleware. Keep the framework patched.
+* **Verify:** Request every protected route without a session, including API routes and server actions. All fail.
 
-Sessions must be cryptographically secure, expire properly, and be invalidated on logout.
+### 6. Server-side request forgery (SSRF) — 🔴 High
 
-**Fix:**
+Any feature that fetches a URL the user controls: link previews, image imports, webhooks, and AI tools that browse. An attacker points it at `169.254.169.254` or an internal service. OWASP 2025 folds SSRF into broken access control.
 
-* Verify session tokens use a cryptographically secure random source with sufficient entropy
-* Configure idle and absolute expiration; destroy sessions server-side on logout
-* Enforce HTTPS-only transmission with `Secure`/`HttpOnly`/`SameSite` cookies; regenerate session IDs after login or privilege changes
+* **Detect:** Search for server-side `fetch`, `axios`, `requests`, or `curl` calls that take user input.
+* **Fix:** Allowlist destination hosts where possible. Otherwise resolve DNS, reject private, loopback, and link-local ranges, and re-check after every redirect. Run fetchers without credentials to internal systems.
+* **Verify:** Submit `http://127.0.0.1`, `http://169.254.169.254/`, a hostname that resolves to a private IP, and a URL that redirects to one. All are refused.
 
-**Checklist:**
+## A02 Security misconfiguration
 
-* \[ \] Sessions use cryptographically random tokens
-* \[ \] Session expiry is configured
-* \[ \] Logout invalidates the session server-side
-* \[ \] Tokens transmitted only over HTTPS
+### 7. Security headers — 🟠 Medium
 
-### 5. Authentication Bypass Paths — 🚨 Critical
+Cheap to add, and most vibecoded apps ship without them.
 
-Routes that skip authentication entirely — often created by accident — let anyone reach protected functionality without logging in.
+* **Fix:** Set globally: `Content-Security-Policy` (start with `default-src 'self'`, avoid `unsafe-inline` and `unsafe-eval`), `frame-ancestors` in the CSP to control framing (keep `X-Frame-Options` only for old browsers), `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, and `Permissions-Policy`. Do not add `X-XSS-Protection`; it is obsolete. Ship the CSP as `Content-Security-Policy-Report-Only` first, then enforce.
+* **Verify:** Inspect production response headers (`curl -I`), not local dev.
 
-**Fix:**
+### 8. Exposed environments and cloud misconfiguration — 🔴 High
 
-* Build a full route inventory and flag routes that should require auth but don't
-* Test for bypass vectors: path manipulation, encoded variants, case-sensitivity gaps, middleware misconfiguration
-* Apply consistent auth middleware to every protected route; normalize paths before authorization checks
+Preview and staging deployments with production data, public storage buckets, debug endpoints, default credentials, exposed source maps, and CORS set to `*` on authenticated APIs.
 
-**Checklist:**
+* **Detect:** List every deployment URL and storage bucket. Check bucket and storage policies. Search for `Access-Control-Allow-Origin: *` together with credentials.
+* **Fix:** Protect previews (platform deployment protection or auth), give them separate credentials and data, make buckets private by default, and allowlist CORS origins.
+* **Verify:** From a logged-out browser, open preview URLs, bucket object URLs, and `/.map` files. None expose private data.
 
-* \[ \] Every protected route has auth middleware applied
-* \[ \] No accidental public routes to private resources
-* \[ \] Auth middleware cannot be bypassed via URL tricks
+## A03 Software supply chain failures
 
-## Secrets & Keys
+### 9. Hallucinated and malicious packages — 🔴 High
 
-### 6. Hard-Coded Credentials — 🚨 Critical
+Models invent package names, and attackers register them ("slopsquatting"). Across 576,000 generated samples from 16 models, hallucinated packages averaged at least 5.2% for commercial models and 21.7% for open-source ones, with 205,474 unique invented names ([USENIX Security 2025](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)).
 
-Passwords, database connection strings, and secrets embedded in source code get committed to git and leaked permanently.
+* **Detect:** Review every new dependency in a diff. Check that it exists under that exact name, its age, maintainers, and download history.
+* **Fix:** Add dependencies yourself, not through the agent's unreviewed install commands. Use a release-age cooldown so brand-new versions are not installed automatically (`minimumReleaseAge` in pnpm, `npmMinimalAgeGate` in Yarn; check your package manager's docs).
+* **Verify:** CI fails when the lockfile changes without a matching manifest change, and installs use `npm ci` or the equivalent frozen-lockfile mode.
 
-**Fix:**
+### 10. Vulnerable dependencies — 🔴 High
 
-* Scan source, config files, and committed files for credentials, API keys, and high-entropy tokens
-* Migrate all secrets to environment variables; rotate anything already exposed
-* Add sensitive files to `.gitignore` and generate a `.env.example` with placeholder values
+* **Detect:** Run the ecosystem's audit (`npm audit`, `pip-audit`, `cargo audit`, `govulncheck`) in CI.
+* **Fix:** Patch critical and high findings first. Enable Dependabot or Renovate, with a cooldown, so updates arrive as reviewable pull requests.
+* **Verify:** The audit step runs on every pull request and blocks on critical findings.
 
-**Checklist:**
+### 11. CI/CD and publishing credentials — 🔴 High
 
-* \[ \] No passwords in source code
-* \[ \] No connection strings with credentials in code
-* \[ \] All secrets loaded from environment variables
-* \[ \] `.env` is in `.gitignore`
+Two 2025 incidents show the pattern. In the tj-actions/changed-files compromise (CVE-2025-30066), attackers moved existing version tags to a malicious commit; workflows pinned to a commit SHA were unaffected ([details](https://www.sentinelone.com/vulnerability-database/cve-2025-30066)). The Shai-Hulud worm stole npm and cloud tokens from developer machines and used them to publish infected versions of more than 500 packages ([CISA](https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem)).
 
-### 7. Exposed API Keys in Client-Side Code — 🚨 Critical
+* **Fix:** Pin third-party actions to a full commit SHA, which GitHub calls "the only way to use an action as an immutable release" ([GitHub](https://docs.github.com/en/actions/reference/security/secure-use)). Set `GITHUB_TOKEN` to read-only by default and grant more per job. Avoid `pull_request_target` with untrusted code. Use OIDC instead of long-lived cloud keys. Publish packages through trusted publishing, not personal tokens. Turn on secret scanning with push protection.
+* **Verify:** A script or linter flags any `uses:` line not pinned to a SHA. Workflow files declare `permissions:` explicitly.
 
-Any key shipped in the frontend bundle is public — anyone can open DevTools and take it.
+## Secrets and keys
 
-**Fix:**
+### 12. Hard-coded and leaked credentials — 🚨 Critical
 
-* Scan frontend code for embedded third-party keys (OpenAI, AWS, Stripe, SendGrid, Firebase, etc.)
-* Move the secret server-side and add a backend proxy endpoint that calls the external API and returns only what the client needs
-* Apply auth/rate limiting on the proxy and filter sensitive fields from the response
+* **Detect:** Scan the full Git history, not just the current tree, with `gitleaks` or `trufflehog`. Check build logs and CI output.
+* **Fix:** Rotate anything found; deleting the commit does not revoke the key. Move secrets to environment variables or a secret manager, commit a `.env.example`, and add `.env*` to `.gitignore`.
+* **Verify:** The scanner runs in CI and as a pre-commit hook, and passes on the full history.
 
-**Checklist:**
+### 13. Secret keys in client code — 🚨 Critical
 
-* \[ \] No API keys in frontend JS or React code
-* \[ \] External API calls proxied through backend
-* \[ \] Keys only in server-side environment variables
+Anything in the browser bundle is public. Know which keys are designed to be public (Supabase anon key, Stripe publishable key) and which are not (Supabase `service_role`, Stripe secret key, any LLM provider key).
 
-## Injection Vulnerabilities
+* **Detect:** Search the built bundle, not only the source, for key prefixes such as `sk_`, `sk-`, and `service_role`. Check which environment variables carry a public prefix (`NEXT_PUBLIC_`, `VITE_`).
+* **Fix:** Call third-party APIs from a server route that holds the key, authenticates the user, rate-limits, and returns only what the client needs.
+* **Verify:** Grep the production build output for every secret's prefix. None appear.
 
-### 8. SQL Injection (SQLi) — 🚨 Critical
+## A04 Cryptographic failures
 
-Concatenating user input into SQL queries lets attackers read, modify, or delete the entire database.
+### 14. Password storage and policy — 🚨 Critical
 
-**Fix:**
+Prefer a managed auth provider. If you store passwords yourself:
 
-* Audit every query for string concatenation or interpolation of user input
-* Replace with parameterized queries/prepared statements, or the ORM's safe query builder
-* Apply input validation and least-privilege database accounts
+* **Fix:** Hash with Argon2id (minimum 19 MiB memory, 2 iterations, parallelism 1). Use scrypt if Argon2id is unavailable. bcrypt is for legacy systems only: work factor 10 or more, and it ignores input beyond 72 bytes ([OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)). Re-hash legacy hashes on next login.
+* **Policy:** NIST SP 800-63B-4 requires at least 15 characters for password-only login (8 with MFA), screening against breached and common passwords, and forbids composition rules and forced periodic rotation ([NIST](https://pages.nist.gov/800-63-4/sp800-63b.html)).
+* **Verify:** No plaintext, MD5, SHA-1, or unsalted SHA-256 hashes exist in the database.
 
-**Checklist:**
+### 15. Sensitive data in URLs, logs, and errors — 🟠 Medium
 
-* \[ \] All queries use parameterized statements or ORM-safe methods
-* \[ \] No string concatenation with user input in SQL
-* \[ \] Database user has minimal required permissions
+Tokens in query strings end up in browser history and CDN logs. Full request dumps put credentials in logs for months.
 
-### 9. Cross-Site Scripting (XSS) — 🔴 High
+* **Fix:** Send tokens in headers or POST bodies. Redact credential and personal-data fields in logs. Return generic error messages to users.
+* **Verify:** Search a day of production logs for `password`, `token`, `authorization`, and key prefixes.
 
-Rendering unescaped user input in HTML lets attackers inject scripts that steal cookies, hijack sessions, or deface the app.
+## A05 Injection
 
-**Fix:**
+### 16. SQL injection — 🚨 Critical
 
-* Scan for `dangerouslySetInnerHTML`, direct `innerHTML` assignment, `document.write`, or string-built HTML using user input
-* Replace with safe rendering (JSX binding, `textContent`) or sanitize with a trusted library (e.g., DOMPurify) when raw HTML is unavoidable
-* Add a production Content Security Policy, minimizing `unsafe-inline`/`unsafe-eval`
+* **Detect:** Search for string-built SQL and ORM escape hatches (`$queryRawUnsafe`, `sequelize.literal`, raw `execute` with template strings), including SQL inside database functions.
+* **Fix:** Use parameterized queries or the ORM's safe builder. Run the app's database user with least privilege.
+* **Verify:** Unit-test each dynamic query with `' OR 1=1 --` and quote characters. Authorized scanners such as `sqlmap` can confirm against a staging copy.
 
-**Checklist:**
+### 17. Cross-site scripting (XSS) — 🔴 High
 
-* \[ \] No `dangerouslySetInnerHTML` with unsanitized input
-* \[ \] No `innerHTML` with user data
-* \[ \] Server-rendered content is escaped
-* \[ \] CSP headers configured
+Includes model output rendered as HTML or Markdown.
 
-### 10. Command Injection — 🚨 Critical
+* **Detect:** Search for `dangerouslySetInnerHTML`, `innerHTML`, `v-html`, `document.write`, and Markdown renderers with raw HTML enabled.
+* **Fix:** Render text through the framework's escaping. When HTML is unavoidable, sanitize with DOMPurify. Enforce a CSP (item 7).
+* **Verify:** Store `<img src=x onerror=alert(1)>` in every user-editable field and in a prompt that the model will echo. Nothing executes.
 
-Passing user input to shell commands lets attackers run arbitrary code on the server.
+### 18. Command injection — 🚨 Critical
 
-**Fix:**
+* **Detect:** Search for `exec`, `system`, `spawn` with `shell: true`, `subprocess` with `shell=True`, and `os.system`, and trace whether user or model input reaches them.
+* **Fix:** Use a library instead of a shell. If you must spawn a process, pass an argument array with the shell disabled.
+* **Verify:** Feed `; id` and `$(id)` through each path. Nothing executes.
 
-* Scan for `exec`, `system`, `spawn`, `subprocess`, `os.system`, `popen` calls and trace whether user input reaches them
-* Where shell execution is necessary, use array-based arguments (not interpolated strings) and disable shell interpretation
-* Where it isn't necessary, replace with a native/library alternative that avoids the shell entirely
+## A06 Insecure design
 
-**Checklist:**
+### 19. Missing rate limits and spend controls — 🔴 High
 
-* \[ \] No user input passed to shell/exec functions
-* \[ \] Child processes use argument arrays, not string interpolation
-* \[ \] Shell calls replaced with native library alternatives where possible
+Brute force, scraping, and AI endpoints that turn a small bill into a large one.
 
-## Data Storage & Handling
+* **Fix:** Rate-limit by IP and account with a shared store (Redis, or the platform's built-in limiter): about 5 login attempts per 15 minutes, 3–5 password resets per hour, and per-user quotas on AI and other expensive endpoints. Return `429` with `Retry-After`. Then cap spending where the provider allows: Vercel's on-demand budget does not stop usage unless **Pause Production Deployments** is enabled, and checks run every few minutes ([Vercel](https://vercel.com/docs/spend-management)); Supabase Pro has a spend cap on by default ([pricing](https://supabase.com/pricing)); set monthly limits on every LLM provider key.
+* **Verify:** Script 50 rapid login attempts and 50 AI requests from one account. Both get throttled. Confirm each provider's alert reaches a person.
 
-### 11. Insecure Client-Side Storage — 🔴 High
+### 20. Payments and webhooks trusted without verification — 🚨 Critical
 
-`localStorage` and `sessionStorage` are readable by any JavaScript on the page, including injected scripts — sensitive tokens don't belong there.
+* **Fix:** Grant paid access only from verified server-side events. Verify webhook signatures (for Stripe, with the endpoint's signing secret on the raw body), reject stale timestamps, and process each event ID once.
+* **Verify:** Send a forged webhook with no or a wrong signature: rejected. Replay a valid one: no duplicate effect. Change the price or plan in a client request: ignored.
 
-**Fix:**
+## A07 Authentication failures
 
-* Scan for `localStorage`/`sessionStorage` usage and classify what's stored (JWTs, session IDs, PII)
-* Move auth/session handling to `httpOnly`, `Secure`, `SameSite` cookies set by the server
-* Add CSRF protection to match the cookie-based auth flow
+### 21. Session handling — 🔴 High
 
-**Checklist:**
+* **Fix:** Use the framework's or provider's sessions. Cookies are `HttpOnly`, `Secure`, and `SameSite=Lax` or `Strict`. Rotate the session ID at login and privilege change, set idle and absolute expiry, and destroy sessions server-side at logout. Keep tokens out of `localStorage`. Chrome's Device Bound Session Credentials, available on Windows since Chrome 146, bind cookies to a hardware key and are worth supporting once your auth provider does ([Google](https://blog.google/security/protecting-cookies-with-device-bound-session-credentials/)).
+* **Verify:** After logout, the old cookie is rejected by the API.
 
-* \[ \] JWT tokens not stored in `localStorage`
-* \[ \] Sensitive data not in `sessionStorage`
-* \[ \] Auth tokens use `httpOnly`, `Secure` cookies
+### 22. Cross-site request forgery (CSRF) — 🔴 High
 
-### 12. Weak Password Storage — 🚨 Critical
+Applies to cookie-authenticated, state-changing requests.
 
-Plain-text passwords or MD5/SHA-1 hashes are trivially cracked. Use bcrypt, Argon2, or scrypt.
+* **Fix:** Use the framework's built-in protection first. Otherwise use synchronizer tokens (stateful apps) or HMAC-signed double-submit cookies (stateless apps). For modern browsers, rejecting unsafe cross-site requests by `Sec-Fetch-Site`, with an `Origin` check as fallback, is also accepted. `SameSite` cookies are defense in depth, not a complete defense ([OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)). The npm package `csurf` is deprecated; do not add it.
+* **Verify:** Submit each state-changing form from another origin. All are rejected.
 
-**Fix:**
+### 23. Password reset and account recovery — 🔴 High
 
-* Audit the registration/login flow for the hashing method in use
-* Replace with bcrypt (cost ≥ 12\) or Argon2id, using the library's built-in salting and constant-time comparison
-* Add a transparent migration: re-hash with the new algorithm on next successful login for legacy users
+* **Fix:** Single-use, short-lived, random reset tokens; the same response whether or not the account exists; sessions invalidated after a reset; rate limits (item 19).
+* **Verify:** A used or expired token fails. Reset responses for real and fake emails are identical.
 
-**Checklist:**
+## A08 Software or data integrity failures
 
-* \[ \] Passwords hashed with bcrypt (≥12 rounds) or Argon2
-* \[ \] No plain text passwords in database
-* \[ \] No MD5/SHA-1 password hashing
+### 24. Insecure deserialization — 🔴 High
 
-### 13. Sensitive Data in URLs and Logs — 🟠 Medium
+* **Detect:** Search for `pickle.loads`, `marshal.loads`, `yaml.load`, Java `ObjectInputStream`, and PHP `unserialize()` on untrusted input.
+* **Fix:** Use JSON and `yaml.safe_load()`. Validate input against a schema (Zod, Pydantic, JSON Schema) before use.
+* **Verify:** Unit tests feed malformed and oversized payloads; they are rejected before business logic runs.
 
-Tokens or passwords in URLs end up in browser history and server/CDN logs; credentials in log statements persist for months.
+## A09 Security logging and alerting failures
 
-**Fix:**
+### 25. Nothing alerts when something goes wrong — 🟠 Medium
 
-* Check for auth tokens, API keys, or PII passed via query strings or URL paths
-* Move sensitive data to POST bodies or headers instead of URLs
-* Sanitize logs: avoid dumping full request/response objects, redact credential fields, and keep debug logging out of production
+* **Fix:** Log authentication events, permission denials, admin actions, and payment events with user and request IDs, without secrets. Alert a person on spikes in failed logins, `403`s, and spending.
+* **Verify:** Trigger each alert once in staging and confirm someone receives it.
 
-**Checklist:**
+## A10 Mishandling of exceptional conditions
 
-* \[ \] No tokens or passwords in URL query strings
-* \[ \] Log statements sanitize sensitive fields
-* \[ \] Error messages don't expose stack traces or internal data to users
+### 26. Failing open — 🔴 High
 
-## Security Headers & Protections
+Code that grants access when a check throws: a `try/catch` that returns `true`, a missing role treated as admin, a timed-out policy service that is skipped.
 
-### 14. Missing Security Headers — 🟠 Medium
+* **Fix:** Default to deny. Treat errors in auth, payment, and policy checks as failures.
+* **Verify:** Make the auth provider, database, or policy service unavailable in a test. Protected actions are refused.
 
-HSTS, CSP, X-Frame-Options, and a few others take under an hour to add and close a meaningful number of attack vectors. Most vibe-coded apps ship without any of them.
+## Advanced hardening
 
-**Fix:**
+Worth adding once the items above are done:
 
-* Add HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy globally via middleware
-* Write a strict, app-specific CSP (`default-src 'self'`, explicit `script-src`/`style-src`/`img-src`/`connect-src`/`font-src`, no `unsafe-inline`/`unsafe-eval` unless unavoidable)
-* Enforce (not report-only) once verified not to break functionality
-
-**Checklist:**
-
-* \[ \] HSTS header configured
-* \[ \] CSP header configured
-* \[ \] X-Frame-Options set
-* \[ \] X-Content-Type-Options set
-* \[ \] Referrer-Policy set
-
-### 15. No CSRF Protection — 🔴 High
-
-Without CSRF protection, a malicious website can trigger authenticated requests to the app on a logged-in user's behalf.
-
-**Fix:**
-
-* Add a framework-appropriate CSRF library (`csurf`, Django's `CsrfViewMiddleware`, Flask-WTF, Spring Security CSRF) to all `POST`/`PUT`/`PATCH`/`DELETE` routes
-* Inject tokens into server-rendered forms; send via header for AJAX/fetch requests
-* Set `SameSite=Strict`/`Lax` and `Secure` on session cookies; reject requests with missing/invalid tokens (`403`)
-
-**Checklist:**
-
-* \[ \] CSRF tokens on all state-changing forms
-* \[ \] CSRF tokens validated server-side
-* \[ \] `SameSite=Strict` or `Lax` on session cookies
-
-### 16. Missing Rate Limiting — 🔴 High
-
-Without rate limiting, attackers can brute-force passwords, enumerate users, or abuse the API indefinitely.
-
-**Fix:**
-
-* Add a rate-limiting library backed by a shared store (e.g., Redis) so limits hold across instances
-* Tighten limits on auth (\~5/15 min), password reset (\~3–5/hour), and registration endpoints; apply a baseline limit to public APIs
-* Return `429` with a `Retry-After` header; key limits by IP and, where relevant, by account
-
-**Checklist:**
-
-* \[ \] Login endpoint rate limited
-* \[ \] Password reset rate limited
-* \[ \] Public API endpoints rate limited
-* \[ \] Proper 429 responses returned
-
-## Dependencies & Supply Chain
-
-### 17. Hallucinated Packages — 🔴 High
-
-AI models sometimes suggest package names that don't exist. Attackers register those names with malicious code, and the install picks it up.
-
-**Fix:**
-
-* Verify every dependency in the manifest exists on the official registry under the exact expected name
-* Check maintainer legitimacy, release activity, and download counts for anything unfamiliar
-* Flag typosquatting risks and low-usage packages for manual review before they ship
-
-**Checklist:**
-
-* \[ \] All packages verified on official registries
-* \[ \] Package names double-checked for typosquatting
-* \[ \] No AI-suggested packages installed without verification
-
-### 18. Outdated Libraries with Known CVEs — 🔴 High
-
-Outdated dependencies are the most common entry point for real-world attacks.
-
-**Fix:**
-
-* Run the stack's audit tool (`npm audit`, `pip-audit`, `cargo audit`, `govulncheck`) and triage by severity
-* Upgrade critical/high findings first; note breaking changes that need migration
-* Turn on automated dependency alerts (Dependabot or Renovate) so this doesn't silently drift again
-
-**Checklist:**
-
-* \[ \] `npm audit` / `pip-audit` run with no critical/high CVEs
-* \[ \] Automated dependency update alerts configured
-* \[ \] Lock files committed and up to date
-
-### 19. Insecure Deserialization — 🔴 High
-
-Deserializing untrusted data (especially Python pickle, Java serialization) can execute arbitrary code.
-
-**Fix:**
-
-* Scan for `pickle.loads`, `marshal.loads`, Java `ObjectInputStream.readObject`, PHP `unserialize()`, and unsafe YAML loaders on untrusted input
-* Replace with safe formats (strict JSON) and `yaml.safe_load()`; avoid object instantiation during parsing
-* Validate incoming data against a schema (JSON Schema, Pydantic, Zod, Joi) before it's processed
-
-**Checklist:**
-
-* \[ \] No `pickle.loads()` with user data
-* \[ \] YAML uses `safe_load()` not `load()`
-* \[ \] No untrusted data passed to deserializers
-* \[ \] User-supplied data validated against a schema before processing
-
-## Advanced Hardening (Mature-Stage Layer)
-
-A further layer of controls, worth adding once the base playbook above is covered and the product has matured past early-stage risk:
-
-* String comparisons for secrets use constant-time checks, not regular equality
-* GraphQL APIs have query depth and complexity limits
-* Outbound webhooks are protected against SSRF, so they can't be tricked into hitting the internal network
-* The lockfile (`package-lock.json`/`pnpm-lock.yaml`/`yarn.lock`) is checked in, so a compromised package can't sneak into a build
-* The admin dashboard is IP allow-listed, not open to the whole internet
-* DNS has CAA records, so only the chosen CA can issue certificates for the domain
-* The domain registrar account has its own separate MFA from everything else
-* Canary tokens are planted in the app to give immediate signal when someone's poking around where they shouldn't
-* Session tokens are bound to a device fingerprint, not just the token itself
-* The CI/CD pipeline scans for secrets before every commit gets merged
-
-## Additional Vulnerability Classes to Audit
-
-Also audit for the following. Classes already covered in detail above link to their entry.
-
-* Cross-site scripting — see [item 9](#9-cross-site-scripting-xss---high)
-* Cross-site request forgery — see [item 15](#15-no-csrf-protection---high)
-* Insecure file uploads
-* Path traversal vulnerabilities
-* Server-side request forgery
-* Broken password reset flows
-* Weak session management — see [item 4](#4-weak-session-handling---high)
-* Vulnerable JWT secrets
-* Overly permissive CORS
-* Missing rate limits — see [item 16](#16-missing-rate-limiting---high)
-* Exposed test or staging environments
-* Default credentials left unchanged
-* Webhook endpoints without signature verification
-* Payment or subscription checks done only on the front end
-* IDOR and role escalation — see [items 2–3](#2-missing-authorization-checks-idor---critical)
-* API endpoints trusting user-controlled input
-* Logs containing sensitive information — see [item 13](#13-sensitive-data-in-urls-and-logs---medium)
-* Exposed source maps
+* Constant-time comparison for secrets and signatures.
+* Query depth and complexity limits on GraphQL APIs.
+* IP allowlisting or SSO in front of admin dashboards.
+* CAA DNS records so only your chosen certificate authority can issue certificates for the domain.
+* Separate, hardware-key MFA on the domain registrar, DNS, and cloud root accounts.
+* Canary tokens in places an intruder would look.
 
 ---
 
-[← Production Readiness Checklist](01-production-readiness-checklist.md) · [Part 2: Ship](README.md) · [Contents](../../README.md#contents) · [How to Not Look AI-Generated →](../part-3-craft/01-how-to-not-look-ai-generated.md)
+[← Production Readiness Checklist](01-production-readiness-checklist.md) · [Part 2: Ship](README.md) · [Contents](../../README.md#contents) · [Securing AI Features and Coding Agents →](03-securing-ai-features-and-agents.md)

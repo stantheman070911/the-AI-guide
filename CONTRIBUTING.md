@@ -106,7 +106,7 @@ Adding a new part follows the same pattern: create `part-N-name/` in both langua
 * **Accuracy over completeness.** Do not add claims you cannot support. If something is uncertain, say so.
 * **Cite sources for facts.** Link to primary sources (official documentation, standards, original research) where possible. Mark direct quotes with quotation marks and name the speaker; label paraphrases as paraphrases.
 * **Keep it practical.** Prefer what to do and how to check it over general commentary.
-* **No promotion.** Vendor names are fine when they help a decision. Affiliate links, sponsored placements, and undisclosed relationships are not accepted. Disclose any affiliation with a product you write about.
+* **No promotion.** Vendor names are fine when they help a decision. Affiliate links, sponsored placements, and undisclosed relationships are not accepted. Disclose any affiliation with a product you write about. Sponsorship, popularity, and appearances in videos are not evidence of quality; a recommendation needs the review in [Appendix D](en/appendix/04-evaluating-tools-and-skills.md).
 * **No sensitive data.** Never include real credentials, API keys, private URLs, or personal information, even as examples. Use obvious placeholders.
 
 ## Reviews

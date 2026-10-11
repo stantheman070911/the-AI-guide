@@ -48,7 +48,10 @@ Templates in [The Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/REA
 
 * Attribute quotations to a named person and use quotation marks only for exact wording. Label paraphrases as paraphrases.
 * Link to primary sources for factual and legal claims where possible.
-* Vendor features, prices, and limits change. When a statement depends on the current state of a product, write it so a reader can tell, and open an issue when you notice it has gone stale.
+* Vendor features, prices, and limits change. Put durable principles first and product details after, so the principles survive when the details go stale.
+* A chapter that states prices, plan limits, versions, or product status carries a line under its introduction: `> Last verified: YYYY-MM-DD.` Update the date only after re-checking the sources.
+* Mark judgment as judgment. "(Judgment, not a measured result.)" is enough.
+* A claim you cannot verify goes in [`RESEARCH_BACKLOG.md`](RESEARCH_BACKLOG.md), not in a chapter.
 * Do not invent examples that look like real data, people, or companies. Use obvious placeholders.
 
 ## Chinese conventions
