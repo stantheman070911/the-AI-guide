@@ -78,7 +78,7 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 
 ## How this guide is organized
 
-* English pages live in [`en/`](en/) and Chinese pages in [`zh-TW/`](zh-TW/), at the same paths. Every page links to its other-language version at the top.
+* English pages live in [`en/`](en/) and Chinese pages in [`zh-TW/`](zh-TW/), at the same paths. Every chapter links to its other-language version at the top.
 * Each part has a short introduction, and each chapter stands alone. Read it in order like a book, or jump straight to a topic.
 * Chapters with product details carry a "Last verified" date. Principles come first; time-sensitive tables come after.
 * Parts 1–3 are meant to be a fairly settled reference. Appendix C is where I keep looser, evolving notes. Open questions are tracked in the [research backlog](RESEARCH_BACKLOG.md).

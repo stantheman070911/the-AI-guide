@@ -1,7 +1,7 @@
 # [PROJECT_NAME] — 需求簡報（Brief）
 
-_最後更新：[YYYY-MM-DD]_
-_角色：必須交付什麼，以及判定完成的標準 · 受 [`CONSTITUTION.md`](CONSTITUTION.md) 治理_
+最後更新：[YYYY-MM-DD]
+角色：必須交付什麼，以及判定完成的標準 · 受 [`CONSTITUTION.md`](CONSTITUTION.md) 治理
 
 這是整個系統中最重要的人類撰寫文件。它回答：**成功是什麼樣子？** 它不描述產品如何打造——那是 [`PLAN.md`](PLAN.md) 的工作——也不描述目前狀態——那是 [`LOG.md`](LOG.md) 的工作。
 

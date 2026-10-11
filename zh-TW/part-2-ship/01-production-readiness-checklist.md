@@ -2,7 +2,7 @@
 
 # 網站上線準備檢查清單
 
-一份整合過的檢查清單，用於把「vibecoded」網站——快速建成、往往大量依賴 AI 協助的網站——推上正式環境。重疊的項目（favicon、404 處理、標題、meta description、`robots.txt`、替代文字、行動裝置溢出等）已經合併，每一點只出現一次。
+一份整合過的檢查清單，用於把「vibecoded」網站——快速建成、往往大量依賴 AI 協助的網站——推上正式環境。
 
 ## 1. 網域、品牌與基本上線打磨
 
@@ -48,7 +48,7 @@
 * 在表單送出後加上感謝頁面與確認／成功狀態
 * 加上有用的驗證訊息；避免要求不必要的資訊
 * 端對端測試所有聯絡表單，確認詢問確實送達目的地
-* 在商業上適當時加上回覆時間承諾（例如「我們通常在一個工作天內回覆」——這能降低不確定感，並可能實質提升轉換率）
+* 在商業上適當時加上回覆時間承諾（例如「我們通常在一個工作天內回覆」）
 * 把表單送出追蹤為轉換
 
 ## 6. SEO 基礎
@@ -168,7 +168,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 
 最高風險的 vibecoding 錯誤之一，就是請 AI 串接某個 API，結果不小心把機密一起打包進用戶端 bundle 送出去。
 
-*關於寫死在程式碼中的憑證與外洩的用戶端金鑰，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#機密與金鑰)。*
+關於寫死在程式碼中的憑證與外洩的用戶端金鑰，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#機密與金鑰)。
 
 ## 19. 身分驗證與授權
 
@@ -179,7 +179,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 
 **關鍵原則**：對使用者隱藏的按鈕，不等於拒絕存取。授權必須由伺服器／資料庫強制執行。
 
-*關於用戶端身分驗證、IDOR、失效的存取控制、session 處理與身分驗證繞過路徑，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#a01-存取控制失效)。*
+關於用戶端身分驗證、IDOR、失效的存取控制、session 處理與身分驗證繞過路徑，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#a01-存取控制失效)。
 
 ## 20. 資料庫安全
 
@@ -198,7 +198,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 * 驗證 ID 與物件擁有權；拒絕非預期的輸入並限制 payload 大小
 * 避免盲目渲染 AI 或使用者產生的 HTML；適當地跳脫輸出
 
-*關於 SQL 注入、XSS 與命令注入，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#a05-注入)。*
+關於 SQL 注入、XSS 與命令注入，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#a05-注入)。
 
 ## 22. 濫用防範與成本保護
 
@@ -211,7 +211,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 
 一個沒有速率限制的 AI 端點，可能很快就把每月 20 美元的基礎設施帳單，變成 2,000 美元的意外帳單。
 
-*詳細的修補計畫請見[資安修補手冊第 19 項](02-security-remediation-playbook.md#19-缺少速率限制與支出控制---高)。*
+詳細的修補計畫請見[資安修補手冊第 19 項](02-security-remediation-playbook.md#19-缺少速率限制與支出控制---高)。
 
 ## 23. 檔案上傳安全
 
@@ -230,7 +230,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 * 檢查 CORS 設定；敏感的 API 避免使用 `Access-Control-Allow-Origin: *`
 * 在身分驗證架構需要時加上 CSRF 防護
 
-*請見資安修補手冊中的[安全標頭](02-security-remediation-playbook.md#7-安全標頭---中)與 [CSRF](02-security-remediation-playbook.md#22-跨站請求偽造csrf--高)。*
+請見資安修補手冊中的[安全標頭](02-security-remediation-playbook.md#7-安全標頭---中)與 [CSRF](02-security-remediation-playbook.md#22-跨站請求偽造csrf--高)。
 
 ## 25. 部署與正式環境設定
 
@@ -247,7 +247,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 * 做一次只用鍵盤的檢查與一次螢幕閱讀器檢查，而不只是自動掃描
 * 確認歐洲無障礙法案是否適用於你
 
-*見[如何不像 AI 生成第 23 節](../part-3-craft/01-how-to-not-look-ai-generated.md#23-把無障礙當成設計限制)。*
+見[如何不像 AI 生成第 23 節](../part-3-craft/01-how-to-not-look-ai-generated.md#23-把無障礙當成設計限制)。
 
 ## 27. AI 功能
 
@@ -257,7 +257,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 * 依使用者與供應商限制 token、步數與支出
 * 透過每一個輸入與輸出通道測試提示詞注入
 
-*見[保護 AI 功能與程式代理](03-securing-ai-features-and-agents.md)。*
+見[保護 AI 功能與程式代理](03-securing-ai-features-and-agents.md)。
 
 ## 更高層次的稽核
 
@@ -268,7 +268,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 | 1\. 它能運作嗎？ | 連結、按鈕、表單、路由、404、錯誤 |
 | 2\. 它在行動裝置上能運作嗎？ | 響應式設計、溢出、選單、點擊區域 |
 | 3\. 人們找得到它嗎？ | SEO、中繼資料、sitemap、robots、schema |
-| 4\. 它能轉換嗎？ | CTA、評論、常見問題、案例研究、表單 |
+| 4\. 它能帶來轉換嗎？ | CTA、評論、常見問題、案例研究、表單 |
 | 5\. 它看起來正當可信嗎？ | 網域、favicon、品牌、真實的內容／照片 |
 | 6\. 它夠快嗎？ | 圖片、JS bundle、渲染、Core Web Vitals |
 | 7\. 我們能衡量它嗎？ | 數據分析、轉換、錯誤監控 |

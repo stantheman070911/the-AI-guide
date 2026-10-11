@@ -2,7 +2,7 @@
 
 # Website Production Readiness Checklist
 
-A consolidated checklist for shipping a "vibecoded" website — one built quickly, often with heavy AI assistance — to production. Overlapping items (favicon, 404 handling, titles, meta descriptions, `robots.txt`, alt text, mobile overflow, etc.) have been merged so each point appears once.
+A consolidated checklist for shipping a "vibecoded" website — one built quickly, often with heavy AI assistance — to production.
 
 ## 1. Domain, Branding & Basic Production Polish
 
@@ -48,7 +48,7 @@ A website is not production-ready if the desktop version works but the mobile ve
 * Add a thank-you page and confirmation/success state after form submission
 * Add useful validation messages; avoid asking for unnecessary information
 * Test all contact forms end-to-end and verify inquiries reach their destination
-* Add a response-time promise where commercially appropriate (e.g. *"We typically respond within one business day"* — this reduces uncertainty and can materially improve conversion)
+* Add a response-time promise where commercially appropriate (e.g. *"We typically respond within one business day"*)
 * Track form submissions as conversions
 
 ## 6. SEO Fundamentals

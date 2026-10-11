@@ -36,14 +36,14 @@ Public leaderboards measure someone else's tasks.
 1. **Check whether you need it.** If the source material fits in the context window and the cost is acceptable with prompt caching, sending it whole is simpler and often better. (Judgment; test both on your evaluation set.)
 2. **Start in Postgres.** pgvector in Supabase or Neon keeps vectors next to the data and its permissions. See [Stack Decision](01-stack-decision.md#3-specialized-alternatives) for when a dedicated vector database is worth it.
 3. **Use hybrid search.** Embeddings miss exact strings such as error codes, SKUs, and names; full-text search catches them. Merge the two result lists.
-4. **Add context to chunks, then rerank.** In Anthropic's tests, prepending a short chunk-specific context cut top-20 retrieval failures by 35%; adding BM25 brought the reduction to 49%; adding a reranker, to 67% ([Anthropic](https://www.anthropic.com/news/contextual-retrieval)).
+4. **Add context to chunks, then rerank.** In Anthropic's tests, prepending a short chunk-specific context cut top-20 retrieval failures by 35%; adding BM25 brought the reduction to 49%; adding a reranker, to 67% ([Anthropic](https://www.anthropic.com/engineering/contextual-retrieval)).
 5. **Filter by permission in the retrieval query.** Not after. See [AI security item 3](../part-2-ship/03-securing-ai-features-and-agents.md#3-enforce-access-control-before-retrieval).
 6. **Evaluate retrieval separately.** Check whether the right chunk appears in the top results before judging the generated answer.
 
 ## Cost
 
 * **Prompt caching** for repeated prefixes: system prompts, tool definitions, long documents.
-* **Batch APIs** for work that can wait: Anthropic and OpenAI both price batch requests at half the normal rate ([Anthropic](https://www.anthropic.com/news/message-batches-api)).
+* **Batch APIs** for work that can wait: Anthropic and OpenAI both price batch requests at half the normal rate ([Anthropic](https://platform.claude.com/docs/en/build-with-claude/batch-processing)).
 * **Route by difficulty.** Send easy, high-volume tasks to a small model.
 * **Measure per feature.** Log tokens and cost per request, tagged by feature and user, so you know what is expensive before the invoice does.
 * **Cap it.** Per-user quotas and provider monthly limits ([playbook item 19](../part-2-ship/02-security-remediation-playbook.md#19-missing-rate-limits-and-spend-controls---high)).
@@ -52,7 +52,7 @@ Public leaderboards measure someone else's tasks.
 
 Log, for each call: prompt version, model, input and output tokens, latency, cost, and any user feedback. Review a sample of real transcripts every week; they show failures that metrics miss. Redact personal data before it reaches the logs.
 
-[PostHog LLM analytics](https://posthog.com/llm-analytics) fits if you already use PostHog. [Langfuse](https://github.com/langfuse/langfuse) is an open-source alternative with tracing, evaluations, and prompt management.
+[PostHog AI observability](https://posthog.com/ai-observability) fits if you already use PostHog. [Langfuse](https://github.com/langfuse/langfuse) is an open-source alternative with tracing, evaluations, and prompt management.
 
 ## Local models
 

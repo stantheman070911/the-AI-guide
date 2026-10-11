@@ -2,9 +2,9 @@
 
 # Security Remediation Playbook
 
-Fixes for the highest-risk items in the [Production Readiness Checklist](01-production-readiness-checklist.md), grouped by the [OWASP Top 10:2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/). Each entry says how to find the problem, fix it, and prove the fix works. Risks specific to LLM features and coding agents are in [Securing AI Features and Coding Agents](03-securing-ai-features-and-agents.md).
+Fixes for the highest-risk items in the [Production Readiness Checklist](01-production-readiness-checklist.md), grouped by the [OWASP Top 10:2025](https://top10.owasp.org/2025/0x00_2025-Introduction/). Each entry says how to find the problem, fix it, and prove the fix works. Risks specific to LLM features and coding agents are in [Securing AI Features and Coding Agents](03-securing-ai-features-and-agents.md).
 
-Severity: 🚨 Critical (fix before shipping) · 🔴 High (fix soon after) · 🟠 Medium (schedule it). 🚨 and 🔴 items are P0 on the checklist's scale.
+Severity: 🚨 Critical (fix before shipping) · 🔴 High (fix before shipping if the app has the affected feature) · 🟠 Medium (schedule it). 🚨 and 🔴 items are P0 on the checklist's scale.
 
 Test only systems you own or are authorized to test.
 
@@ -12,7 +12,7 @@ Test only systems you own or are authorized to test.
 
 ## Why this matters more with AI-written code
 
-In Veracode's 2025 tests of more than 100 models on 80 security-sensitive tasks, 45% of generated code samples introduced a known vulnerability, and larger models did no better ([press release](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)). The agent will write the happy path. Access control, input handling, and failure behavior are where you review.
+In Veracode's 2025 vendor research, testing more than 100 models on 80 security-sensitive tasks, 45% of generated code samples contained an OWASP Top 10 class of vulnerability, and larger models did no better ([press release](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)). The agent will write the happy path. Access control, input handling, and failure behavior are where you review.
 
 ## A01 Broken access control
 
@@ -42,11 +42,11 @@ Admin and write operations reachable by ordinary users.
 
 ### 4. Tenant isolation and database policies — 🚨 Critical
 
-The most common serious flaw in AI-built apps. Supabase and Firebase expose the database to the browser by design; the key in the client is public, and only row-level policies stand between it and your data. In CVE-2025-48757, a scan of 1,645 apps from Lovable's showcase found 170 with tables readable or writable by anyone ([record](https://cvemon.intruder.io/cves/CVE-2025-48757)).
+The most common serious flaw in AI-built apps. Supabase and Firebase expose the database to the browser by design; the key in the client is public, and only row-level policies stand between it and your data. In CVE-2025-48757, a researcher's scan of 1,645 apps from Lovable's showcase found 170 with tables readable or writable by anyone ([NVD](https://nvd.nist.gov/vuln/detail/CVE-2025-48757)). Lovable disputes the CVE, holding that each app's owner is responsible for its data.
 
-* **Detect:** Run the Supabase Security Advisor (`supabase db advisors`, or the dashboard). Treat `rls_disabled_in_public`, `permissive_rls_policy` (`USING (true)`), `security_definer_view`, and `rls_references_user_metadata` as release blockers ([lint list](https://supabase.com/docs/guides/database/database-advisors)). For Firebase, review Security Rules for `allow read, write: if true`.
-* **Fix:** Enable RLS on every exposed table. Write policies against `auth.uid()` or a tenant ID from a trusted source, never from user-editable metadata. Keep the `service_role` key on the server only.
-* **Verify:** Using only the public URL and anon key, try to read and write each table with no session, then with account A against account B's rows. Add these as automated tests so a later migration cannot silently reopen them.
+* **Detect:** Run the Supabase Security Advisor (`supabase db advisors`, or the dashboard). Treat every security lint at level ERROR (among them `rls_disabled_in_public`, `security_definer_view`, `rls_references_user_metadata`, `auth_users_exposed`, `sensitive_columns_exposed`, `insecure_queue_exposed_in_api`) and `permissive_rls_policy` (`USING (true)`) as release blockers ([lint list](https://supabase.com/docs/guides/observability/advisors)). For Firebase, review Security Rules for `allow read, write: if true`.
+* **Fix:** Enable RLS on every exposed table. Write policies against `auth.uid()` or a tenant ID from a trusted source, never from user-editable metadata. Keep the secret key (`sb_secret_…`, or the legacy `service_role` key) on the server only. Supabase is deprecating the legacy `anon` and `service_role` keys by the end of 2026; new projects use publishable and secret keys.
+* **Verify:** Using only the public URL and the publishable (or legacy anon) key, try to read and write each table with no session, then with account A against account B's rows. Add these as automated tests so a later migration cannot silently reopen them.
 
 ### 5. Authentication bypass paths — 🚨 Critical
 
@@ -88,7 +88,7 @@ Preview and staging deployments with production data, public storage buckets, de
 Models invent package names, and attackers register them ("slopsquatting"). Across 576,000 generated samples from 16 models, hallucinated packages averaged at least 5.2% for commercial models and 21.7% for open-source ones, with 205,474 unique invented names ([USENIX Security 2025](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)).
 
 * **Detect:** Review every new dependency in a diff. Check that it exists under that exact name, its age, maintainers, and download history.
-* **Fix:** Add dependencies yourself, not through the agent's unreviewed install commands. Use a release-age cooldown so brand-new versions are not installed automatically (`minimumReleaseAge` in pnpm, `npmMinimalAgeGate` in Yarn; check your package manager's docs).
+* **Fix:** Add dependencies yourself, not through the agent's unreviewed install commands. Use a release-age cooldown so brand-new versions are not installed automatically (`min-release-age` in npm, in days; `minimumReleaseAge` in pnpm; `npmMinimalAgeGate` in Yarn).
 * **Verify:** CI fails when the lockfile changes without a matching manifest change, and installs use `npm ci` or the equivalent frozen-lockfile mode.
 
 ### 10. Vulnerable dependencies — 🔴 High
@@ -99,7 +99,7 @@ Models invent package names, and attackers register them ("slopsquatting"). Acro
 
 ### 11. CI/CD and publishing credentials — 🔴 High
 
-Two 2025 incidents show the pattern. In the tj-actions/changed-files compromise (CVE-2025-30066), attackers moved existing version tags to a malicious commit; workflows pinned to a commit SHA were unaffected ([details](https://www.sentinelone.com/vulnerability-database/cve-2025-30066)). The Shai-Hulud worm stole npm and cloud tokens from developer machines and used them to publish infected versions of more than 500 packages ([CISA](https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem)).
+Two 2025 incidents show the pattern. In the tj-actions/changed-files compromise (CVE-2025-30066), attackers moved existing version tags to a malicious commit; workflows pinned to a commit SHA were unaffected ([NVD](https://nvd.nist.gov/vuln/detail/CVE-2025-30066)). The Shai-Hulud worm stole npm and cloud tokens from developer machines and used them to publish infected versions of more than 500 packages ([CISA](https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem)).
 
 * **Fix:** Pin third-party actions to a full commit SHA, which GitHub calls "the only way to use an action as an immutable release" ([GitHub](https://docs.github.com/en/actions/reference/security/secure-use)). Set `GITHUB_TOKEN` to read-only by default and grant more per job. Avoid `pull_request_target` with untrusted code. Use OIDC instead of long-lived cloud keys. Publish packages through trusted publishing, not personal tokens. Turn on secret scanning with push protection.
 * **Verify:** A script or linter flags any `uses:` line not pinned to a SHA. Workflow files declare `permissions:` explicitly.
@@ -114,11 +114,11 @@ Two 2025 incidents show the pattern. In the tj-actions/changed-files compromise 
 
 ### 13. Secret keys in client code — 🚨 Critical
 
-Anything in the browser bundle is public. Know which keys are designed to be public (Supabase anon key, Stripe publishable key) and which are not (Supabase `service_role`, Stripe secret key, any LLM provider key).
+Anything in the browser bundle is public. Know which keys are designed to be public (Supabase publishable key `sb_publishable_…` or legacy `anon` key, Stripe publishable key `pk_…`) and which are not (Supabase secret key `sb_secret_…` or legacy `service_role` key, Stripe `sk_…` and restricted `rk_…` keys, webhook secrets `whsec_…`, any LLM provider key).
 
-* **Detect:** Search the built bundle, not only the source, for key prefixes such as `sk_`, `sk-`, and `service_role`. Check which environment variables carry a public prefix (`NEXT_PUBLIC_`, `VITE_`).
+* **Detect:** Search the built bundle, not only the source, for full secret prefixes: `sb_secret_`, `sk_live_`, `sk_test_`, `rk_live_`, `rk_test_`, `whsec_`, and the pattern `\bsk-[A-Za-z0-9_-]{20,}` for OpenAI- and Anthropic-style keys. A bare `sk-` also matches ordinary code such as `mask-`. Legacy Supabase keys are JWTs: decode each `eyJ…` string and fail if its `role` claim is `service_role`. Check which environment variables carry a public prefix (`NEXT_PUBLIC_`, `VITE_`).
 * **Fix:** Call third-party APIs from a server route that holds the key, authenticates the user, rate-limits, and returns only what the client needs.
-* **Verify:** Grep the production build output for every secret's prefix. None appear.
+* **Verify:** Re-run both checks on the production build output: no secret prefix appears, and no decoded JWT has `role: service_role`.
 
 ## A04 Cryptographic failures
 
@@ -128,7 +128,7 @@ Prefer a managed auth provider. If you store passwords yourself:
 
 * **Fix:** Hash with Argon2id (minimum 19 MiB memory, 2 iterations, parallelism 1). Use scrypt if Argon2id is unavailable. bcrypt is for legacy systems only: work factor 10 or more, and it ignores input beyond 72 bytes ([OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)). Re-hash legacy hashes on next login.
 * **Policy:** NIST SP 800-63B-4 requires at least 15 characters for password-only login (8 with MFA), screening against breached and common passwords, and forbids composition rules and forced periodic rotation ([NIST](https://pages.nist.gov/800-63-4/sp800-63b.html)).
-* **Verify:** No plaintext, MD5, SHA-1, or unsalted SHA-256 hashes exist in the database.
+* **Verify:** Every stored password hash is Argon2id, scrypt, bcrypt, or PBKDF2. None is plaintext or a fast hash (MD5, SHA-1, SHA-256), salted or not.
 
 ### 15. Sensitive data in URLs, logs, and errors — 🟠 Medium
 
@@ -165,7 +165,7 @@ Includes model output rendered as HTML or Markdown.
 
 Brute force, scraping, and AI endpoints that turn a small bill into a large one.
 
-* **Fix:** Rate-limit by IP and account with a shared store (Redis, or the platform's built-in limiter): about 5 login attempts per 15 minutes, 3–5 password resets per hour, and per-user quotas on AI and other expensive endpoints. Return `429` with `Retry-After`. Then cap spending where the provider allows: Vercel's on-demand budget does not stop usage unless **Pause Production Deployments** is enabled, and checks run every few minutes ([Vercel](https://vercel.com/docs/spend-management)); Supabase Pro has a spend cap on by default ([pricing](https://supabase.com/pricing)); set monthly limits on every LLM provider key.
+* **Fix:** Rate-limit by IP and account with a shared store (Redis, or the platform's built-in limiter): about 5 login attempts per 15 minutes, 3–5 password resets per hour, and per-user quotas on AI and other expensive endpoints. Return `429` with `Retry-After`. Then cap spending where the provider allows: Vercel's on-demand budget does not stop usage unless **Pause Production Deployments** is enabled, and checks run every few minutes ([Vercel](https://vercel.com/docs/spend-management)). Pausing stops production deployments only; AI Gateway and v0 usage billed to the team continue, so cap model spend separately. Supabase Pro has a spend cap on by default ([pricing](https://supabase.com/pricing)). Set monthly limits on every LLM provider key.
 * **Verify:** Script 50 rapid login attempts and 50 AI requests from one account. Both get throttled. Confirm each provider's alert reaches a person.
 
 ### 20. Payments and webhooks trusted without verification — 🚨 Critical

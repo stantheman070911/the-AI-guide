@@ -8,7 +8,7 @@ Two attack surfaces: the LLM features you ship to users, and the coding agents y
 
 ## The core problem: prompt injection
 
-A model reads instructions and data in the same channel. Text inside a web page, email, PDF, issue, or tool result can redirect it. No filter reliably stops this; OWASP describes foolproof prevention as unclear given how models work ([cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)), and guardrail models can themselves be injected.
+A model reads instructions and data in the same channel. Text inside a web page, email, PDF, issue, or tool result can redirect it. No filter reliably stops this; OWASP describes foolproof prevention as unclear given how models work ([LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/)), and guardrail models can themselves be injected ([cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)).
 
 So design for the case where injection succeeds. The question is not "can the model be tricked?" but "what can it do once it is?"
 
@@ -22,7 +22,7 @@ Simon Willison's rule ([post](https://simonwillison.net/2025/Jun/16/the-lethal-t
 
 Remove any one leg and the data-theft path closes. The external channel is often less obvious than a "send email" tool: a rendered Markdown image whose URL carries data, a link preview, a web-fetch tool, a pull request comment, or a commit to a public repository.
 
-A documented case: in May 2025, a prompt injection in a public GitHub issue caused an agent using the GitHub MCP server, with tool calls set to "Always Allow", to copy data from the owner's private repositories into a public pull request ([Invariant Labs](https://invariantlabs.ai/blog/mcp-github-vulnerability)). The server had no bug. The combination was the flaw.
+A documented demonstration: in May 2025, a prompt injection in a public GitHub issue caused an agent using the GitHub MCP server to copy data from the owner's private repositories into a public pull request ([Invariant Labs](https://invariantlabs.ai/blog/mcp-github-vulnerability)). The server had no bug. The combination was the flaw.
 
 ## LLM features you ship
 
@@ -71,14 +71,15 @@ A coding agent runs shell commands with your user account, your SSH keys, and yo
 
 * Turn on the agent's OS-level sandbox and keep network access to an allowlist. Know its boundary: Claude Code's sandbox covers shell commands, while its file tools, MCP servers, and hooks run outside it ([docs](https://code.claude.com/docs/en/sandboxing)).
 * Run unattended or "auto-approve" sessions in a dev container, VM, or cloud environment, never on the machine that holds your production credentials.
+* Treat opening a repository as running its code. Project files such as `.claude/settings.json`, `.mcp.json`, and hooks can start servers, run commands, or redirect API traffic. Two Claude Code flaws did this before the trust prompt ([CVE-2025-59536](https://nvd.nist.gov/vuln/detail/CVE-2025-59536), [CVE-2026-21852](https://nvd.nist.gov/vuln/detail/CVE-2026-21852)). Keep agents updated, and open unfamiliar repositories in a container or VM.
 * Grant broad permission modes per task, not permanently.
 
 ### 8. Keep production credentials away from agents
 
 Anything an agent can read, it can leak: into logs, pull requests, or the prompts sent to a model provider.
 
-* Give agents scoped, short-lived tokens for development resources. No production database URLs, no `service_role` keys, no root cloud credentials.
-* Deny reads of `.env` files and credential directories in the agent's permission settings.
+* Give agents scoped, short-lived tokens for development resources. No production database URLs, no `service_role` or `sb_secret_` keys, no root cloud credentials.
+* Deny reads of `.env` files and credential directories in the permission rules and in the sandbox (`sandbox.filesystem.denyRead` or `sandbox.credentials`). Permission rules alone do not stop a script the agent runs from opening the file. Keep production secrets out of local `.env` files.
 
 ### 9. MCP servers and skills are code you install
 

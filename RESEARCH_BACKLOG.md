@@ -8,12 +8,10 @@ Last reviewed: 2026-10-11.
 
 ## Unverified claims
 
-* **AI code review benchmarks.** A widely cited comparison of AI reviewers on about 300,000 pull requests (attributed to Martian) could not be traced to its primary source. Macroscope had no independent evaluation.
-* **npm token enforcement in 2026.** A vendor blog reports that npm restricted 2FA-bypass tokens from 31 July 2026. Not confirmed in GitHub's changelog.
+* **AI code review benchmarks.** The widely cited comparison is Martian's [Code Review Bench](https://codereview.withmartian.com/); its methodology page could not be retrieved, and the 200k–300k pull request scale appears only in vendor write-ups. Macroscope has no independent evaluation.
 * **Shai-Hulud 2.0.** A second wave in November 2025 is reported by vendors, not by CISA.
-* **Codex sandbox defaults.** OpenAI's documentation moved during research; the current default sandbox and approval modes need re-checking.
-* **EN 301 549 and WCAG 2.2.** The harmonized standard behind the European Accessibility Act references WCAG 2.1; the timing of an update to 2.2 is unconfirmed.
-* **Copywriting Guide, lesson 10.** "People don't buy products; they buy better versions of themselves" is attributed to Tony Robbins in the guide but is more commonly credited to Samuel Hulick. Needs a source before changing.
+* **Codex network default.** Sandbox modes (`read-only`, `workspace-write`, `danger-full-access`) and approval policies (`on-request`, `never`) are documented at [learn.chatgpt.com/docs/sandboxing](https://learn.chatgpt.com/docs/sandboxing); the default for network access is not stated.
+* **Copywriting Guide quotes.** Lessons are labeled as paraphrases because no primary source was found for Halbert's offer line (lesson 1), the Caples headline line (lesson 9), or "people don't buy products; they buy better versions of themselves" (lesson 10). A book and page would let the quotes return.
 
 ## Not yet evaluated
 

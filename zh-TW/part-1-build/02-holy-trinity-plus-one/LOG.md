@@ -1,7 +1,7 @@
 # [PROJECT_NAME] — 開發日誌（Development Log）
 
-_最後更新：[YYYY-MM-DD]_
-_角色：現在經過驗證、確實為真的事 · 受 [`CONSTITUTION.md`](CONSTITUTION.md) 治理_
+最後更新：[YYYY-MM-DD]
+角色：現在經過驗證、確實為真的事 · 受 [`CONSTITUTION.md`](CONSTITUTION.md) 治理
 
 這份文件讓全新的代理工作階段讀 30 秒就能開始產出。它是**以營運為目的的文件，不是日記。** 下方的目前狀態段落直接改寫：用新的真實陳述取代過時的那一行。工作階段紀錄（如下方的好例子）只往後追加，絕不改寫。
 

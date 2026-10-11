@@ -1,7 +1,7 @@
 # [PROJECT_NAME] — 實作計畫（Implementation Plan）
 
-_最後更新：[YYYY-MM-DD]_
-_角色：已核准的 brief 如何被打造與驗證 · 受 [`CONSTITUTION.md`](CONSTITUTION.md) 治理_
+最後更新：[YYYY-MM-DD]
+角色：已核准的 brief 如何被打造與驗證 · 受 [`CONSTITUTION.md`](CONSTITUTION.md) 治理
 
 這是**可執行的工作佇列**，不只是架構說明。架構粗略規劃；接下來的幾個任務精確規劃。不要試圖提前好幾個月預測每個實作細節——等目前這一段完成後，再重新規劃下一段。
 
@@ -93,7 +93,7 @@ _角色：已核准的 brief 如何被打造與驗證 · 受 [`CONSTITUTION.md`]
 1. [下一個優先事項]
 2. [接著是這個]
 
-項目落地後就離開這份清單。這是優先順序，不是時程表。
+項目完成後就離開這份清單。這是優先順序，不是時程表。
 
 ## 7. Brief → 實作的追溯
 

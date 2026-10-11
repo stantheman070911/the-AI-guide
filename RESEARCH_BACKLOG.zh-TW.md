@@ -8,12 +8,10 @@
 
 ## 未經查證的主張
 
-* **AI 程式碼審查基準測試。** 一份被廣泛引用、以約 300,000 個 pull request 比較 AI 審查工具的研究（據稱出自 Martian），無法追溯到第一手來源。Macroscope 沒有任何獨立評估。
-* **2026 年的 npm token 限制。** 一篇廠商部落格指出，npm 自 2026 年 7 月 31 日起限制可略過 2FA 的 token。GitHub 的 changelog 中尚未得到證實。
+* **AI 程式碼審查基準測試。** 被廣泛引用的比較是 Martian 的 [Code Review Bench](https://codereview.withmartian.com/)；無法取得它的方法說明頁面，而 20 萬至 30 萬個 pull request 的規模只出現在廠商文章中。Macroscope 沒有任何獨立評估。
 * **Shai-Hulud 2.0。** 2025 年 11 月的第二波攻擊由廠商回報，而不是 CISA。
-* **Codex 沙箱預設值。** 研究期間 OpenAI 的文件搬移了位置；目前預設的沙箱與核准模式需要重新確認。
-* **EN 301 549 與 WCAG 2.2。** 歐洲無障礙法案所依據的調和標準引用的是 WCAG 2.1；更新到 2.2 的時程尚未確定。
-* **文案寫作指南第 10 課。** 「人們買的不是產品；他們買的是更好的自己」在指南中歸於 Tony Robbins，但更常被認為出自 Samuel Hulick。修改前需要找到來源。
+* **Codex 網路存取預設值。** 沙箱模式（`read-only`、`workspace-write`、`danger-full-access`）與核准政策（`on-request`、`never`）記載於 [learn.chatgpt.com/docs/sandboxing](https://learn.chatgpt.com/docs/sandboxing)；網路存取的預設值沒有說明。
+* **文案寫作指南的引言。** 由於找不到第一手來源，各課改標為轉述：Halbert 關於 offer 的那句話（第 1 課）、Caples 關於標題的那句話（第 9 課），以及「人們買的不是產品；他們買的是更好的自己」（第 10 課）。找到書名與頁碼後，才能恢復為引言。
 
 ## 尚未評估
 
