@@ -41,7 +41,7 @@ Each part folder has a `README.md` that introduces the part and lists its chapte
 Every page exists in English and Traditional Chinese (繁體中文).
 
 * **Pages in `en/` and `zh-TW/` mirror each other.** The same file name at the same path, with the same headings in the same order.
-* **Root files use a suffix.** `README.md` pairs with `README.zh-TW.md`, `CONTRIBUTING.md` with `CONTRIBUTING.zh-TW.md`, and so on. `GLOSSARY.md` is a single bilingual file. `LICENSE` stays in English only.
+* **Root files use a suffix.** `README.md` pairs with `README.zh-TW.md`, `CONTRIBUTING.md` with `CONTRIBUTING.zh-TW.md`, and so on. `GLOSSARY.md` is a single bilingual file. `LICENSE` and `LICENSE-CODE` stay in English only.
 * **English is the source language**, except for pages marked otherwise at the top. [Appendix A](en/appendix/01-writing-principles.md) was written in Chinese, so the Chinese version is authoritative there.
 * **Both versions must say the same thing.** They may phrase it differently, but they must carry the same facts, claims, degree of certainty, and structure.
 
@@ -115,4 +115,4 @@ A maintainer reviews every pull request for accuracy, clarity, consistency with 
 
 ## License
 
-By contributing, you agree that your contributions are released under the repository's [license](LICENSE).
+By contributing, you agree that your contributions are released under the same terms: text under [CC BY 4.0](LICENSE), code and templates under the [MIT License](LICENSE-CODE).

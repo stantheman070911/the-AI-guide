@@ -1,6 +1,6 @@
 [English](README.md) | **繁體中文**
 
-# Vibecoding 指南
+# AI 指南
 
 用 AI 輔助（「vibecoded」）開發、交付真正產品的實用筆記，帶有明確觀點——該用什麼技術堆疊、如何判斷網站是否真的可以上線、如何補上 AI 程式工具常常留下的資安漏洞，以及如何讓 AI 輔助的設計與寫作看起來不像 AI 生成。
 
@@ -88,4 +88,4 @@
 
 ## 授權
 
-以 [MIT 授權條款](LICENSE)發布。授權條款以英文原文為準。
+文字內容 © 2026 Stanley Lu，採用 [CC BY 4.0](LICENSE) 授權。程式碼、程式碼範例、[神聖三位一體 + 1](zh-TW/part-1-build/02-holy-trinity-plus-one/README.md) 範本，以及[附錄 B](zh-TW/appendix/02-claude-md-coding-rules.md) 的預設範本，採用 [MIT 授權條款](LICENSE-CODE)。授權條款以英文原文為準。

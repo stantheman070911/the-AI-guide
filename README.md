@@ -1,6 +1,6 @@
 **English** | [繁體中文](README.zh-TW.md)
 
-# Vibecoding Guide
+# The AI Guide
 
 Practical, opinionated notes for shipping real products with AI-assisted ("vibecoded") development — what stack to use, how to know a site is actually production-ready, how to close the security gaps AI coding tools tend to leave open, and how to make AI-assisted design and writing not look AI-generated.
 
@@ -88,4 +88,4 @@ Issues and pull requests are welcome in English or Chinese.
 
 ## License
 
-Released under the [MIT License](LICENSE).
+Text © 2026 Stanley Lu, licensed under [CC BY 4.0](LICENSE). Code, code samples, the [Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/README.md) templates, and the [Appendix B](en/appendix/02-claude-md-coding-rules.md) preset are licensed under the [MIT License](LICENSE-CODE).

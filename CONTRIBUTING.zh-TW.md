@@ -41,7 +41,7 @@ scripts/check_docs.py          連結與雙語對應檢查工具
 每一頁都有英文與繁體中文兩個版本。
 
 * **`en/` 與 `zh-TW/` 中的頁面互相對應。** 相同的路徑、相同的檔名，標題相同且順序一致。
-* **根目錄的檔案使用後綴。** `README.md` 對應 `README.zh-TW.md`，`CONTRIBUTING.md` 對應 `CONTRIBUTING.zh-TW.md`，以此類推。`GLOSSARY.md` 是單一的雙語檔案。`LICENSE` 只保留英文。
+* **根目錄的檔案使用後綴。** `README.md` 對應 `README.zh-TW.md`，`CONTRIBUTING.md` 對應 `CONTRIBUTING.zh-TW.md`，以此類推。`GLOSSARY.md` 是單一的雙語檔案。`LICENSE` 與 `LICENSE-CODE` 只保留英文。
 * **英文是來源語言**，除非頁面頂端另有標示。[附錄 A](zh-TW/appendix/01-writing-principles.md) 原本以中文撰寫，因此該頁以中文版為準。
 * **兩個版本必須說同樣的事。** 措辭可以不同，但事實、主張、確定程度與結構必須一致。
 
@@ -115,4 +115,4 @@ scripts/check_docs.py          連結與雙語對應檢查工具
 
 ## 授權
 
-貢獻內容即表示你同意你的貢獻以本儲存庫的[授權條款](LICENSE)發布。
+貢獻內容即表示你同意你的貢獻以相同條件發布：文字內容採用 [CC BY 4.0](LICENSE)，程式碼與範本採用 [MIT 授權條款](LICENSE-CODE)。
