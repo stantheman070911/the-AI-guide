@@ -2,9 +2,7 @@
 
 # How to Not Look AI-Generated
 
-*A designer's guide to avoiding generic AI aesthetics and preserving authorship.*
-
-The goal is not to imitate arbitrary "human imperfections," or to conceal the use of a tool. The goal is to make work in which the decisions feel authored.
+The goal is work in which the decisions feel authored.
 
 An AI aesthetic often feels statistically plausible, highly organized, superficially polished, and strangely indifferent to its subject. AI-looking work is work in which too many decisions appear to have been made by default.
 
@@ -209,16 +207,6 @@ Change where AI sits in the process.
 **The deletion test.** Which elements can I remove without reducing meaning, hierarchy, or emotional effect? Remove them.
 
 **The explanation test.** Can I explain why each major visual decision exists? Not "because it looked good." Not "because the template needed something there." Not "because the AI generated it that way." A defensible answer connects the decision to content, audience, identity, medium, or concept.
-
-## The underlying rule
-
-AI-looking design is usually not caused by AI itself. It is caused by unearned decisions: generic hierarchy, generic imagery, generic language, generic composition, generic polish, generic irregularity.
-
-AI naturally produces orderly hierarchy, consistent components, balanced spacing, categorization, and decorative visual aids. Human-feeling work tends to involve stronger editorial decisions instead: what to remove, what to exaggerate, what to leave imperfect, and what deserves attention.
-
-Increase the number of decisions that originate in the specific idea.
-
-> Authorship means: the work could not have looked exactly this way if it had been about something else. That is the standard.
 
 ---
 

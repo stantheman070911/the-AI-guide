@@ -2,7 +2,7 @@
 
 # Part 2: Ship
 
-What to check before a vibecoded product meets real users and real attackers. Start with the checklist. The playbook turns its highest-risk security items into fixes and verification steps; the third chapter covers risks specific to AI features and coding agents.
+What to check before a vibecoded product meets real users and real attackers. Start with the checklist.
 
 ## Chapters
 

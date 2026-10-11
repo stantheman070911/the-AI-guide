@@ -4,8 +4,7 @@ _Last updated: [YYYY-MM-DD]_
 _Role: the permanent rules every other document and every agent session must obey_
 
 This is the only document a coding agent may not edit on its own. Changes here are
-human-approved, deliberate, and rare. Keep this file **short — 50 to 150 lines.** A
-constitution nobody can hold in their head stops being read; a map beats an encyclopedia.
+human-approved, deliberate, and rare. Keep this file **short — 50 to 150 lines.**
 
 ## Law I — What each document owns
 

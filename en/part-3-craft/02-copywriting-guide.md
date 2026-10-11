@@ -192,10 +192,6 @@ Before publishing a sales message, ask:
 * Is the mechanism distinct from competitors?
 * Am I selling the customer's transformation, not merely the product?
 
-## Core principle
-
-The best copy makes a valuable offer feel relevant, credible, distinct, and personally meaningful—then makes the next step feel easy.
-
 ---
 
 [← How to Not Look AI-Generated](01-how-to-not-look-ai-generated.md) · [Part 3: Craft](README.md) · [Contents](../../README.md#contents) · [Writing with AI →](03-writing-with-ai.md)
