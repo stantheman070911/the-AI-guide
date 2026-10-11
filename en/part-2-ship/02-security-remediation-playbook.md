@@ -116,9 +116,9 @@ Two 2025 incidents show the pattern. In the tj-actions/changed-files compromise 
 
 Anything in the browser bundle is public. Know which keys are designed to be public (Supabase publishable key `sb_publishable_…` or legacy `anon` key, Stripe publishable key `pk_…`) and which are not (Supabase secret key `sb_secret_…` or legacy `service_role` key, Stripe `sk_…` and restricted `rk_…` keys, webhook secrets `whsec_…`, any LLM provider key).
 
-* **Detect:** Search the built bundle, not only the source, for `sb_secret_`, `sk_`, `rk_`, `whsec_`, and `sk-`. Legacy Supabase keys are JWTs: decode each `eyJ…` string and fail if its `role` claim is `service_role`. Check which environment variables carry a public prefix (`NEXT_PUBLIC_`, `VITE_`).
+* **Detect:** Search the built bundle, not only the source, for full secret prefixes: `sb_secret_`, `sk_live_`, `sk_test_`, `rk_live_`, `rk_test_`, `whsec_`, and the pattern `\bsk-[A-Za-z0-9_-]{20,}` for OpenAI- and Anthropic-style keys. A bare `sk-` also matches ordinary code such as `mask-`. Legacy Supabase keys are JWTs: decode each `eyJ…` string and fail if its `role` claim is `service_role`. Check which environment variables carry a public prefix (`NEXT_PUBLIC_`, `VITE_`).
 * **Fix:** Call third-party APIs from a server route that holds the key, authenticates the user, rate-limits, and returns only what the client needs.
-* **Verify:** Grep the production build output for every secret's prefix. None appear.
+* **Verify:** Re-run both checks on the production build output: no secret prefix appears, and no decoded JWT has `role: service_role`.
 
 ## A04 Cryptographic failures
 
@@ -165,7 +165,7 @@ Includes model output rendered as HTML or Markdown.
 
 Brute force, scraping, and AI endpoints that turn a small bill into a large one.
 
-* **Fix:** Rate-limit by IP and account with a shared store (Redis, or the platform's built-in limiter): about 5 login attempts per 15 minutes, 3–5 password resets per hour, and per-user quotas on AI and other expensive endpoints. Return `429` with `Retry-After`. Then cap spending where the provider allows: Vercel's on-demand budget does not stop usage unless **Pause Production Deployments** is enabled, and checks run every few minutes ([Vercel](https://vercel.com/docs/spend-management)). Pausing stops production deployments only; AI Gateway and v0 usage billed to the team continue, so cap model spend separately; Supabase Pro has a spend cap on by default ([pricing](https://supabase.com/pricing)); set monthly limits on every LLM provider key.
+* **Fix:** Rate-limit by IP and account with a shared store (Redis, or the platform's built-in limiter): about 5 login attempts per 15 minutes, 3–5 password resets per hour, and per-user quotas on AI and other expensive endpoints. Return `429` with `Retry-After`. Then cap spending where the provider allows: Vercel's on-demand budget does not stop usage unless **Pause Production Deployments** is enabled, and checks run every few minutes ([Vercel](https://vercel.com/docs/spend-management)). Pausing stops production deployments only; AI Gateway and v0 usage billed to the team continue, so cap model spend separately. Supabase Pro has a spend cap on by default ([pricing](https://supabase.com/pricing)). Set monthly limits on every LLM provider key.
 * **Verify:** Script 50 rapid login attempts and 50 AI requests from one account. Both get throttled. Confirm each provider's alert reaches a person.
 
 ### 20. Payments and webhooks trusted without verification — 🚨 Critical

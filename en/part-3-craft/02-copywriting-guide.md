@@ -116,7 +116,7 @@ A useful headline often includes:
 
 ### 10. Sell the transformation, not the object
 
-A widely quoted line, often credited to Tony Robbins without a traced source: people do not buy products; they buy a better version of themselves.
+A widely quoted line of unclear origin, credited to both Tony Robbins and Samuel Hulick: people do not buy products; they buy a better version of themselves.
 
 People buy what the product enables: confidence, relief, status, security, freedom, competence, belonging, or identity.
 

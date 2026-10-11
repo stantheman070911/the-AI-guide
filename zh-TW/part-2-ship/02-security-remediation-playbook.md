@@ -116,9 +116,9 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 瀏覽器 bundle 裡的任何東西都是公開的。要分清楚哪些金鑰本來就設計成公開（Supabase publishable key `sb_publishable_…` 或舊版 `anon` key、Stripe publishable key `pk_…`），哪些不是（Supabase secret key `sb_secret_…` 或舊版 `service_role` key、Stripe 的 `sk_…` 與受限金鑰 `rk_…`、webhook 簽章密鑰 `whsec_…`、任何 LLM 供應商的金鑰）。
 
-* **偵測**：搜尋建置後的 bundle，而不只是原始碼，找出 `sb_secret_`、`sk_`、`rk_`、`whsec_` 與 `sk-`。舊版 Supabase 金鑰是 JWT：逐一解碼 `eyJ…` 字串，`role` 為 `service_role` 即判定失敗。檢查哪些環境變數帶有公開前綴（`NEXT_PUBLIC_`、`VITE_`）。
+* **偵測**：搜尋建置後的 bundle，而不只是原始碼，找出完整的機密前綴：`sb_secret_`、`sk_live_`、`sk_test_`、`rk_live_`、`rk_test_`、`whsec_`，以及用來找 OpenAI 與 Anthropic 這類金鑰的樣式 `\bsk-[A-Za-z0-9_-]{20,}`。只搜尋 `sk-` 也會比對到 `mask-` 這類一般程式碼。舊版 Supabase 金鑰是 JWT：逐一解碼 `eyJ…` 字串，`role` 為 `service_role` 即判定失敗。檢查哪些環境變數帶有公開前綴（`NEXT_PUBLIC_`、`VITE_`）。
 * **修正**：從伺服器路由呼叫第三方 API；由它持有金鑰、驗證使用者、限制速率，並只回傳用戶端需要的內容。
-* **驗證**：在正式環境的建置輸出中搜尋每一個機密的前綴。都不會出現。
+* **驗證**：對正式環境的建置輸出重跑兩項檢查：不出現任何機密前綴，解碼後的 JWT 也沒有 `role: service_role`。
 
 ## A04 加密機制失效
 
@@ -165,7 +165,7 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 暴力破解、爬取資料，以及把小帳單變成大帳單的 AI 端點。
 
-* **修正**：依 IP 與帳號設定速率限制，使用共用儲存（Redis，或平台內建的限制器）：登入約每 15 分鐘 5 次、密碼重設每小時 3–5 次，AI 與其他昂貴端點設定每位使用者配額。回傳 `429` 並附上 `Retry-After`。接著在供應商允許的地方設定支出上限：Vercel 的 on-demand budget 除非開啟 **Pause Production Deployments**，否則不會停止用量，而且每隔幾分鐘才檢查一次（[Vercel](https://vercel.com/docs/spend-management)）。暫停只會停止正式環境部署；計入團隊帳單的 AI Gateway 與 v0 用量會繼續計費，模型支出要另外設上限；Supabase Pro 預設開啟支出上限（[價格](https://supabase.com/pricing)）；每一把 LLM 供應商金鑰都設定每月上限。
+* **修正**：依 IP 與帳號設定速率限制，使用共用儲存（Redis，或平台內建的限制器）：登入約每 15 分鐘 5 次、密碼重設每小時 3–5 次，AI 與其他昂貴端點設定每位使用者配額。回傳 `429` 並附上 `Retry-After`。接著在供應商允許的地方設定支出上限：Vercel 的 on-demand budget 除非開啟 **Pause Production Deployments**，否則不會停止用量，而且每隔幾分鐘才檢查一次（[Vercel](https://vercel.com/docs/spend-management)）。暫停只會停止正式環境部署；計入團隊帳單的 AI Gateway 與 v0 用量會繼續計費，模型支出要另外設上限。Supabase Pro 預設開啟支出上限（[價格](https://supabase.com/pricing)）。每一把 LLM 供應商金鑰都設定每月上限。
 * **驗證**：用腳本對同一個帳號快速發出 50 次登入嘗試與 50 次 AI 請求。兩者都被限流。確認每一個供應商的警示都會送到真人手上。
 
 ### 20. 未經驗證就信任的金流與 webhook — 🚨 嚴重
