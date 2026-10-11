@@ -4,7 +4,7 @@
 
 這是我持續更新的清單，列出我安裝的 Claude Code skills、外掛與命令列工具。它比本指南的其他部分粗略，會隨著我的學習而改變。
 
-Skill 名稱保留工具中顯示的原樣，因此不翻譯。分組依照每個 skill 的來源。
+Skill 名稱保留工具中顯示的原樣，因此不翻譯。分組依照每個 skill 的來源。這是個人清單，不是推薦；安裝工具前如何審查，請見[附錄 D](04-evaluating-tools-and-skills.md)。
 
 ## Claude Code／設定
 
@@ -106,4 +106,4 @@ Skill 名稱保留工具中顯示的原樣，因此不翻譯。分組依照每�
 
 ---
 
-[← 附錄 B：CLAUDE.md 預設範本](02-claude-md-coding-rules.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄)
+[← 附錄 B：CLAUDE.md 預設範本](02-claude-md-coding-rules.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 D：評估工具與 Skills →](04-evaluating-tools-and-skills.md)

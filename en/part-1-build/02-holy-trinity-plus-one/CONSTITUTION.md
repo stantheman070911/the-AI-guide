@@ -45,7 +45,7 @@ Do not let an agent freely edit all four documents — that is how an agent quie
 | CONSTITUTION.md | Human only. An agent may propose a change; it may never apply one unasked. |
 | BRIEF.md | Human-approved. An agent may propose an amendment when implementation exposes a genuine product ambiguity, but does not merge it unasked. |
 | PLAN.md | Human and agent, collaboratively — this is the normal working document during implementation. |
-| LOG.md | Mostly agent-maintained, append-only. Correct a factual error if one is found; do not rewrite history. |
+| LOG.md | Mostly agent-maintained. Current-state sections are updated in place; session entries are appended and never rewritten, except to correct a factual error. |
 
 ## Law III — Retention
 
@@ -78,7 +78,7 @@ Non-negotiable, regardless of what any single session decides in the moment:
 
 ## Law V — Two risk modes
 
-The same agent, a different risk budget, chosen explicitly and stated in LOG.md:
+The same agent, a different risk budget. This law defines the modes; LOG.md records which mode each surface is in:
 
 | Mode | When | What changes |
 | --- | --- | --- |

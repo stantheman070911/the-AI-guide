@@ -4,7 +4,7 @@
 
 My running list of the Claude Code skills, plugins, and command-line tools I have installed. It is less polished than the rest of the guide and changes as I learn.
 
-Skill names are listed exactly as they appear in the tools, so they are not translated. Groups follow where each skill came from.
+Skill names are listed exactly as they appear in the tools, so they are not translated. Groups follow where each skill came from. This is a personal inventory, not a recommendation; [Appendix D](04-evaluating-tools-and-skills.md) covers how to vet a tool before installing it.
 
 ## Claude Code / config
 
@@ -106,4 +106,4 @@ A command-line tool, not a skill. It scaffolds a slides workspace with Claude Co
 
 ---
 
-[← Appendix B: CLAUDE.md Preset](02-claude-md-coding-rules.md) · [Appendix](README.md) · [Contents](../../README.md#contents)
+[← Appendix B: CLAUDE.md Preset](02-claude-md-coding-rules.md) · [Appendix](README.md) · [Contents](../../README.md#contents) · [Appendix D: Evaluating Tools and Skills →](04-evaluating-tools-and-skills.md)

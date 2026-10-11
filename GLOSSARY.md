@@ -25,30 +25,41 @@ English ↔ Traditional Chinese (Taiwan) terms used in this guide. Use these whe
 | --- | --- | --- |
 | acceptance criteria | 驗收標準 | |
 | agent (AI coding agent) | 代理（AI 程式代理） | |
+| agent skill | skill | Agent Skills format (`SKILL.md`). |
 | background job | 背景工作 | |
 | backup / restore | 備份／還原 | |
 | bug | bug | |
 | cache | 快取 | |
+| context engineering | 上下文工程 | |
+| context window | 上下文視窗 | |
 | client / client-side | 用戶端 | |
 | dependency | 相依套件 | |
 | deploy / deployment | 部署 | |
 | environment variable | 環境變數 | |
+| evaluation (eval) set | 評估集 | |
 | feature flag | 功能旗標 | |
 | frontend / backend | 前端／後端 | |
 | lockfile | lock 檔 | |
+| merchant of record (MoR) | 記錄商家（MoR） | |
 | middleware | 中介軟體 | |
 | migration | 遷移 | |
+| MCP server | MCP 伺服器 | |
 | observability | 可觀測性 | |
 | object storage | 物件儲存 | |
 | out of scope | 不在範圍內 | |
 | production | 正式環境 | "go to production" → 上線 |
 | production-ready | 可以上線 | |
 | prompt | 提示詞 | |
+| prompt caching | prompt caching | Kept in English. |
 | queue | 佇列 | |
 | repository | 儲存庫 | |
+| retrieval (RAG) | 檢索（RAG） | |
+| rerank | 重新排序 | |
 | requirement | 需求 | |
 | rollback | 回退 | |
 | runbook | 維運手冊 | |
+| sandbox | 沙箱 | |
+| spend cap / spend limit | 支出上限 | |
 | server / server-side | 伺服器／伺服器端 | |
 | stack (tech stack) | 技術堆疊 | |
 | staging | 預備環境 | |
@@ -69,13 +80,21 @@ English ↔ Traditional Chinese (Taiwan) terms used in this guide. Use these whe
 | CSRF (cross-site request forgery) | 跨站請求偽造（CSRF） | |
 | deserialization | 反序列化 | |
 | hash / salt | 雜湊／加鹽 | |
+| hallucinated package | 幻覺套件 | |
 | IDOR | 不安全的直接物件參照（IDOR） | |
 | least privilege | 最小權限 | |
+| lethal trifecta | 致命三要素 | Simon Willison's term. |
 | rate limiting | 速率限制 | |
 | remediation | 修補 | |
+| prompt injection | 提示詞注入 | |
+| red teaming | 紅隊測試 | |
 | rotate (a secret) | 輪替 | |
+| row-level security (RLS) | 列層級安全性（RLS） | |
 | secret | 機密 | |
 | security header | 安全標頭 | |
+| supply chain | 供應鏈 | |
+| tenant isolation | 租戶隔離 | |
+| tool poisoning | 工具投毒 | |
 | SQL injection | SQL 注入 | |
 | SSRF | 伺服器端請求偽造（SSRF） | |
 | vulnerability | 漏洞 | |

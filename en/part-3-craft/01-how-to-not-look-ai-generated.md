@@ -169,6 +169,22 @@ The reader makes the first decision extremely quickly: *"Is this worth stopping 
 
 > **Principle:** Optimize in this order — visual intrigue, immediate comprehension, readability, substance. Polish comes afterward.
 
+## 23. Treat accessibility as a design constraint
+
+Generated interfaces routinely fail on contrast, focus states, form labels, and keyboard use. Accessibility is also a legal requirement in more places: since 28 June 2025, the European Accessibility Act requires many consumer digital products and services sold in the EU to be accessible, with an exemption for microenterprises that provide services ([Directive 2019/882](https://eur-lex.europa.eu/eli/dir/2019/882/oj/eng)).
+
+Use [WCAG 2.2](https://www.w3.org/TR/WCAG22/) level AA as the baseline. The failures to check first:
+
+* Text contrast of at least 4.5:1, or 3:1 for large text.
+* A visible focus indicator, and every action reachable by keyboard.
+* A programmatic label on every form input.
+* Pointer targets at least 24 × 24 CSS pixels.
+* Meaning not carried by color alone; motion reduced when the user asks for it (`prefers-reduced-motion`).
+
+Test with a keyboard-only pass, a screen reader pass (VoiceOver or NVDA), and an automated checker such as axe. Automated checkers find only part of the problems.
+
+> **Principle:** Constraints that include every reader produce better design for all of them. Treat contrast, focus, and labels as part of the visual system, not a compliance pass at the end.
+
 ## The professional AI-assisted workflow
 
 Change where AI sits in the process.
@@ -205,4 +221,4 @@ Increase the number of decisions that originate in the specific idea.
 
 ---
 
-[← Security Remediation Playbook](../part-2-ship/02-security-remediation-playbook.md) · [Part 3: Craft](README.md) · [Contents](../../README.md#contents) · [Copywriting Guide →](02-copywriting-guide.md)
+[← Securing AI Features and Coding Agents](../part-2-ship/03-securing-ai-features-and-agents.md) · [Part 3: Craft](README.md) · [Contents](../../README.md#contents) · [Copywriting Guide →](02-copywriting-guide.md)

@@ -136,4 +136,4 @@ A meta-correction must not recursively generate another rule.
 
 ---
 
-[← Copywriting Guide](../part-3-craft/02-copywriting-guide.md) · [Appendix](README.md) · [Contents](../../README.md#contents) · [Appendix B: CLAUDE.md Preset →](02-claude-md-coding-rules.md)
+[← Writing with AI](../part-3-craft/03-writing-with-ai.md) · [Appendix](README.md) · [Contents](../../README.md#contents) · [Appendix B: CLAUDE.md Preset →](02-claude-md-coding-rules.md)

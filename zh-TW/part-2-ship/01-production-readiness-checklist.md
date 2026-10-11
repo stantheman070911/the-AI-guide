@@ -179,7 +179,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 
 **關鍵原則**：對使用者隱藏的按鈕，不等於拒絕存取。授權必須由伺服器／資料庫強制執行。
 
-*關於用戶端身分驗證、IDOR、失效的存取控制、session 處理與身分驗證繞過路徑，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#身分驗證與授權)。*
+*關於用戶端身分驗證、IDOR、失效的存取控制、session 處理與身分驗證繞過路徑，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#a01-存取控制失效)。*
 
 ## 20. 資料庫安全
 
@@ -189,7 +189,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 * 絕不把服務／管理員資料庫憑證暴露給瀏覽器
 * 備份重要資料，並確認破壞性操作需要適當的授權
 
-特別是 Supabase，一個非常常見的 vibecoding 錯誤是先做 UI、之後才發現權限問題，然後讓資料表維持過度寬鬆，好讓應用程式「能動」。
+特別是 Supabase，一個非常常見的 vibecoding 錯誤是先做 UI、之後才發現權限問題，然後讓資料表維持過度寬鬆，好讓應用程式「能動」。見[修補手冊第 4 項](02-security-remediation-playbook.md#4-租戶隔離與資料庫政策---嚴重)。
 
 ## 21. 輸入與應用程式安全
 
@@ -198,7 +198,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 * 驗證 ID 與物件擁有權；拒絕非預期的輸入並限制 payload 大小
 * 避免盲目渲染 AI 或使用者產生的 HTML；適當地跳脫輸出
 
-*關於 SQL 注入、XSS 與命令注入，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#注入漏洞)。*
+*關於 SQL 注入、XSS 與命令注入，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#a05-注入)。*
 
 ## 22. 濫用防範與成本保護
 
@@ -211,7 +211,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 
 一個沒有速率限制的 AI 端點，可能很快就把每月 20 美元的基礎設施帳單，變成 2,000 美元的意外帳單。
 
-*詳細的修補計畫請見[資安修補手冊第 16 項](02-security-remediation-playbook.md#16-缺少速率限制---高)。*
+*詳細的修補計畫請見[資安修補手冊第 19 項](02-security-remediation-playbook.md#19-缺少速率限制與支出控制---高)。*
 
 ## 23. 檔案上傳安全
 
@@ -224,12 +224,13 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 ## 24. 網站安全設定
 
 * 啟用 HTTPS，並把 HTTP 重新導向到 HTTPS
-* 加上適當的安全標頭：CSP、HSTS、MIME 嗅探與框架嵌入防護
+* 加上適當的安全標頭：CSP、HSTS、`X-Content-Type-Options`、`Referrer-Policy`
+* 用 CSP 的 `frame-ancestors` 控制框架嵌入
 * 用 `HttpOnly`、`Secure` 與適當的 `SameSite` 政策保護 cookie
 * 檢查 CORS 設定；敏感的 API 避免使用 `Access-Control-Allow-Origin: *`
 * 在身分驗證架構需要時加上 CSRF 防護
 
-*關於安全標頭與 CSRF，詳細的修補步驟請見[資安修補手冊](02-security-remediation-playbook.md#安全標頭與防護)。*
+*請見資安修補手冊中的[安全標頭](02-security-remediation-playbook.md#7-安全標頭---中)與 [CSRF](02-security-remediation-playbook.md#22-跨站請求偽造csrf--高)。*
 
 ## 25. 部署與正式環境設定
 
@@ -239,6 +240,24 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 * 確認電子郵件使用正式網域，且金流系統處於正確的模式
 * 確認資料庫指向正式環境，且備份、監控與錯誤追蹤都已就位
 * 從乾淨的建置測試部署
+
+## 26. 無障礙
+
+* 符合 WCAG 2.2 AA：文字對比、可見的焦點、鍵盤操作、有標籤的輸入欄位、至少 24 × 24 px 的點擊區域
+* 做一次只用鍵盤的檢查與一次螢幕閱讀器檢查，而不只是自動掃描
+* 確認歐洲無障礙法案是否適用於你
+
+*見[如何不像 AI 生成第 23 節](../part-3-craft/01-how-to-not-look-ai-generated.md#23-把無障礙當成設計限制)。*
+
+## 27. AI 功能
+
+* 把模型輸出當作不可信任的內容：跳脫它、驗證結構化輸出、絕不執行它
+* 工具使用終端使用者的權限；不可逆的動作要使用者確認
+* 在模型看到任何內容之前，依租戶與權限篩選檢索結果
+* 依使用者與供應商限制 token、步數與支出
+* 透過每一個輸入與輸出通道測試提示詞注入
+
+*見[保護 AI 功能與程式代理](03-securing-ai-features-and-agents.md)。*
 
 ## 更高層次的稽核
 
@@ -253,7 +272,7 @@ Vibecoded 網站常常在開發者的 MacBook 上表現良好，卻在真正顧�
 | 5\. 它看起來正當可信嗎？ | 網域、favicon、品牌、真實的內容／照片 |
 | 6\. 它夠快嗎？ | 圖片、JS bundle、渲染、Core Web Vitals |
 | 7\. 我們能衡量它嗎？ | 數據分析、轉換、錯誤監控 |
-| 8\. 它會被攻擊嗎？ | 機密、身分驗證、授權、輸入、資料庫、上傳、濫用 |
+| 8\. 它會被攻擊嗎？ | 機密、身分驗證、授權、輸入、資料庫、上傳、濫用、AI 功能 |
 
 在 AI／vibecoding 時代，最後一道關卡最值得重視：糟糕的中繼資料讓網站看起來很業餘，但糟糕的授權可能讓整個客戶資料庫外洩。
 
@@ -267,4 +286,4 @@ P0 項目對應[資安修補手冊](02-security-remediation-playbook.md)中的 �
 
 ---
 
-[← 神聖三位一體 + 1](../part-1-build/02-holy-trinity-plus-one/README.md) · [第二部：上線](README.md) · [目錄](../../README.zh-TW.md#目錄) · [資安修補手冊 →](02-security-remediation-playbook.md)
+[← 用 LLM 打造功能](../part-1-build/04-building-with-llms.md) · [第二部：上線](README.md) · [目錄](../../README.zh-TW.md#目錄) · [資安修補手冊 →](02-security-remediation-playbook.md)

@@ -2,371 +2,231 @@
 
 # 資安修補手冊
 
-針對[網站上線準備檢查清單](01-production-readiness-checklist.md)中風險最高的項目，提供詳細、可執行的指引。每一項都列出風險、修正方式與驗證清單。
+針對[網站上線準備檢查清單](01-production-readiness-checklist.md)中風險最高的項目提供修正方法，依 [OWASP Top 10:2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/) 分類。每一項都說明如何找出問題、如何修正，以及如何證明修正有效。LLM 功能與程式代理特有的風險，請見[保護 AI 功能與程式代理](03-securing-ai-features-and-agents.md)。
 
-嚴重等級說明：🚨 嚴重（上線前修正）· 🔴 高（上線後盡快修正）· 🟠 中（排入時程）。這些等級對應檢查清單的 P0／P1／P2 分級——這裡的 🚨 與 🔴 項目都屬於 P0。
+嚴重等級：🚨 嚴重（上線前修正）· 🔴 高（上線後盡快修正）· 🟠 中（排入時程）。🚨 與 🔴 項目屬於檢查清單分級中的 P0。
 
-## 身分驗證與授權
+只測試你擁有或獲得授權測試的系統。
+
+> 最後查證：2026-10-11。
+
+## 為什麼 AI 寫的程式碼更需要這些
+
+Veracode 在 2025 年以 80 個資安敏感任務測試了 100 多個模型，45% 的生成程式碼樣本引入了已知漏洞，而且較大的模型表現並沒有比較好（[新聞稿](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)）。代理會把正常流程寫出來。存取控制、輸入處理與失敗時的行為，才是你要審查的地方。
+
+## A01 存取控制失效
 
 ### 1. 用戶端身分驗證 — 🚨 嚴重
 
-如果登入檢查是在瀏覽器的 JavaScript 中執行，任何使用者都能讀取原始碼並繞過它。身分驗證邏輯應該放在伺服器端；用戶端只應在伺服器驗證憑證後，收到一個 session token。
+寫在瀏覽器 JavaScript 裡的登入檢查，可以被讀取並略過。
 
-**修正：**
+* **偵測**：在前端程式碼中搜尋密碼比對、角色檢查與 token 驗證。
+* **修正**：在伺服器端驗證憑證並判斷角色。用戶端只拿到 session cookie 或 token。
+* **驗證**：不透過 UI，以匿名身分直接呼叫每一個受保護的 API。每一次呼叫都失敗。
 
-* 稽核程式碼庫中在用戶端執行的身分驗證／授權邏輯（密碼比對、角色檢查、token 驗證）
-* 把所有憑證驗證與角色判斷移到伺服器端的端點
-* 用戶端只送出憑證，並取回一個經過驗證的 session token（JWT 或安全的 cookie）
+### 2. 缺少物件層級授權（IDOR）— 🚨 嚴重
 
-**檢查清單：**
+已登入不代表被允許。任何接受 ID 的端點，都必須檢查呼叫者是否可以存取那個物件。
 
-* \[ \] 前端 JS 中沒有密碼比對
-* \[ \] 瀏覽器程式碼中沒有角色／權限檢查
-* \[ \] 身分驗證邏輯已移到伺服器／後端
+* **偵測**：列出每一個接受 `userId`、`orderId`、`documentId` 等參數的路由。找出只用 ID 篩選的查詢。
+* **修正**：每一個查詢都限定在已驗證的使用者或租戶範圍內（`WHERE id = $1 AND owner_id = $2`）。否則回傳 `404` 或 `403`。
+* **驗證**：用兩個測試帳號，以 A 登入後請求 B 的物件。讀取與寫入的每一個請求都失敗。
 
-### 2. 缺少授權檢查（IDOR）— 🚨 嚴重
+### 3. 缺少功能層級授權 — 🚨 嚴重
 
-已登入不代表可以存取一切。每個回傳資料的端點，都必須驗證請求者擁有或被允許存取那一筆特定資源。
+一般使用者也能觸及管理員功能與寫入操作。
 
-**修正：**
+* **偵測**：列出所有 `POST`／`PUT`／`PATCH`／`DELETE` 路由與管理頁面。記下哪些在伺服器端檢查角色。
+* **修正**：在伺服器程式碼中，對每一個操作強制執行角色與擁有權檢查。隱藏按鈕不是權限檢查。
+* **驗證**：用一般使用者的 session 重送管理員請求。全部回傳 `403`。
 
-* 稽核每個接受識別碼（`userId`、`documentId`、`orderId` 等）的端點，確認有伺服器端的擁有權／角色檢查
-* 絕不假設通過身分驗證就等於獲得授權
-* 以 `403` 拒絕未經授權的存取；所有以 ID 為基礎的查詢都限定在已驗證的使用者範圍內
+### 4. 租戶隔離與資料庫政策 — 🚨 嚴重
 
-**檢查清單：**
+AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設計就是讓瀏覽器直接存取資料庫；用戶端的金鑰是公開的，資料與外界之間只隔著列層級政策。在 CVE-2025-48757 中，掃描 Lovable 展示區的 1,645 個應用程式，發現其中 170 個的資料表任何人都能讀取或寫入（[紀錄](https://cvemon.intruder.io/cves/CVE-2025-48757)）。
 
-* \[ \] 每個資源端點都檢查擁有權
-* \[ \] 沒有存取控制時，ID 不可被猜測／不是連續編號
-* \[ \] 伺服器在每次請求時驗證使用者與資源之間的關係
-
-### 3. 失效的存取控制 — 🚨 嚴重
-
-已驗證的使用者只應能修改或刪除自己擁有的資源。少了這一點，任何已登入的攻擊者都能破壞其他使用者的資料。
-
-**修正：**
-
-* 稽核所有寫入／更新／刪除路由（`POST`／`PUT`／`PATCH`／`DELETE`），確認有明確的伺服器端擁有權檢查
-* 強制 `resource.ownerId === user.id`，管理員操作再加上角色檢查
-* 以 `403` 拒絕未經授權的操作
-
-**檢查清單：**
-
-* \[ \] 刪除／編輯操作在伺服器端驗證擁有權
-* \[ \] 僅限管理員的路由受角色檢查保護
-* \[ \] 沒有任何資源能被未經授權的使用者修改
-
-### 4. 脆弱的 session 處理 — 🔴 高
-
-Session 必須在密碼學上安全、正確過期，並在登出時失效。
-
-**修正：**
-
-* 確認 session token 使用具足夠熵值的密碼學安全亂數來源
-* 設定閒置與絕對過期時間；登出時在伺服器端銷毀 session
-* 強制僅透過 HTTPS 傳輸，並使用 `Secure`／`HttpOnly`／`SameSite` cookie；登入或權限變更後重新產生 session ID
-
-**檢查清單：**
-
-* \[ \] Session 使用密碼學隨機的 token
-* \[ \] 已設定 session 過期時間
-* \[ \] 登出會在伺服器端讓 session 失效
-* \[ \] Token 只透過 HTTPS 傳輸
+* **偵測**：執行 Supabase Security Advisor（`supabase db advisors`，或在 dashboard 中）。把 `rls_disabled_in_public`、`permissive_rls_policy`（`USING (true)`）、`security_definer_view` 與 `rls_references_user_metadata` 視為阻擋上線的問題（[lint 清單](https://supabase.com/docs/guides/database/database-advisors)）。Firebase 則檢查 Security Rules 中是否有 `allow read, write: if true`。
+* **修正**：在每一個對外公開的資料表上啟用 RLS。政策依據 `auth.uid()` 或來自可信來源的租戶 ID 撰寫，絕不依據使用者可編輯的 metadata。`service_role` 金鑰只放在伺服器端。
+* **驗證**：只用公開網址與 anon key，先在沒有 session 的情況下，再以帳號 A 對帳號 B 的資料列，嘗試讀寫每一個資料表。把這些加成自動化測試，避免之後的遷移悄悄重新打開漏洞。
 
 ### 5. 身分驗證繞過路徑 — 🚨 嚴重
 
-完全跳過身分驗證的路由——往往是意外產生的——讓任何人不必登入就能觸及受保護的功能。
+略過身分驗證的路由，或可以被略過的單一檢查。在 CVE-2025-29927 中，一個精心構造的 `x-middleware-subrequest` 標頭，讓自行託管的應用程式完全略過 Next.js middleware；只在 middleware 中執行身分驗證的應用程式因此暴露（[OSV](https://osv.dev/vulnerability/CVE-2025-29927)）。
 
-**修正：**
+* **偵測**：建立路由清單，標出哪些需要身分驗證。測試路徑變體：結尾斜線、編碼、大小寫。
+* **修正**：在存取資料的地方（路由處理器、server action 或資料庫政策）檢查授權，而不只在 middleware 中。保持框架更新。
+* **驗證**：在沒有 session 的情況下請求每一個受保護的路由，包括 API 路由與 server action。全部失敗。
 
-* 建立完整的路由清單，標出應該需要身分驗證卻沒有的路由
-* 測試繞過手法：路徑操弄、編碼變體、大小寫敏感度落差、中介軟體設定錯誤
-* 對每個受保護路由一致地套用身分驗證中介軟體；在授權檢查之前先將路徑正規化
+### 6. 伺服器端請求偽造（SSRF）— 🔴 高
 
-**檢查清單：**
+任何會去抓取使用者可控網址的功能：連結預覽、圖片匯入、webhook，以及會上網瀏覽的 AI 工具。攻擊者把它指向 `169.254.169.254` 或內部服務。OWASP 2025 把 SSRF 併入存取控制失效。
 
-* \[ \] 每個受保護路由都套用了身分驗證中介軟體
-* \[ \] 沒有意外通往私密資源的公開路由
-* \[ \] 身分驗證中介軟體無法透過網址技巧繞過
+* **偵測**：搜尋接受使用者輸入的伺服器端 `fetch`、`axios`、`requests` 或 `curl` 呼叫。
+* **修正**：盡可能以允許清單限制目的主機。否則先解析 DNS，拒絕私有、loopback 與 link-local 位址範圍，並在每次重新導向後重新檢查。抓取程式不帶任何內部系統的憑證。
+* **驗證**：提交 `http://127.0.0.1`、`http://169.254.169.254/`、一個解析到私有 IP 的主機名稱，以及一個會重新導向到私有 IP 的網址。全部被拒絕。
+
+## A02 安全設定錯誤
+
+### 7. 安全標頭 — 🟠 中
+
+成本很低，而大多數 vibecoded 應用程式上線時都沒有。
+
+* **修正**：全域設定 `Content-Security-Policy`（從 `default-src 'self'` 開始，避免 `unsafe-inline` 與 `unsafe-eval`）、在 CSP 中用 `frame-ancestors` 控制框架嵌入（`X-Frame-Options` 只為舊瀏覽器保留）、`Strict-Transport-Security`、`X-Content-Type-Options: nosniff`、`Referrer-Policy` 與 `Permissions-Policy`。不要加 `X-XSS-Protection`，它已經過時。CSP 先以 `Content-Security-Policy-Report-Only` 上線，再改為強制執行。
+* **驗證**：檢查正式環境的回應標頭（`curl -I`），而不是本機開發環境。
+
+### 8. 暴露的環境與雲端設定錯誤 — 🔴 高
+
+帶有正式資料的預覽與預備環境、公開的儲存 bucket、除錯端點、預設憑證、暴露的 source map，以及在需要驗證的 API 上把 CORS 設為 `*`。
+
+* **偵測**：列出每一個部署網址與儲存 bucket。檢查 bucket 與儲存政策。搜尋同時出現 `Access-Control-Allow-Origin: *` 與憑證的設定。
+* **修正**：保護預覽部署（平台的部署保護或身分驗證），給它們獨立的憑證與資料，bucket 預設為私有，CORS 來源使用允許清單。
+* **驗證**：在未登入的瀏覽器中開啟預覽網址、bucket 物件網址與 `/.map` 檔案。都不會暴露私密資料。
+
+## A03 軟體供應鏈失效
+
+### 9. 幻覺套件與惡意套件 — 🔴 高
+
+模型會編造套件名稱，攻擊者則搶先註冊這些名稱（「slopsquatting」）。在 16 個模型產生的 576,000 個程式碼樣本中，商業模型的幻覺套件平均至少 5.2%，開源模型為 21.7%，共出現 205,474 個不重複的捏造名稱（[USENIX Security 2025](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)）。
+
+* **偵測**：審查 diff 中每一個新增的相依套件。確認它以完全相同的名稱存在，並檢查它的年齡、維護者與下載紀錄。
+* **修正**：相依套件由你自己加入，不要透過代理未經審查的安裝指令。設定發布時間冷卻期，讓剛發布的版本不會被自動安裝（pnpm 的 `minimumReleaseAge`、Yarn 的 `npmMinimalAgeGate`；請查閱你的套件管理工具文件）。
+* **驗證**：lockfile 變更卻沒有對應的清單檔變更時，CI 會失敗；安裝時使用 `npm ci` 或同等的凍結 lockfile 模式。
+
+### 10. 有漏洞的相依套件 — 🔴 高
+
+* **偵測**：在 CI 中執行該生態系的稽核工具（`npm audit`、`pip-audit`、`cargo audit`、`govulncheck`）。
+* **修正**：先修補嚴重與高風險的發現。啟用 Dependabot 或 Renovate，並設定冷卻期，讓更新以可審查的 pull request 形式出現。
+* **驗證**：稽核步驟在每一個 pull request 上執行，遇到嚴重發現時阻擋合併。
+
+### 11. CI/CD 與發布憑證 — 🔴 高
+
+2025 年的兩起事件說明了這種模式。在 tj-actions/changed-files 遭入侵事件（CVE-2025-30066）中，攻擊者把既有的版本標籤移到惡意 commit；固定到 commit SHA 的 workflow 不受影響（[詳情](https://www.sentinelone.com/vulnerability-database/cve-2025-30066)）。Shai-Hulud 蠕蟲從開發者電腦竊取 npm 與雲端 token，並用它們發布了 500 多個套件的受感染版本（[CISA](https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem)）。
+
+* **修正**：把第三方 action 固定到完整的 commit SHA；GitHub 稱這是「目前唯一能把 action 當作不可變版本使用的方法」（[GitHub](https://docs.github.com/en/actions/reference/security/secure-use)）。`GITHUB_TOKEN` 預設為唯讀，再依 job 給予更多權限。避免讓 `pull_request_target` 處理不可信任的程式碼。用 OIDC 取代長期有效的雲端金鑰。透過 trusted publishing 發布套件，而不是個人 token。開啟具推送保護的 secret scanning。
+* **驗證**：用腳本或 linter 標出任何沒有固定到 SHA 的 `uses:`。workflow 檔案明確宣告 `permissions:`。
 
 ## 機密與金鑰
 
-### 6. 寫死在程式碼中的憑證 — 🚨 嚴重
+### 12. 寫死與外洩的憑證 — 🚨 嚴重
 
-嵌在原始碼中的密碼、資料庫連線字串與機密，會被 commit 到 git，並永久外洩。
+* **偵測**：用 `gitleaks` 或 `trufflehog` 掃描完整的 Git 歷史，而不只是目前的檔案。檢查建置日誌與 CI 輸出。
+* **修正**：輪替所有找到的機密；刪除 commit 並不會撤銷金鑰。把機密移到環境變數或機密管理工具，commit 一份 `.env.example`，並把 `.env*` 加入 `.gitignore`。
+* **驗證**：掃描工具在 CI 中與 pre-commit hook 中執行，並且對完整歷史通過檢查。
 
-**修正：**
+### 13. 用戶端程式碼中的機密金鑰 — 🚨 嚴重
 
-* 掃描原始碼、設定檔與已 commit 的檔案，找出憑證、API 金鑰與高熵值的 token
-* 把所有機密遷移到環境變數；輪替任何已經外洩的東西
-* 把敏感檔案加入 `.gitignore`，並產生一份使用佔位值的 `.env.example`
+瀏覽器 bundle 裡的任何東西都是公開的。要分清楚哪些金鑰本來就設計成公開（Supabase anon key、Stripe publishable key），哪些不是（Supabase `service_role`、Stripe secret key、任何 LLM 供應商的金鑰）。
 
-**檢查清單：**
+* **偵測**：搜尋建置後的 bundle，而不只是原始碼，找出 `sk_`、`sk-`、`service_role` 等金鑰前綴。檢查哪些環境變數帶有公開前綴（`NEXT_PUBLIC_`、`VITE_`）。
+* **修正**：從伺服器路由呼叫第三方 API；由它持有金鑰、驗證使用者、限制速率，並只回傳用戶端需要的內容。
+* **驗證**：在正式環境的建置輸出中搜尋每一個機密的前綴。都不會出現。
 
-* \[ \] 原始碼中沒有密碼
-* \[ \] 程式碼中沒有含憑證的連線字串
-* \[ \] 所有機密都從環境變數載入
-* \[ \] `.env` 已列入 `.gitignore`
+## A04 加密機制失效
 
-### 7. 用戶端程式碼中外洩的 API 金鑰 — 🚨 嚴重
+### 14. 密碼儲存與政策 — 🚨 嚴重
 
-任何打包進前端 bundle 的金鑰都是公開的——任何人打開 DevTools 就能拿走。
+優先使用託管的身分驗證服務。如果要自己儲存密碼：
 
-**修正：**
+* **修正**：用 Argon2id 雜湊（記憶體至少 19 MiB、迭代 2 次、平行度 1）。無法使用 Argon2id 時用 scrypt。bcrypt 只適用於舊系統：work factor 10 以上，而且它會忽略超過 72 位元組的輸入（[OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)）。舊的雜湊在使用者下次登入時重新雜湊。
+* **政策**：NIST SP 800-63B-4 要求只靠密碼登入時至少 15 個字元（搭配 MFA 時 8 個字元），必須比對外洩與常見密碼清單，並禁止組成規則與強制定期更換（[NIST](https://pages.nist.gov/800-63-4/sp800-63b.html)）。
+* **驗證**：資料庫中沒有明文、MD5、SHA-1 或未加鹽的 SHA-256 雜湊。
 
-* 掃描前端程式碼中嵌入的第三方金鑰（OpenAI、AWS、Stripe、SendGrid、Firebase 等）
-* 把機密移到伺服器端，並加上一個後端代理端點，由它呼叫外部 API，只回傳用戶端需要的內容
-* 在代理端點上套用身分驗證／速率限制，並從回應中過濾敏感欄位
+### 15. 網址、日誌與錯誤訊息中的敏感資料 — 🟠 中
 
-**檢查清單：**
+查詢字串中的 token 會留在瀏覽器歷史與 CDN 日誌中。完整傾印請求，會讓憑證在日誌裡留存好幾個月。
 
-* \[ \] 前端 JS 或 React 程式碼中沒有 API 金鑰
-* \[ \] 外部 API 呼叫都經由後端代理
-* \[ \] 金鑰只存在於伺服器端環境變數
+* **修正**：用標頭或 POST body 傳送 token。在日誌中遮蔽憑證與個人資料欄位。對使用者回傳一般性的錯誤訊息。
+* **驗證**：在一天份的正式環境日誌中搜尋 `password`、`token`、`authorization` 與金鑰前綴。
 
-## 注入漏洞
+## A05 注入
 
-### 8. SQL 注入（SQLi）— 🚨 嚴重
+### 16. SQL 注入 — 🚨 嚴重
 
-把使用者輸入串接進 SQL 查詢，會讓攻擊者能讀取、修改或刪除整個資料庫。
+* **偵測**：搜尋以字串組成的 SQL，以及 ORM 的逃生口（`$queryRawUnsafe`、`sequelize.literal`、用 template string 呼叫原始 `execute`），包括資料庫函式中的 SQL。
+* **修正**：使用參數化查詢或 ORM 的安全查詢產生器。應用程式的資料庫使用者採最小權限。
+* **驗證**：對每一個動態查詢用 `' OR 1=1 --` 與引號字元做單元測試。在獲得授權的情況下，可用 `sqlmap` 等掃描工具對預備環境的副本確認。
 
-**修正：**
+### 17. 跨站腳本攻擊（XSS）— 🔴 高
 
-* 稽核每一個查詢，找出串接或內插使用者輸入的字串
-* 改用參數化查詢／預備陳述式（prepared statement），或 ORM 的安全查詢產生器
-* 套用輸入驗證與最小權限的資料庫帳號
+包括以 HTML 或 Markdown 渲染的模型輸出。
 
-**檢查清單：**
+* **偵測**：搜尋 `dangerouslySetInnerHTML`、`innerHTML`、`v-html`、`document.write`，以及啟用原始 HTML 的 Markdown 渲染器。
+* **修正**：透過框架的跳脫機制渲染文字。無法避免 HTML 時，用 DOMPurify 清理。強制執行 CSP（第 7 項）。
+* **驗證**：在每一個使用者可編輯的欄位，以及一個會讓模型照抄的提示詞中，存入 `<img src=x onerror=alert(1)>`。都不會執行。
 
-* \[ \] 所有查詢都使用參數化陳述式或 ORM 的安全方法
-* \[ \] SQL 中沒有與使用者輸入串接的字串
-* \[ \] 資料庫使用者只具備最低必要權限
+### 18. 命令注入 — 🚨 嚴重
 
-### 9. 跨站腳本攻擊（XSS）— 🔴 高
+* **偵測**：搜尋 `exec`、`system`、帶 `shell: true` 的 `spawn`、帶 `shell=True` 的 `subprocess` 與 `os.system`，並追蹤使用者或模型的輸入是否會流到這些地方。
+* **修正**：用函式庫取代 shell。如果一定要啟動行程，傳入參數陣列並停用 shell。
+* **驗證**：讓 `; id` 與 `$(id)` 經過每一條路徑。都不會執行。
 
-在 HTML 中渲染未跳脫的使用者輸入，會讓攻擊者注入腳本，用來竊取 cookie、劫持 session 或竄改應用程式畫面。
+## A06 不安全的設計
 
-**修正：**
+### 19. 缺少速率限制與支出控制 — 🔴 高
 
-* 掃描 `dangerouslySetInnerHTML`、直接指定 `innerHTML`、`document.write`，或使用使用者輸入組成的 HTML 字串
-* 改用安全的渲染方式（JSX 綁定、`textContent`），或在無法避免原始 HTML 時，用可信賴的函式庫清理（例如 DOMPurify）
-* 加上正式環境的 Content Security Policy，盡量減少 `unsafe-inline`／`unsafe-eval`
+暴力破解、爬取資料，以及把小帳單變成大帳單的 AI 端點。
 
-**檢查清單：**
+* **修正**：依 IP 與帳號設定速率限制，使用共用儲存（Redis，或平台內建的限制器）：登入約每 15 分鐘 5 次、密碼重設每小時 3–5 次，AI 與其他昂貴端點設定每位使用者配額。回傳 `429` 並附上 `Retry-After`。接著在供應商允許的地方設定支出上限：Vercel 的 on-demand budget 除非開啟 **Pause Production Deployments**，否則不會停止用量，而且每隔幾分鐘才檢查一次（[Vercel](https://vercel.com/docs/spend-management)）；Supabase Pro 預設開啟支出上限（[價格](https://supabase.com/pricing)）；每一把 LLM 供應商金鑰都設定每月上限。
+* **驗證**：用腳本對同一個帳號快速發出 50 次登入嘗試與 50 次 AI 請求。兩者都被限流。確認每一個供應商的警示都會送到真人手上。
 
-* \[ \] 沒有搭配未清理輸入的 `dangerouslySetInnerHTML`
-* \[ \] 沒有搭配使用者資料的 `innerHTML`
-* \[ \] 伺服器渲染的內容有經過跳脫
-* \[ \] 已設定 CSP 標頭
+### 20. 未經驗證就信任的金流與 webhook — 🚨 嚴重
 
-### 10. 命令注入 — 🚨 嚴重
+* **修正**：只依據經過驗證的伺服器端事件開通付費權限。驗證 webhook 簽章（Stripe 要用該端點的簽章密鑰，對原始 body 驗證），拒絕過期的時間戳，並且每個事件 ID 只處理一次。
+* **驗證**：送出沒有簽章或簽章錯誤的偽造 webhook：被拒絕。重送一個有效的 webhook：沒有重複效果。在用戶端請求中修改價格或方案：被忽略。
 
-把使用者輸入傳給 shell 命令，會讓攻擊者能在伺服器上執行任意程式碼。
+## A07 身分驗證失效
 
-**修正：**
+### 21. Session 處理 — 🔴 高
 
-* 掃描 `exec`、`system`、`spawn`、`subprocess`、`os.system`、`popen` 呼叫，並追蹤使用者輸入是否會流到這些地方
-* 必須執行 shell 時，使用陣列形式的參數（而不是內插字串），並停用 shell 解譯
-* 不必要時，改用完全不經過 shell 的原生／函式庫替代方案
+* **修正**：使用框架或身分驗證服務提供的 session。Cookie 設定 `HttpOnly`、`Secure` 與 `SameSite=Lax` 或 `Strict`。登入與權限變更時更換 session ID，設定閒置與絕對過期時間，登出時在伺服器端銷毀 session。Token 不放在 `localStorage`。Chrome 的 Device Bound Session Credentials 自 Chrome 146 起已在 Windows 上提供，會把 cookie 綁定到硬體金鑰；等你的身分驗證服務支援後，值得採用（[Google](https://blog.google/security/protecting-cookies-with-device-bound-session-credentials/)）。
+* **驗證**：登出後，舊的 cookie 會被 API 拒絕。
 
-**檢查清單：**
+### 22. 跨站請求偽造（CSRF）— 🔴 高
 
-* \[ \] 沒有使用者輸入被傳給 shell／exec 函式
-* \[ \] 子行程使用參數陣列，而不是字串內插
-* \[ \] 在可能的地方，shell 呼叫已改用原生函式庫替代方案
+適用於以 cookie 驗證、會改變狀態的請求。
 
-## 資料儲存與處理
+* **修正**：優先使用框架內建的防護。否則使用 synchronizer token（有狀態的應用程式）或以 HMAC 簽章的 double-submit cookie（無狀態的應用程式）。對新式瀏覽器，依 `Sec-Fetch-Site` 拒絕不安全的跨站請求，並以 `Origin` 檢查作為後備，也是被接受的做法。`SameSite` cookie 是縱深防禦，不是完整的防護（[OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)）。npm 套件 `csurf` 已被棄用，不要加入。
+* **驗證**：從其他來源送出每一個會改變狀態的表單。全部被拒絕。
 
-### 11. 不安全的用戶端儲存 — 🔴 高
+### 23. 密碼重設與帳號復原 — 🔴 高
 
-`localStorage` 與 `sessionStorage` 可以被頁面上任何 JavaScript 讀取，包括被注入的腳本——敏感的 token 不屬於那裡。
+* **修正**：重設 token 必須一次性、短效且隨機；不論帳號是否存在都回傳相同的回應；重設後讓既有 session 失效；設定速率限制（第 19 項）。
+* **驗證**：已使用或已過期的 token 會失敗。對真實與不存在的電子郵件，重設回應完全相同。
 
-**修正：**
+## A08 軟體或資料完整性失效
 
-* 掃描 `localStorage`／`sessionStorage` 的使用，並分類儲存了什麼（JWT、session ID、個人可識別資訊）
-* 把身分驗證／session 處理改為由伺服器設定的 `httpOnly`、`Secure`、`SameSite` cookie
-* 加上 CSRF 防護，配合以 cookie 為基礎的身分驗證流程
+### 24. 不安全的反序列化 — 🔴 高
 
-**檢查清單：**
+* **偵測**：搜尋對不可信任輸入使用的 `pickle.loads`、`marshal.loads`、`yaml.load`、Java `ObjectInputStream` 與 PHP `unserialize()`。
+* **修正**：使用 JSON 與 `yaml.safe_load()`。使用前先依 schema（Zod、Pydantic、JSON Schema）驗證輸入。
+* **驗證**：單元測試送入格式錯誤與過大的 payload；它們在進入商業邏輯之前就被拒絕。
 
-* \[ \] JWT token 沒有存放在 `localStorage`
-* \[ \] 敏感資料沒有存放在 `sessionStorage`
-* \[ \] 身分驗證 token 使用 `httpOnly`、`Secure` cookie
+## A09 資安日誌與警示失效
 
-### 12. 脆弱的密碼儲存 — 🚨 嚴重
+### 25. 出事時沒有任何警示 — 🟠 中
 
-明文密碼或 MD5／SHA-1 雜湊都能被輕易破解。請使用 bcrypt、Argon2 或 scrypt。
+* **修正**：記錄身分驗證事件、權限拒絕、管理員操作與金流事件，附上使用者與請求 ID，不含機密。登入失敗、`403` 與支出出現異常時通知真人。
+* **驗證**：在預備環境中觸發每一個警示一次，確認有人收到。
 
-**修正：**
+## A10 例外狀況處理不當
 
-* 稽核註冊／登入流程中使用的雜湊方法
-* 改用 bcrypt（cost ≥ 12）或 Argon2id，並使用函式庫內建的加鹽與常數時間比對
-* 加上無感遷移：舊使用者在下次成功登入時，以新演算法重新雜湊
+### 26. 失敗時放行 — 🔴 高
 
-**檢查清單：**
+檢查拋出例外時反而放行的程式碼：回傳 `true` 的 `try/catch`、缺少角色時被當成管理員、政策服務逾時就被略過。
 
-* \[ \] 密碼以 bcrypt（≥12 rounds）或 Argon2 雜湊
-* \[ \] 資料庫中沒有明文密碼
-* \[ \] 沒有使用 MD5／SHA-1 雜湊密碼
+* **修正**：預設拒絕。身分驗證、金流與政策檢查中的錯誤一律視為失敗。
+* **驗證**：在測試中讓身分驗證服務、資料庫或政策服務無法使用。受保護的操作會被拒絕。
 
-### 13. 網址與日誌中的敏感資料 — 🟠 中
+## 進階強化
 
-網址中的 token 或密碼會留在瀏覽器歷史與伺服器／CDN 日誌中；日誌陳述式中的憑證會保留好幾個月。
+完成上面各項之後值得加上的：
 
-**修正：**
-
-* 檢查是否有身分驗證 token、API 金鑰或個人可識別資訊透過查詢字串或網址路徑傳遞
-* 把敏感資料改放在 POST body 或標頭，而不是網址
-* 清理日誌：避免傾印完整的請求／回應物件、遮蔽憑證欄位，並讓除錯日誌遠離正式環境
-
-**檢查清單：**
-
-* \[ \] 網址查詢字串中沒有 token 或密碼
-* \[ \] 日誌陳述式會清理敏感欄位
-* \[ \] 錯誤訊息不會向使用者暴露 stack trace 或內部資料
-
-## 安全標頭與防護
-
-### 14. 缺少安全標頭 — 🟠 中
-
-HSTS、CSP、X-Frame-Options 與其他幾個標頭，加起來不用一個小時，就能堵住相當多的攻擊途徑。大多數 vibe-coded 應用程式上線時一個都沒有。
-
-**修正：**
-
-* 透過中介軟體全域加上 HSTS、CSP、X-Frame-Options、X-Content-Type-Options、Referrer-Policy 與 Permissions-Policy
-* 撰寫嚴格、針對應用程式的 CSP（`default-src 'self'`、明確的 `script-src`／`style-src`／`img-src`／`connect-src`／`font-src`，除非無法避免，否則不使用 `unsafe-inline`／`unsafe-eval`）
-* 確認不會破壞功能後，改為強制執行（而不是僅回報）
-
-**檢查清單：**
-
-* \[ \] 已設定 HSTS 標頭
-* \[ \] 已設定 CSP 標頭
-* \[ \] 已設定 X-Frame-Options
-* \[ \] 已設定 X-Content-Type-Options
-* \[ \] 已設定 Referrer-Policy
-
-### 15. 沒有 CSRF 防護 — 🔴 高
-
-沒有 CSRF 防護時，惡意網站可以代替已登入的使用者，對應用程式發出經過身分驗證的請求。
-
-**修正：**
-
-* 為所有 `POST`／`PUT`／`PATCH`／`DELETE` 路由加上適合框架的 CSRF 函式庫（`csurf`、Django 的 `CsrfViewMiddleware`、Flask-WTF、Spring Security CSRF）
-* 把 token 注入伺服器渲染的表單；AJAX／fetch 請求則透過標頭傳送
-* 在 session cookie 上設定 `SameSite=Strict`／`Lax` 與 `Secure`；拒絕缺少或無效 token 的請求（`403`）
-
-**檢查清單：**
-
-* \[ \] 所有會改變狀態的表單都有 CSRF token
-* \[ \] CSRF token 在伺服器端驗證
-* \[ \] Session cookie 設定了 `SameSite=Strict` 或 `Lax`
-
-### 16. 缺少速率限制 — 🔴 高
-
-沒有速率限制時，攻擊者可以暴力破解密碼、列舉使用者，或無限期地濫用 API。
-
-**修正：**
-
-* 加上以共用儲存（例如 Redis）為後端的速率限制函式庫，讓限制在多個執行個體之間都能成立
-* 收緊身分驗證（約每 15 分鐘 5 次）、密碼重設（約每小時 3–5 次）與註冊端點的限制；對公開 API 套用基準限制
-* 回傳 `429` 並附上 `Retry-After` 標頭；依 IP 設定限制，並在相關時依帳號設定
-
-**檢查清單：**
-
-* \[ \] 登入端點有速率限制
-* \[ \] 密碼重設有速率限制
-* \[ \] 公開 API 端點有速率限制
-* \[ \] 回傳正確的 429 回應
-
-## 相依套件與供應鏈
-
-### 17. 幻覺套件 — 🔴 高
-
-AI 模型有時會建議根本不存在的套件名稱。攻擊者會用惡意程式碼註冊這些名稱，然後安裝時就會把它裝進來。
-
-**修正：**
-
-* 確認清單檔中的每個相依套件都以完全相符的名稱存在於官方套件庫
-* 對任何不熟悉的套件，檢查維護者的正當性、發布活躍度與下載量
-* 標出 typosquatting（仿冒拼寫）風險與低使用量的套件，在上線前人工審查
-
-**檢查清單：**
-
-* \[ \] 所有套件都已在官方套件庫上確認
-* \[ \] 套件名稱已再次檢查是否有 typosquatting
-* \[ \] 沒有未經確認就安裝 AI 建議的套件
-
-### 18. 含已知 CVE 的過時函式庫 — 🔴 高
-
-過時的相依套件是現實世界攻擊最常見的入口。
-
-**修正：**
-
-* 執行技術堆疊對應的稽核工具（`npm audit`、`pip-audit`、`cargo audit`、`govulncheck`），並依嚴重程度分類處理
-* 先升級嚴重／高風險的發現；記下需要遷移的破壞性變更
-* 開啟自動化的相依套件警示（Dependabot 或 Renovate），避免它再次無聲地漂移
-
-**檢查清單：**
-
-* \[ \] 已執行 `npm audit`／`pip-audit`，沒有嚴重／高風險的 CVE
-* \[ \] 已設定自動化的相依套件更新警示
-* \[ \] Lock 檔已 commit 且保持最新
-
-### 19. 不安全的反序列化 — 🔴 高
-
-反序列化不可信任的資料（特別是 Python pickle、Java 序列化）可能執行任意程式碼。
-
-**修正：**
-
-* 掃描對不可信任輸入使用的 `pickle.loads`、`marshal.loads`、Java `ObjectInputStream.readObject`、PHP `unserialize()` 與不安全的 YAML 載入器
-* 改用安全的格式（嚴格的 JSON）與 `yaml.safe_load()`；避免在解析時實例化物件
-* 在處理之前，用 schema（JSON Schema、Pydantic、Zod、Joi）驗證傳入的資料
-
-**檢查清單：**
-
-* \[ \] 沒有對使用者資料使用 `pickle.loads()`
-* \[ \] YAML 使用 `safe_load()` 而不是 `load()`
-* \[ \] 沒有不可信任的資料被傳給反序列化器
-* \[ \] 使用者提供的資料在處理前已依 schema 驗證
-
-## 進階強化（成熟階段）
-
-在完成上面的基本手冊、且產品已經度過早期風險之後，值得再加上的一層控制：
-
-* 機密的字串比對使用常數時間檢查，而不是一般的相等比較
-* GraphQL API 設有查詢深度與複雜度限制
-* 對外的 webhook 有 SSRF 防護，不會被誘騙去存取內部網路
-* Lock 檔（`package-lock.json`／`pnpm-lock.yaml`／`yarn.lock`）已納入版本控制，遭入侵的套件無法偷偷混進建置
-* 管理後台設有 IP 允許清單，而不是對整個網際網路開放
-* DNS 設有 CAA 記錄，只有指定的憑證機構能為該網域簽發憑證
-* 網域註冊商帳號使用獨立的 MFA，和其他一切分開
-* 在應用程式中佈下 canary token，有人在不該去的地方探查時立即發出訊號
-* Session token 綁定裝置指紋，而不只依賴 token 本身
-* CI/CD 流程在每個 commit 合併前掃描機密
-
-## 其他需要稽核的漏洞類別
-
-也要稽核下列項目。上面已經詳細說明的類別，會連結到對應的項目。
-
-* 跨站腳本攻擊——見[第 9 項](#9-跨站腳本攻擊xss--高)
-* 跨站請求偽造——見[第 15 項](#15-沒有-csrf-防護---高)
-* 不安全的檔案上傳
-* 路徑穿越漏洞
-* 伺服器端請求偽造（SSRF）
-* 有缺陷的密碼重設流程
-* 脆弱的 session 管理——見[第 4 項](#4-脆弱的-session-處理---高)
-* 脆弱的 JWT 密鑰
-* 過度寬鬆的 CORS
-* 缺少速率限制——見[第 16 項](#16-缺少速率限制---高)
-* 暴露的測試或預備環境
-* 未更改的預設憑證
-* 沒有簽章驗證的 webhook 端點
-* 只在前端執行的金流或訂閱檢查
-* IDOR 與權限提升——見[第 2–3 項](#2-缺少授權檢查idor--嚴重)
-* 信任使用者可控輸入的 API 端點
-* 含有敏感資訊的日誌——見[第 13 項](#13-網址與日誌中的敏感資料---中)
-* 暴露的 source map
+* 比對機密與簽章時使用常數時間比較。
+* GraphQL API 設定查詢深度與複雜度限制。
+* 管理後台前加上 IP 允許清單或 SSO。
+* 設定 CAA DNS 記錄，只讓你選定的憑證機構能為該網域簽發憑證。
+* 網域註冊商、DNS 與雲端 root 帳號使用獨立的硬體金鑰 MFA。
+* 在入侵者會去找的地方佈下 canary token。
 
 ---
 
-[← 網站上線準備檢查清單](01-production-readiness-checklist.md) · [第二部：上線](README.md) · [目錄](../../README.zh-TW.md#目錄) · [如何不像 AI 生成 →](../part-3-craft/01-how-to-not-look-ai-generated.md)
+[← 網站上線準備檢查清單](01-production-readiness-checklist.md) · [第二部：上線](README.md) · [目錄](../../README.zh-TW.md#目錄) · [保護 AI 功能與程式代理 →](03-securing-ai-features-and-agents.md)

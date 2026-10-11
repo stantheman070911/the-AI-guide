@@ -168,7 +168,7 @@ Vibecoded sites frequently perform well on the developer's MacBook and poorly on
 
 One of the highest-risk vibecoding mistakes is asking an AI to integrate an API and then accidentally shipping the secret into the client bundle.
 
-*See the [Security Remediation Playbook](02-security-remediation-playbook.md#secrets--keys) for detailed remediation steps on hard-coded credentials and exposed client-side keys.*
+*See the [Security Remediation Playbook](02-security-remediation-playbook.md#secrets-and-keys) for detailed remediation steps on hard-coded credentials and exposed client-side keys.*
 
 ## 19. Authentication & Authorization
 
@@ -179,7 +179,7 @@ One of the highest-risk vibecoding mistakes is asking an AI to integrate an API 
 
 **Critical principle:** a button hidden from the user does not mean permission denied. The server/database must enforce authorization.
 
-*See the [Security Remediation Playbook](02-security-remediation-playbook.md#authentication--authorization) for detailed remediation steps on client-side auth, IDOR, broken access controls, session handling, and auth bypass paths.*
+*See the [Security Remediation Playbook](02-security-remediation-playbook.md#a01-broken-access-control) for detailed remediation steps on client-side auth, IDOR, broken access controls, session handling, and auth bypass paths.*
 
 ## 20. Database Security
 
@@ -189,7 +189,7 @@ One of the highest-risk vibecoding mistakes is asking an AI to integrate an API 
 * Never expose service/admin database credentials to browsers
 * Back up important data and verify destructive operations require appropriate authorization
 
-For Supabase in particular, a very common vibecoding mistake is building the UI first, discovering permissions later, then leaving tables overly permissive so the app "works."
+For Supabase in particular, a very common vibecoding mistake is building the UI first, discovering permissions later, then leaving tables overly permissive so the app "works." See [playbook item 4](02-security-remediation-playbook.md#4-tenant-isolation-and-database-policies---critical).
 
 ## 21. Input & Application Security
 
@@ -198,7 +198,7 @@ For Supabase in particular, a very common vibecoding mistake is building the UI 
 * Validate IDs and object ownership; reject unexpected input and limit payload sizes
 * Avoid blindly rendering AI- or user-generated HTML; escape output appropriately
 
-*See the [Security Remediation Playbook](02-security-remediation-playbook.md#injection-vulnerabilities) for detailed remediation steps on SQL injection, XSS, and command injection.*
+*See the [Security Remediation Playbook](02-security-remediation-playbook.md#a05-injection) for detailed remediation steps on SQL injection, XSS, and command injection.*
 
 ## 22. Abuse Prevention & Cost Protection
 
@@ -211,7 +211,7 @@ Particularly important for AI products.
 
 An AI endpoint without rate limiting can turn a $20/month infrastructure bill into a $2,000 surprise bill very quickly.
 
-*See [Security Remediation Playbook, item 16](02-security-remediation-playbook.md#16-missing-rate-limiting---high) for a detailed remediation plan.*
+*See [Security Remediation Playbook, item 19](02-security-remediation-playbook.md#19-missing-rate-limits-and-spend-controls---high) for a detailed remediation plan.*
 
 ## 23. File Upload Security
 
@@ -224,12 +224,13 @@ An AI endpoint without rate limiting can turn a $20/month infrastructure bill in
 ## 24. Web Security Configuration
 
 * Enable HTTPS and redirect HTTP to HTTPS
-* Add appropriate security headers: CSP, HSTS, MIME-sniffing and framing protections
+* Add appropriate security headers: CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`
+* Control framing with CSP `frame-ancestors`
 * Secure cookies with `HttpOnly`, `Secure`, and an appropriate `SameSite` policy
 * Check CORS configuration; avoid `Access-Control-Allow-Origin: *` for sensitive APIs
 * Add CSRF protection where the authentication architecture requires it
 
-*See the [Security Remediation Playbook](02-security-remediation-playbook.md#security-headers--protections) for detailed remediation steps on security headers and CSRF.*
+*See the Security Remediation Playbook for [security headers](02-security-remediation-playbook.md#7-security-headers---medium) and [CSRF](02-security-remediation-playbook.md#22-cross-site-request-forgery-csrf---high).*
 
 ## 25. Deployment & Production Configuration
 
@@ -239,6 +240,24 @@ An AI endpoint without rate limiting can turn a $20/month infrastructure bill in
 * Verify email is using the production domain, and that the payment system is in the correct mode
 * Verify the database points to production, and that backups, monitoring, and error tracking are in place
 * Test deployment from a clean build
+
+## 26. Accessibility
+
+* Meet WCAG 2.2 AA: text contrast, visible focus, keyboard access, labeled inputs, 24 × 24 px minimum targets
+* Do a keyboard-only pass and a screen reader pass, not only an automated scan
+* Check whether the European Accessibility Act applies to you
+
+*See [How to Not Look AI-Generated, §23](../part-3-craft/01-how-to-not-look-ai-generated.md#23-treat-accessibility-as-a-design-constraint).*
+
+## 27. AI Features
+
+* Treat model output as untrusted: escape it, validate structured output, never execute it
+* Give tools the end user's permissions; confirm irreversible actions with the user
+* Filter retrieval by tenant and permission before the model sees anything
+* Cap tokens, steps, and spend per user and per provider
+* Test prompt injection through every input and output channel
+
+*See [Securing AI Features and Coding Agents](03-securing-ai-features-and-agents.md).*
 
 ## The higher-level audit
 
@@ -253,7 +272,7 @@ The checklist above reduces to eight production gates:
 | 5\. Does it look legitimate? | Domain, favicon, branding, real content/photos |
 | 6\. Is it fast? | Images, JS bundles, rendering, Core Web Vitals |
 | 7\. Can we measure it? | Analytics, conversions, error monitoring |
-| 8\. Can it be attacked? | Secrets, auth, authorization, input, DB, uploads, abuse |
+| 8\. Can it be attacked? | Secrets, auth, authorization, input, DB, uploads, abuse, AI features |
 
 The last gate deserves the most weight in the AI/vibecoding era: bad metadata makes a site look amateur, but bad authorization can expose an entire customer database.
 
@@ -267,4 +286,4 @@ P0 items correspond to the 🚨 Critical / 🔴 High entries in the [Security Re
 
 ---
 
-[← The Holy Trinity + 1](../part-1-build/02-holy-trinity-plus-one/README.md) · [Part 2: Ship](README.md) · [Contents](../../README.md#contents) · [Security Remediation Playbook →](02-security-remediation-playbook.md)
+[← Building with LLMs](../part-1-build/04-building-with-llms.md) · [Part 2: Ship](README.md) · [Contents](../../README.md#contents) · [Security Remediation Playbook →](02-security-remediation-playbook.md)

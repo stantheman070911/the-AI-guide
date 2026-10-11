@@ -198,4 +198,4 @@ Tony Robbins：人們買的不是產品；他們買的是更好的自己。
 
 ---
 
-[← 如何不像 AI 生成](01-how-to-not-look-ai-generated.md) · [第三部：打磨](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 A：核心撰寫原則 →](../appendix/01-writing-principles.md)
+[← 如何不像 AI 生成](01-how-to-not-look-ai-generated.md) · [第三部：打磨](README.md) · [目錄](../../README.zh-TW.md#目錄) · [用 AI 寫作 →](03-writing-with-ai.md)
