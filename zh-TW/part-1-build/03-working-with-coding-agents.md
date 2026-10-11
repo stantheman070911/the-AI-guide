@@ -8,8 +8,8 @@
 
 ## 證據怎麼說
 
-* **感覺快不等於真的快。** 在 METR 2025 年的隨機對照試驗中，16 位資深開發者在自己的儲存庫中工作，使用 2025 年初的 AI 工具反而多花了 19% 的時間，卻認為自己快了 20%（[METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)）。METR 2026 年 2 月的後續研究顯示，較新的工具確實讓開發者變快，但它自己也說，這些資料對於「快了多少」只是「非常薄弱的證據」（[更新](https://metr.org/blog/2026-02-24-uplift-update/)）。相信這種印象之前，先在你自己的工作上量測。
-* **AI 放大的是你原本的團隊。** 2025 年 DORA 報告發現約 90% 的開發者使用 AI，而 AI 會放大既有的優勢與失能，不會自己修好交付流程（[Google](https://blog.google/technology/developers/dora-report-2025/)）。有了代理，測試、小幅修改與審查變得更重要，而不是更不重要。
+* **感覺快不等於真的快。** 在 METR 2025 年的隨機對照試驗中，16 位資深開發者在自己的儲存庫中工作，使用 2025 年初的 AI 工具反而多花了 19% 的時間，卻認為自己快了 20%（[METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)）。METR 2026 年 2 月的後續研究顯示，較新的工具確實讓開發者變快，但其信賴區間包含「沒有效果」，METR 自己也說，這些資料對於「快了多少」只是「非常薄弱的證據」（[更新](https://metr.org/blog/2026-02-24-uplift-update/)）。相信這種印象之前，先在你自己的工作上量測。
+* **AI 放大的是你原本的團隊。** 2025 年 DORA 報告發現約 90% 的開發者使用 AI，而 AI 會放大既有的優勢與失能，不會自己修好交付流程（[Google](https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/)）。有了代理，測試、小幅修改與審查變得更重要，而不是更不重要。
 * **程式碼需要資安審查。** 見[資安修補手冊](../part-2-ship/02-security-remediation-playbook.md#為什麼-ai-寫的程式碼更需要這些)。
 
 ## 工作循環

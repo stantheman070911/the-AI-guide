@@ -179,7 +179,8 @@ Use [WCAG 2.2](https://www.w3.org/TR/WCAG22/) level AA as the baseline. The fail
 * A visible focus indicator, and every action reachable by keyboard.
 * A programmatic label on every form input.
 * Pointer targets at least 24 × 24 CSS pixels.
-* Meaning not carried by color alone; motion reduced when the user asks for it (`prefers-reduced-motion`).
+* Meaning not carried by color alone.
+* Beyond AA, also honor `prefers-reduced-motion`.
 
 Test with a keyboard-only pass, a screen reader pass (VoiceOver or NVDA), and an automated checker such as axe. Automated checkers find only part of the problems.
 

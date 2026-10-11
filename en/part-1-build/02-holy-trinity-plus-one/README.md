@@ -28,7 +28,7 @@ work — they tell an agent what to build next and what "done" means — but the
 never be allowed to override what the repository, the tests, and Git history actually
 demonstrate. When a document and the code disagree, the code is right.
 
-## Why four documents and not one giant instruction file
+## Why separate documents and not one giant instruction file
 
 A single sprawling `AGENTS.md`-style file becomes counterproductive at scale: it
 consumes context, goes stale, and makes everything look equally important. Splitting

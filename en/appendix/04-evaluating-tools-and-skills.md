@@ -32,7 +32,7 @@ Before installing a skill, MCP server, or agent plugin:
 
 ### Coding agents
 
-Pick one and learn it. Claude Code and Codex are the default terminal agents ([Stack Decision](../part-1-build/01-stack-decision.md#1-default-stack)). Cursor and GitHub Copilot suit editor-centered work; JetBrains Junie suits IntelliJ users; [OpenHands](https://github.com/OpenHands/OpenHands) is the open-source option for self-hosted agents. Gemini CLI stopped serving requests in June 2026; its replacement, Antigravity CLI, is experimental.
+Pick one and learn it. Claude Code and Codex are the default terminal agents ([Stack Decision](../part-1-build/01-stack-decision.md#1-default-stack)). Cursor and GitHub Copilot suit editor-centered work; JetBrains Junie suits IntelliJ users; [OpenHands](https://github.com/OpenHands/OpenHands) is the open-source option for self-hosted agents. Gemini CLI no longer serves free and personal Google AI plans as of June 2026; their replacement, Antigravity CLI, is experimental.
 
 ### Planning
 

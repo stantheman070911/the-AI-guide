@@ -23,11 +23,11 @@
 
 | 層級 | 預設 | 為什麼 | 注意事項 |
 | --- | --- | --- | --- |
-| 程式代理 | Claude Code 或 Codex | 成熟的終端代理，具備沙箱、MCP 與專案指示檔。選一個並把它用熟。 | 見[與程式代理協作](03-working-with-coding-agents.md)。Gemini CLI 已於 2026 年 6 月 18 日停止服務（[Google](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)）。 |
+| 程式代理 | Claude Code 或 Codex | 成熟的終端代理，具備沙箱、MCP 與專案指示檔。選一個並把它用熟。 | 見[與程式代理協作](03-working-with-coding-agents.md)。Gemini CLI 自 2026 年 6 月 18 日起，不再為免費、Google AI Pro 與 Ultra 個人帳號提供服務；付費 API 金鑰與 Gemini Code Assist Standard／Enterprise 授權仍可使用（[Google](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)）。 |
 | 程式碼與 CI | GitHub | 程式碼、審查、issue 與 Actions 的單一事實來源。 | 強化 Actions：[修補手冊第 11 項](../part-2-ship/02-security-remediation-playbook.md#11-cicd-與發布憑證---高)。 |
-| 託管 | Vercel | Next.js 維運負擔最低的選擇。 | 除非開啟 **Pause Production Deployments**，否則 on-demand budget 不會停止用量（[文件](https://vercel.com/docs/spend-management)）。 |
+| 託管 | Vercel | Next.js 維運負擔最低的選擇。 | 除非開啟 **Pause Production Deployments**，否則 on-demand budget 不會停止用量，而且暫停也不會停止 AI Gateway 的用量（[文件](https://vercel.com/docs/spend-management)）。 |
 | 資料庫、身分驗證、儲存 | Supabase | Postgres、身分驗證、儲存、即時功能、佇列、排程與 pgvector 集中在同一個平台。Free：500 MB、50,000 MAU，閒置一週後暫停。Pro 每月 25 美元起，預設開啟支出上限（[價格](https://supabase.com/pricing)）。 | 列層級安全性就是你的安全邊界：[修補手冊第 4 項](../part-2-ship/02-security-remediation-playbook.md#4-租戶隔離與資料庫政策---嚴重)。 |
-| 金流 | Stripe | Checkout、Billing、webhook、客戶入口網站。 | 跨國銷售數位產品：見下方的記錄商家。 |
+| 金流 | Stripe | Checkout、Billing、webhook、客戶入口網站。 | 只開放給受支援國家的企業，臺灣目前不在名單上。先確認資格。跨國銷售數位產品，見下方的記錄商家。 |
 | 電子郵件 | Resend | API 簡單的交易型郵件。 | 上線前設定 SPF、DKIM 與 DMARC。 |
 | DNS 與邊緣 | Cloudflare | DNS、CDN、WAF，也可兼作網域註冊商。 | 把註冊商分開，是說得通的帳號隔離選擇。 |
 | 數據分析與錯誤追蹤 | PostHog | 數據分析、工作階段重播、功能旗標、實驗與錯誤追蹤；每月前 100,000 筆例外免費（[價格](https://posthog.com/docs/error-tracking/pricing)）。 | 排除內部流量；避免在重播中記錄個人資料。 |
@@ -38,12 +38,12 @@
 
 | 升級 | 什麼時候加入 | 備註 |
 | --- | --- | --- |
-| 記錄商家：Stripe Managed Payments 或 Paddle | 在多個國家登記與申報 VAT 或銷售稅的成本，高於這筆費用時。 | Managed Payments 於 2026 年 4 月全面推出，適用於數位產品，每筆交易收取 3.5%，另加標準 Stripe 手續費（[價格](https://support.stripe.com/questions/managed-payments-pricing)）。 |
+| 記錄商家：Stripe Managed Payments 或 Paddle | 在多個國家登記與申報 VAT 或銷售稅的成本，高於這筆費用時。 | Managed Payments 於 2026 年 4 月對 39 個國家的企業全面推出，適用於數位產品，每筆交易收取 3.5%，另加標準 Stripe 手續費（[價格](https://support.stripe.com/questions/managed-payments-pricing)）。 |
 | Sentry | 除錯需求超出 PostHog：追蹤、版本健康度、更深入的 stack 分析。 | PostHog 解釋使用者行為；Sentry 解釋應用程式故障。 |
 | Upstash Redis | 資料庫不擅長處理的快取、速率限制或暫態狀態。 | 不是因為「每個 SaaS 都需要 Redis」。 |
 | Vercel Workflows | 多步驟工作必須撐過當機、重試，以及長達數小時或數天的等待。 | 建立在開源的 Workflow SDK 之上；依用量計價（[文件](https://vercel.com/docs/workflows)）。 |
 | Clerk | 你想要現成的身分驗證 UI、組織與邀請功能，而不想自己做。 | 每月留存使用者 50,000 人以內免費；包含基本組織功能，進階 B2B 功能每月 100 美元（[價格](https://clerk.com/pricing)）。 |
-| AI gateway：Vercel AI Gateway 或 OpenRouter | 你使用多家模型供應商，需要備援、路由或統一帳單。 | 多一個網路節點，也多一方會看到你的提示詞。 |
+| AI gateway：Vercel AI Gateway 或 OpenRouter | 你使用多家模型供應商，需要備援、路由或統一帳單。 | 多一個網路節點，也多一方會看到你的提示詞。Vercel 的支出暫停不會停止 AI Gateway 的用量，要另外設上限。 |
 | AI 程式碼審查：CodeRabbit 或 Greptile | Pull request 數量超出人力能仔細審查的程度。 | 公開的比較結果互相矛盾，而且多由廠商自行進行。在你自己的 pull request 上試用兩者。 |
 
 ## 3. 特定情境的替代方案
@@ -52,7 +52,7 @@
 
 | 替代方案 | 適合的情況 |
 | --- | --- |
-| Better Auth | 你想把身分驗證放在自己的資料庫中、不使用託管服務，特別是沒有使用 Supabase 時。它的團隊自 2025 年 9 月起維護 Auth.js（現在只做安全修補）（[公告](https://www.better-auth.com/blog/authjs-joins-better-auth)）。 |
+| Better Auth | 你想把身分驗證放在自己的資料庫中、不使用託管服務，特別是沒有使用 Supabase 時。它的團隊自 2025 年 9 月起維護 Auth.js，只處理安全修補與緊急問題（[公告](https://better-auth.com/blog/authjs-joins-better-auth)）。 |
 | Neon | 你想要可以為每個 pull request 即時建立分支的 serverless Postgres。Databricks 於 2025 年 5 月收購了它。 |
 | Convex | 你的應用程式大量使用即時功能，而且比起 SQL 更偏好反應式的 TypeScript 後端。 |
 | Railway、Render 或 Fly.io | 你需要長時間執行的行程、WebSocket、容器或背景 worker，而它們不適合 serverless 函式。 |
@@ -67,7 +67,7 @@
 
 有潛力、還很年輕，或目前只有開發者自己回報效益。
 
-* **Antigravity CLI**——Google 用來取代 Gemini CLI 的閉源工具，2026 年 5 月推出。
+* **Antigravity CLI**——Google 在個人方案上取代 Gemini CLI 的工具，2026 年 5 月 19 日推出，據報導為閉源。
 * **Traycer**——為程式代理撰寫檔案層級計畫的規劃層。
 * **Headroom**——在工具輸出與上下文送到模型之前先壓縮。
 * **OpenViking**——Volcengine 推出的代理上下文資料庫。
@@ -75,7 +75,7 @@
 
 ## 5. 不建議或未經查證
 
-* **Gemini CLI**——已停止服務；請遷移。
+* **Gemini CLI**——免費與個人 Google AI 方案已停止服務；Google 引導這些使用者改用 Antigravity CLI。
 * **9Router**——把你的程式碼與憑證送經數十家第三方供應商，包括免費方案。資料與服務條款的風險大於省下的 token。
 * **共享 PHP 主機**——對這套技術堆疊而言，是錯誤的執行環境模型，不適合 Next.js 與 Postgres 應用程式。
 * **預設就加入 Pinecone、Clerk、Redis 或 Sentry**——每一項都在解決你可能還沒遇到的問題。

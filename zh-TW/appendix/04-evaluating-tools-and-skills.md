@@ -32,7 +32,7 @@
 
 ### 程式代理
 
-選一個並把它用熟。Claude Code 與 Codex 是預設的終端代理（[技術堆疊決策](../part-1-build/01-stack-decision.md#1-預設技術堆疊)）。Cursor 與 GitHub Copilot 適合以編輯器為中心的工作；JetBrains Junie 適合 IntelliJ 使用者；[OpenHands](https://github.com/OpenHands/OpenHands) 是自行託管代理的開源選擇。Gemini CLI 已於 2026 年 6 月停止服務；取代它的 Antigravity CLI 仍屬實驗性。
+選一個並把它用熟。Claude Code 與 Codex 是預設的終端代理（[技術堆疊決策](../part-1-build/01-stack-decision.md#1-預設技術堆疊)）。Cursor 與 GitHub Copilot 適合以編輯器為中心的工作；JetBrains Junie 適合 IntelliJ 使用者；[OpenHands](https://github.com/OpenHands/OpenHands) 是自行託管代理的開源選擇。自 2026 年 6 月起，Gemini CLI 不再為免費與個人 Google AI 方案提供服務；取代它的 Antigravity CLI 仍屬實驗性。
 
 ### 規劃
 

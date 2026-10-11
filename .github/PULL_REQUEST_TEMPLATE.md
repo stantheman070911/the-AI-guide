@@ -23,4 +23,4 @@ Related issue · 相關 issue:
 - [ ] `python3 scripts/check_docs.py` passes · 檢查工具通過
 - [ ] Facts are supported, and sources are linked where needed · 事實有根據，必要時已附來源
 - [ ] No credentials, private URLs, or personal data · 不含憑證、私人網址或個人資料
-- [ ] Follows the [style guide](https://github.com/stantheman070911/vibecoding-guide/blob/main/STYLE_GUIDE.md) · 遵守風格指南
+- [ ] Follows the [style guide](https://github.com/stantheman070911/the-AI-guide/blob/main/STYLE_GUIDE.md) · 遵守風格指南

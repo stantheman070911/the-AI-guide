@@ -8,8 +8,8 @@ How to get reliable work out of an AI coding agent, session by session. [The Hol
 
 ## What the evidence says
 
-* **Feeling fast is not being fast.** In METR's 2025 randomized trial, 16 experienced developers working in their own repositories took 19% longer with early-2025 AI tools, while believing they had been 20% faster ([METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)). METR's February 2026 follow-up suggests later tools do speed developers up, but calls its own data "very weak evidence" of how much ([update](https://metr.org/blog/2026-02-24-uplift-update/)). Measure on your own work before trusting the impression.
-* **AI amplifies the team you already have.** The 2025 DORA report found about 90% of developers using AI, and that it magnifies existing strengths and dysfunctions rather than fixing delivery on its own ([Google](https://blog.google/technology/developers/dora-report-2025/)). Tests, small changes, and review matter more with agents, not less.
+* **Feeling fast is not being fast.** In METR's 2025 randomized trial, 16 experienced developers working in their own repositories took 19% longer with early-2025 AI tools, while believing they had been 20% faster ([METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)). METR's February 2026 follow-up suggests later tools do speed developers up, but its confidence intervals include no effect and METR calls the data "very weak evidence" of how much ([update](https://metr.org/blog/2026-02-24-uplift-update/)). Measure on your own work before trusting the impression.
+* **AI amplifies the team you already have.** The 2025 DORA report found about 90% of developers using AI, and that it magnifies existing strengths and dysfunctions rather than fixing delivery on its own ([Google](https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/)). Tests, small changes, and review matter more with agents, not less.
 * **The code needs security review.** See the [Security Remediation Playbook](../part-2-ship/02-security-remediation-playbook.md#why-this-matters-more-with-ai-written-code).
 
 ## The loop

@@ -7,7 +7,7 @@ body:
     attributes:
       label: Page · 頁面
       description: Link or path to the page, and the section if possible. 頁面連結或路徑，可以的話註明段落。
-      placeholder: en/part-2-ship/02-security-remediation-playbook.md#15-no-csrf-protection---high
+      placeholder: en/part-2-ship/02-security-remediation-playbook.md#22-cross-site-request-forgery-csrf---high
     validations:
       required: true
   - type: dropdown

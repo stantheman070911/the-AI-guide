@@ -11,7 +11,7 @@ By taking part, you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 | You want to… | Do this |
 | --- | --- |
 | Fix a typo, broken link, or small error | Open a pull request directly. |
-| Report something wrong or outdated | [Open an issue](https://github.com/stantheman070911/vibecoding-guide/issues/new/choose) with the page and, if possible, a source. |
+| Report something wrong or outdated | [Open an issue](https://github.com/stantheman070911/the-AI-guide/issues/new/choose) with the page and, if possible, a source. |
 | Improve or fix a translation | Open a pull request, or an issue if you are unsure. |
 | Propose a new topic or chapter | Open an issue first, so we can agree on scope and placement before you write. |
 | Restructure existing content | Open an issue first. Moving content breaks links and translations, so it needs agreement. |

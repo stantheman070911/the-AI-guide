@@ -2,9 +2,9 @@
 
 # 資安修補手冊
 
-針對[網站上線準備檢查清單](01-production-readiness-checklist.md)中風險最高的項目提供修正方法，依 [OWASP Top 10:2025](https://owasp.org/Top10/2025/0x00_2025-Introduction/) 分類。每一項都說明如何找出問題、如何修正，以及如何證明修正有效。LLM 功能與程式代理特有的風險，請見[保護 AI 功能與程式代理](03-securing-ai-features-and-agents.md)。
+針對[網站上線準備檢查清單](01-production-readiness-checklist.md)中風險最高的項目提供修正方法，依 [OWASP Top 10:2025](https://top10.owasp.org/2025/0x00_2025-Introduction/) 分類。每一項都說明如何找出問題、如何修正，以及如何證明修正有效。LLM 功能與程式代理特有的風險，請見[保護 AI 功能與程式代理](03-securing-ai-features-and-agents.md)。
 
-嚴重等級：🚨 嚴重（上線前修正）· 🔴 高（上線後盡快修正）· 🟠 中（排入時程）。🚨 與 🔴 項目屬於檢查清單分級中的 P0。
+嚴重等級：🚨 嚴重（上線前修正）· 🔴 高（應用程式具備相關功能時，上線前修正）· 🟠 中（排入時程）。🚨 與 🔴 項目屬於檢查清單分級中的 P0。
 
 只測試你擁有或獲得授權測試的系統。
 
@@ -12,7 +12,7 @@
 
 ## 為什麼 AI 寫的程式碼更需要這些
 
-Veracode 在 2025 年以 80 個資安敏感任務測試了 100 多個模型，45% 的生成程式碼樣本引入了已知漏洞，而且較大的模型表現並沒有比較好（[新聞稿](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)）。代理會把正常流程寫出來。存取控制、輸入處理與失敗時的行為，才是你要審查的地方。
+在 Veracode 2025 年的廠商研究中，以 80 個資安敏感任務測試了 100 多個模型，45% 的生成程式碼樣本含有 OWASP Top 10 類別的漏洞，而且較大的模型表現並沒有比較好（[新聞稿](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)）。代理會把正常流程寫出來。存取控制、輸入處理與失敗時的行為，才是你要審查的地方。
 
 ## A01 存取控制失效
 
@@ -42,11 +42,11 @@ Veracode 在 2025 年以 80 個資安敏感任務測試了 100 多個模型，45
 
 ### 4. 租戶隔離與資料庫政策 — 🚨 嚴重
 
-AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設計就是讓瀏覽器直接存取資料庫；用戶端的金鑰是公開的，資料與外界之間只隔著列層級政策。在 CVE-2025-48757 中，掃描 Lovable 展示區的 1,645 個應用程式，發現其中 170 個的資料表任何人都能讀取或寫入（[紀錄](https://cvemon.intruder.io/cves/CVE-2025-48757)）。
+AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設計就是讓瀏覽器直接存取資料庫；用戶端的金鑰是公開的，資料與外界之間只隔著列層級政策。在 CVE-2025-48757 中，一位研究者掃描 Lovable 展示區的 1,645 個應用程式，發現其中 170 個的資料表任何人都能讀取或寫入（[NVD](https://nvd.nist.gov/vuln/detail/CVE-2025-48757)）。Lovable 對此 CVE 提出異議，認為資料保護是各應用程式擁有者的責任。
 
-* **偵測**：執行 Supabase Security Advisor（`supabase db advisors`，或在 dashboard 中）。把 `rls_disabled_in_public`、`permissive_rls_policy`（`USING (true)`）、`security_definer_view` 與 `rls_references_user_metadata` 視為阻擋上線的問題（[lint 清單](https://supabase.com/docs/guides/database/database-advisors)）。Firebase 則檢查 Security Rules 中是否有 `allow read, write: if true`。
-* **修正**：在每一個對外公開的資料表上啟用 RLS。政策依據 `auth.uid()` 或來自可信來源的租戶 ID 撰寫，絕不依據使用者可編輯的 metadata。`service_role` 金鑰只放在伺服器端。
-* **驗證**：只用公開網址與 anon key，先在沒有 session 的情況下，再以帳號 A 對帳號 B 的資料列，嘗試讀寫每一個資料表。把這些加成自動化測試，避免之後的遷移悄悄重新打開漏洞。
+* **偵測**：執行 Supabase Security Advisor（`supabase db advisors`，或在 dashboard 中）。把所有 ERROR 等級的資安 lint（包括 `rls_disabled_in_public`、`security_definer_view`、`rls_references_user_metadata`、`auth_users_exposed`、`sensitive_columns_exposed`、`insecure_queue_exposed_in_api`）以及 `permissive_rls_policy`（`USING (true)`）都視為阻擋上線的問題（[lint 清單](https://supabase.com/docs/guides/observability/advisors)）。Firebase 則檢查 Security Rules 中是否有 `allow read, write: if true`。
+* **修正**：在每一個對外公開的資料表上啟用 RLS。政策依據 `auth.uid()` 或來自可信來源的租戶 ID 撰寫，絕不依據使用者可編輯的 metadata。Secret key（`sb_secret_…`，或舊版 `service_role` key）只放在伺服器端。Supabase 將在 2026 年底前淘汰舊版 `anon` 與 `service_role` 金鑰；新專案使用 publishable key 與 secret key。
+* **驗證**：只用公開網址與 publishable key（或舊版 anon key），先在沒有 session 的情況下，再以帳號 A 對帳號 B 的資料列，嘗試讀寫每一個資料表。把這些加成自動化測試，避免之後的遷移悄悄重新打開漏洞。
 
 ### 5. 身分驗證繞過路徑 — 🚨 嚴重
 
@@ -88,7 +88,7 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 模型會編造套件名稱，攻擊者則搶先註冊這些名稱（「slopsquatting」）。在 16 個模型產生的 576,000 個程式碼樣本中，商業模型的幻覺套件平均至少 5.2%，開源模型為 21.7%，共出現 205,474 個不重複的捏造名稱（[USENIX Security 2025](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)）。
 
 * **偵測**：審查 diff 中每一個新增的相依套件。確認它以完全相同的名稱存在，並檢查它的年齡、維護者與下載紀錄。
-* **修正**：相依套件由你自己加入，不要透過代理未經審查的安裝指令。設定發布時間冷卻期，讓剛發布的版本不會被自動安裝（pnpm 的 `minimumReleaseAge`、Yarn 的 `npmMinimalAgeGate`；請查閱你的套件管理工具文件）。
+* **修正**：相依套件由你自己加入，不要透過代理未經審查的安裝指令。設定發布時間冷卻期，讓剛發布的版本不會被自動安裝（npm 的 `min-release-age`，以天為單位；pnpm 的 `minimumReleaseAge`；Yarn 的 `npmMinimalAgeGate`）。
 * **驗證**：lockfile 變更卻沒有對應的清單檔變更時，CI 會失敗；安裝時使用 `npm ci` 或同等的凍結 lockfile 模式。
 
 ### 10. 有漏洞的相依套件 — 🔴 高
@@ -99,7 +99,7 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 ### 11. CI/CD 與發布憑證 — 🔴 高
 
-2025 年的兩起事件說明了這種模式。在 tj-actions/changed-files 遭入侵事件（CVE-2025-30066）中，攻擊者把既有的版本標籤移到惡意 commit；固定到 commit SHA 的 workflow 不受影響（[詳情](https://www.sentinelone.com/vulnerability-database/cve-2025-30066)）。Shai-Hulud 蠕蟲從開發者電腦竊取 npm 與雲端 token，並用它們發布了 500 多個套件的受感染版本（[CISA](https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem)）。
+2025 年的兩起事件說明了這種模式。在 tj-actions/changed-files 遭入侵事件（CVE-2025-30066）中，攻擊者把既有的版本標籤移到惡意 commit；固定到 commit SHA 的 workflow 不受影響（[NVD](https://nvd.nist.gov/vuln/detail/CVE-2025-30066)）。Shai-Hulud 蠕蟲從開發者電腦竊取 npm 與雲端 token，並用它們發布了 500 多個套件的受感染版本（[CISA](https://www.cisa.gov/news-events/alerts/2025/09/23/widespread-supply-chain-compromise-impacting-npm-ecosystem)）。
 
 * **修正**：把第三方 action 固定到完整的 commit SHA；GitHub 稱這是「目前唯一能把 action 當作不可變版本使用的方法」（[GitHub](https://docs.github.com/en/actions/reference/security/secure-use)）。`GITHUB_TOKEN` 預設為唯讀，再依 job 給予更多權限。避免讓 `pull_request_target` 處理不可信任的程式碼。用 OIDC 取代長期有效的雲端金鑰。透過 trusted publishing 發布套件，而不是個人 token。開啟具推送保護的 secret scanning。
 * **驗證**：用腳本或 linter 標出任何沒有固定到 SHA 的 `uses:`。workflow 檔案明確宣告 `permissions:`。
@@ -114,9 +114,9 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 ### 13. 用戶端程式碼中的機密金鑰 — 🚨 嚴重
 
-瀏覽器 bundle 裡的任何東西都是公開的。要分清楚哪些金鑰本來就設計成公開（Supabase anon key、Stripe publishable key），哪些不是（Supabase `service_role`、Stripe secret key、任何 LLM 供應商的金鑰）。
+瀏覽器 bundle 裡的任何東西都是公開的。要分清楚哪些金鑰本來就設計成公開（Supabase publishable key `sb_publishable_…` 或舊版 `anon` key、Stripe publishable key `pk_…`），哪些不是（Supabase secret key `sb_secret_…` 或舊版 `service_role` key、Stripe 的 `sk_…` 與受限金鑰 `rk_…`、webhook 簽章密鑰 `whsec_…`、任何 LLM 供應商的金鑰）。
 
-* **偵測**：搜尋建置後的 bundle，而不只是原始碼，找出 `sk_`、`sk-`、`service_role` 等金鑰前綴。檢查哪些環境變數帶有公開前綴（`NEXT_PUBLIC_`、`VITE_`）。
+* **偵測**：搜尋建置後的 bundle，而不只是原始碼，找出 `sb_secret_`、`sk_`、`rk_`、`whsec_` 與 `sk-`。舊版 Supabase 金鑰是 JWT：逐一解碼 `eyJ…` 字串，`role` 為 `service_role` 即判定失敗。檢查哪些環境變數帶有公開前綴（`NEXT_PUBLIC_`、`VITE_`）。
 * **修正**：從伺服器路由呼叫第三方 API；由它持有金鑰、驗證使用者、限制速率，並只回傳用戶端需要的內容。
 * **驗證**：在正式環境的建置輸出中搜尋每一個機密的前綴。都不會出現。
 
@@ -128,7 +128,7 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 * **修正**：用 Argon2id 雜湊（記憶體至少 19 MiB、迭代 2 次、平行度 1）。無法使用 Argon2id 時用 scrypt。bcrypt 只適用於舊系統：work factor 10 以上，而且它會忽略超過 72 位元組的輸入（[OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)）。舊的雜湊在使用者下次登入時重新雜湊。
 * **政策**：NIST SP 800-63B-4 要求只靠密碼登入時至少 15 個字元（搭配 MFA 時 8 個字元），必須比對外洩與常見密碼清單，並禁止組成規則與強制定期更換（[NIST](https://pages.nist.gov/800-63-4/sp800-63b.html)）。
-* **驗證**：資料庫中沒有明文、MD5、SHA-1 或未加鹽的 SHA-256 雜湊。
+* **驗證**：資料庫中每一個密碼雜湊都是 Argon2id、scrypt、bcrypt 或 PBKDF2。沒有明文，也沒有快速雜湊（MD5、SHA-1、SHA-256），無論是否加鹽。
 
 ### 15. 網址、日誌與錯誤訊息中的敏感資料 — 🟠 中
 
@@ -165,7 +165,7 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 暴力破解、爬取資料，以及把小帳單變成大帳單的 AI 端點。
 
-* **修正**：依 IP 與帳號設定速率限制，使用共用儲存（Redis，或平台內建的限制器）：登入約每 15 分鐘 5 次、密碼重設每小時 3–5 次，AI 與其他昂貴端點設定每位使用者配額。回傳 `429` 並附上 `Retry-After`。接著在供應商允許的地方設定支出上限：Vercel 的 on-demand budget 除非開啟 **Pause Production Deployments**，否則不會停止用量，而且每隔幾分鐘才檢查一次（[Vercel](https://vercel.com/docs/spend-management)）；Supabase Pro 預設開啟支出上限（[價格](https://supabase.com/pricing)）；每一把 LLM 供應商金鑰都設定每月上限。
+* **修正**：依 IP 與帳號設定速率限制，使用共用儲存（Redis，或平台內建的限制器）：登入約每 15 分鐘 5 次、密碼重設每小時 3–5 次，AI 與其他昂貴端點設定每位使用者配額。回傳 `429` 並附上 `Retry-After`。接著在供應商允許的地方設定支出上限：Vercel 的 on-demand budget 除非開啟 **Pause Production Deployments**，否則不會停止用量，而且每隔幾分鐘才檢查一次（[Vercel](https://vercel.com/docs/spend-management)）。暫停只會停止正式環境部署；計入團隊帳單的 AI Gateway 與 v0 用量會繼續計費，模型支出要另外設上限；Supabase Pro 預設開啟支出上限（[價格](https://supabase.com/pricing)）；每一把 LLM 供應商金鑰都設定每月上限。
 * **驗證**：用腳本對同一個帳號快速發出 50 次登入嘗試與 50 次 AI 請求。兩者都被限流。確認每一個供應商的警示都會送到真人手上。
 
 ### 20. 未經驗證就信任的金流與 webhook — 🚨 嚴重

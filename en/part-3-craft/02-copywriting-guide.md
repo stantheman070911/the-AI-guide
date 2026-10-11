@@ -8,7 +8,7 @@ Ten lessons from well-known copywriters and marketers, eight additions for the A
 
 ### 1. The offer carries the sale
 
-Gary Halbert: "Your offer is by far the most important element in the entire sales message."
+Paraphrasing Gary Halbert: the offer is the most important element of a sales message.
 
 A strong message cannot rescue a weak offer. Before refining the copy, make sure the offer itself is compelling:
 
@@ -21,7 +21,7 @@ A strong message cannot rescue a weak offer. Before refining the copy, make sure
 
 ### 2. Call out the right market immediately
 
-Eugene Schwartz: Call your market into the headline.
+Paraphrasing Eugene Schwartz: Call your market into the headline.
 
 The reader should quickly feel: "This is for me." Use the headline to identify the audience, situation, problem, or aspiration.
 
@@ -34,7 +34,7 @@ Example:
 
 ### 3. Make the outcome more valuable and believable
 
-Alex Hormozi: Increase the dream outcome and the perceived likelihood of achieving it; decrease time delay and effort.
+Paraphrasing Alex Hormozi: Increase the dream outcome and the perceived likelihood of achieving it; decrease time delay and effort.
 
 People evaluate an offer through four questions:
 
@@ -47,7 +47,7 @@ People evaluate an offer through four questions:
 
 ### 4. Write for the customer, not for yourself
 
-Jim Edwards: Nobody cares about you in your sales copy.
+Paraphrasing Jim Edwards: Nobody cares about you in your sales copy.
 
 Customers care about their own problems, desires, risks, and identity. Company history, credentials, and features matter only when they clearly help the reader get what they want.
 
@@ -58,7 +58,7 @@ Customers care about their own problems, desires, risks, and identity. Company h
 
 ### 5. Use bullets to create curiosity
 
-Gary Halbert: Reveal enough to create desire, but not enough to satisfy curiosity.
+Paraphrasing Gary Halbert: Reveal enough to create desire, but not enough to satisfy curiosity.
 
 A bullet should present a compelling benefit, unexpected insight, or intriguing mechanism—then leave the reader wanting the explanation.
 
@@ -68,7 +68,7 @@ Example: "The simple 'two-question' follow-up that turns silent prospects into b
 
 ### 6. Specific facts beat vague adjectives
 
-David Ogilvy: Specific facts beat vague adjectives.
+Paraphrasing David Ogilvy: Specific facts beat vague adjectives.
 
 Words such as "amazing," "revolutionary," "premium," and "powerful" are usually weak unless supported by a fact.
 
@@ -79,7 +79,7 @@ Words such as "amazing," "revolutionary," "premium," and "powerful" are usually 
 
 ### 7. Respect the reader's intelligence
 
-David Ogilvy: The customer is intelligent. Write like you respect them.
+Paraphrasing David Ogilvy: The customer is intelligent. Write like you respect them.
 
 Do not rely on exaggerated claims, empty hype, or simplistic manipulation. Explain the logic, provide evidence, and let the reader reach a confident conclusion.
 
@@ -87,7 +87,7 @@ Do not rely on exaggerated claims, empty hype, or simplistic manipulation. Expla
 
 ### 8. Differentiate through the mechanism
 
-Eugene Schwartz: When every competitor makes the same promise, change the mechanism.
+Paraphrasing Eugene Schwartz: When every competitor makes the same promise, change the mechanism.
 
 In crowded markets, everyone claims to save time, increase revenue, improve confidence, or create results. The differentiator is often how your solution produces that result.
 
@@ -100,7 +100,7 @@ Example:
 
 ### 9. Treat the headline as the highest-leverage line
 
-John Caples: If you create a good headline, your task is more than half completed.
+Paraphrasing John Caples: If you create a good headline, your task is more than half completed.
 
 The headline determines whether the rest of the message gets read. It should earn attention through relevance, clarity, specificity, curiosity, or a strong promise.
 
@@ -116,7 +116,7 @@ A useful headline often includes:
 
 ### 10. Sell the transformation, not the object
 
-Tony Robbins: People do not buy products; they buy a better version of themselves.
+A widely quoted line, often credited to Tony Robbins without a traced source: people do not buy products; they buy a better version of themselves.
 
 People buy what the product enables: confidence, relief, status, security, freedom, competence, belonging, or identity.
 
@@ -126,7 +126,7 @@ Example: Customers do not buy a productivity app. They buy the feeling of being 
 
 ## Modern additions (AI and social era)
 
-Distilled from a synthesis of the ten lessons above against current research and platform guidance — the parts that weren't already covered.
+What the ten lessons above do not cover.
 
 ### 11. Distinctive provenance beats fluent prose
 

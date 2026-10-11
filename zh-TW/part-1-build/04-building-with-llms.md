@@ -36,14 +36,14 @@ Anthropic 對代理的建議：從「最簡單的解法開始，只在需要時�
 1. **先確認你是否需要它。** 如果原始資料放得進上下文視窗，而且搭配 prompt caching 的成本可以接受，整份送進去更簡單，效果也往往更好。（判斷；請用你的評估集測試兩種做法。）
 2. **從 Postgres 開始。** Supabase 或 Neon 中的 pgvector，讓向量與資料及其權限放在一起。專用向量資料庫什麼時候值得，見[技術堆疊決策](01-stack-decision.md#3-特定情境的替代方案)。
 3. **使用混合搜尋。** Embedding 會漏掉錯誤代碼、SKU 與名稱這類精確字串；全文搜尋可以抓到它們。合併兩份結果清單。
-4. **為段落加上上下文，再重新排序。** 在 Anthropic 的測試中，於每個段落前面加上一小段專屬上下文，讓前 20 名檢索的失敗率下降 35%；加上 BM25 後降幅達 49%；再加上重新排序模型，降幅達 67%（[Anthropic](https://www.anthropic.com/news/contextual-retrieval)）。
+4. **為段落加上上下文，再重新排序。** 在 Anthropic 的測試中，於每個段落前面加上一小段專屬上下文，讓前 20 名檢索的失敗率下降 35%；加上 BM25 後降幅達 49%；再加上重新排序模型，降幅達 67%（[Anthropic](https://www.anthropic.com/engineering/contextual-retrieval)）。
 5. **在檢索查詢中依權限篩選。** 不是之後才篩。見[AI 資安第 3 項](../part-2-ship/03-securing-ai-features-and-agents.md#3-在檢索之前執行存取控制)。
 6. **分開評估檢索。** 在評判生成的答案之前，先檢查正確的段落是否出現在前幾名結果中。
 
 ## 成本
 
 * **Prompt caching**：用於重複出現的前綴，例如系統提示詞、工具定義與長文件。
-* **Batch API**：用於可以等待的工作。Anthropic 與 OpenAI 的批次請求都是一般價格的一半（[Anthropic](https://www.anthropic.com/news/message-batches-api)）。
+* **Batch API**：用於可以等待的工作。Anthropic 與 OpenAI 的批次請求都是一般價格的一半（[Anthropic](https://platform.claude.com/docs/en/build-with-claude/batch-processing)）。
 * **依難度分流。** 把簡單、量大的任務交給小模型。
 * **依功能量測。** 記錄每個請求的 token 與成本，並標記功能與使用者，讓你在帳單出現之前就知道什麼最貴。
 * **設定上限。** 每位使用者配額與供應商每月上限（[修補手冊第 19 項](../part-2-ship/02-security-remediation-playbook.md#19-缺少速率限制與支出控制---高)）。
@@ -52,7 +52,7 @@ Anthropic 對代理的建議：從「最簡單的解法開始，只在需要時�
 
 每次呼叫都記錄：提示詞版本、模型、輸入與輸出 token、延遲、成本，以及任何使用者回饋。每週審閱一批真實對話紀錄；它們會顯示指標看不出來的失敗。個人資料在進入日誌前先遮蔽。
 
-如果你已經在用 PostHog，[PostHog LLM analytics](https://posthog.com/llm-analytics) 很合適。[Langfuse](https://github.com/langfuse/langfuse) 是開源的替代方案，提供追蹤、評估與提示詞管理。
+如果你已經在用 PostHog，[PostHog AI observability](https://posthog.com/ai-observability) 很合適。[Langfuse](https://github.com/langfuse/langfuse) 是開源的替代方案，提供追蹤、評估與提示詞管理。
 
 ## 本機模型
 

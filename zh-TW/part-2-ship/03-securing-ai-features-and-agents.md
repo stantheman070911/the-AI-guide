@@ -8,7 +8,7 @@
 
 ## 核心問題：提示詞注入
 
-模型在同一個通道裡讀取指令與資料。網頁、電子郵件、PDF、issue 或工具結果中的文字，都可能改變它的行為。沒有任何過濾器能可靠地阻止這件事；OWASP 指出，以模型的運作方式而言，萬無一失的防範方法並不明確（[cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)），而防護用的模型本身也可能被注入。
+模型在同一個通道裡讀取指令與資料。網頁、電子郵件、PDF、issue 或工具結果中的文字，都可能改變它的行為。沒有任何過濾器能可靠地阻止這件事；OWASP 指出，以模型的運作方式而言，萬無一失的防範方法並不明確（[LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/)），而防護用的模型本身也可能被注入（[cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)）。
 
 所以要假設注入會成功來設計。問題不是「模型會不會被騙？」，而是「被騙之後它能做什麼？」
 
@@ -22,7 +22,7 @@ Simon Willison 的規則（[原文](https://simonwillison.net/2025/Jun/16/the-le
 
 拿掉任何一項，資料竊取的路徑就會關閉。對外通道往往不像「寄送電子郵件」工具那麼明顯：網址中夾帶資料的 Markdown 圖片、連結預覽、網頁抓取工具、pull request 留言，或推送到公開儲存庫的 commit。
 
-有文件記錄的案例：2025 年 5 月，公開 GitHub issue 中的提示詞注入，讓一個使用 GitHub MCP 伺服器、工具呼叫設為「Always Allow」的代理，把擁有者私人儲存庫的資料複製到公開的 pull request 中（[Invariant Labs](https://invariantlabs.ai/blog/mcp-github-vulnerability)）。伺服器本身沒有 bug。問題出在組合。
+有文件記錄的示範：2025 年 5 月，公開 GitHub issue 中的提示詞注入，讓一個使用 GitHub MCP 伺服器的代理，把擁有者私人儲存庫的資料複製到公開的 pull request 中（[Invariant Labs](https://invariantlabs.ai/blog/mcp-github-vulnerability)）。伺服器本身沒有 bug。問題出在組合。
 
 ## 你提供的 LLM 功能
 
@@ -71,14 +71,15 @@ Simon Willison 的規則（[原文](https://simonwillison.net/2025/Jun/16/the-le
 
 * 開啟代理的作業系統層級沙箱，並把網路存取限制在允許清單內。要清楚它的邊界：Claude Code 的沙箱涵蓋 shell 指令，而它的檔案工具、MCP 伺服器與 hook 都在沙箱之外執行（[文件](https://code.claude.com/docs/en/sandboxing)）。
 * 無人看管或「自動核准」的工作階段，要在 dev container、虛擬機或雲端環境中執行，絕不在存放正式環境憑證的電腦上執行。
+* 把開啟儲存庫視為執行它的程式碼。`.claude/settings.json`、`.mcp.json` 與 hook 這類專案檔案，可能啟動伺服器、執行指令，或改變 API 流量的去向。Claude Code 曾有兩個漏洞在信任提示出現前就這麼做（[CVE-2025-59536](https://nvd.nist.gov/vuln/detail/CVE-2025-59536)、[CVE-2026-21852](https://nvd.nist.gov/vuln/detail/CVE-2026-21852)）。保持代理為最新版本，不熟悉的儲存庫在容器或虛擬機中開啟。
 * 寬鬆的權限模式依任務授予，不要永久開啟。
 
 ### 8. 讓正式環境憑證遠離代理
 
 代理能讀到的任何東西，都可能外洩：進入日誌、pull request，或傳送給模型供應商的提示詞。
 
-* 給代理針對開發資源、範圍有限且短效的 token。不給正式資料庫網址、不給 `service_role` 金鑰、不給雲端 root 憑證。
-* 在代理的權限設定中，禁止讀取 `.env` 檔案與憑證目錄。
+* 給代理針對開發資源、範圍有限且短效的 token。不給正式資料庫網址、不給 `service_role` 或 `sb_secret_` 金鑰、不給雲端 root 憑證。
+* 在權限規則與沙箱設定（`sandbox.filesystem.denyRead` 或 `sandbox.credentials`）中，同時禁止讀取 `.env` 檔案與憑證目錄。只靠權限規則，擋不住代理執行的腳本自行開啟檔案。正式環境的機密不要放在本機 `.env`。
 
 ### 9. MCP 伺服器與 skills 都是你安裝的程式碼
 
