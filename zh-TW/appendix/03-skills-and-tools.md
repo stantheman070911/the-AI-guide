@@ -2,7 +2,7 @@
 
 # 附錄 C：我使用的 Skills 與工具
 
-這是我持續更新的清單，列出我安裝的 Claude Code skills、外掛與命令列工具。它比本指南的其他部分粗略，會隨著我的學習而改變。
+這是我持續更新的清單，列出我安裝的 Claude Code skills、外掛與命令列工具。
 
 Skill 名稱保留工具中顯示的原樣，因此不翻譯。分組依照每個 skill 的來源。這是個人清單，不是推薦；安裝工具前如何審查，請見[附錄 D](04-evaluating-tools-and-skills.md)。
 
@@ -102,7 +102,7 @@ Skill 名稱保留工具中顯示的原樣，因此不翻譯。分組依照每�
 
 ## open-slide
 
-這是命令列工具，不是 skill。它會建立一個預先設定好 Claude Code skills 的簡報工作區。用 `npm install -g @open-slide/cli` 全域安裝，再執行 `npx @open-slide/cli init <name>` 建立新的工作區。網站：[open-slide.dev](https://open-slide.dev)。
+這是命令列工具，不是 skill。它會建立一個預先設定好 Claude Code skills 的簡報工作區。執行 `npx @open-slide/cli init <name>` 建立新的工作區。網站：[open-slide.dev](https://open-slide.dev)。
 
 ---
 

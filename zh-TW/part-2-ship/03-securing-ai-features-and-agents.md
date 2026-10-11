@@ -10,7 +10,7 @@
 
 模型在同一個通道裡讀取指令與資料。網頁、電子郵件、PDF、issue 或工具結果中的文字，都可能改變它的行為。沒有任何過濾器能可靠地阻止這件事；OWASP 指出，以模型的運作方式而言，萬無一失的防範方法並不明確（[LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/)），而防護用的模型本身也可能被注入（[cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)）。
 
-所以要假設注入會成功來設計。問題不是「模型會不會被騙？」，而是「被騙之後它能做什麼？」
+所以要假設注入會成功來設計。
 
 ## 致命三要素
 

@@ -2,7 +2,7 @@
 
 # Contributing
 
-Thank you for helping improve the Vibecoding Guide. Corrections, clearer wording, translations, and new topics are all welcome. You do not need to be an engineer to contribute: many of the most useful changes are a sentence made clearer or a translation made more natural.
+Corrections, clearer wording, translations, and new topics are welcome.
 
 By taking part, you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -49,7 +49,7 @@ Every page exists in English and Traditional Chinese (繁體中文).
 
 When you change a page, try to update both languages in the same pull request.
 
-If you can only write in one language, that is fine. Do this instead:
+If you write in only one language:
 
 1. Make your change in the language you know.
 2. At the top of the other-language version, under the navigation line, add a notice:
@@ -111,7 +111,7 @@ Adding a new part follows the same pattern: create `part-N-name/` in both langua
 
 ## Reviews
 
-A maintainer reviews every pull request for accuracy, clarity, consistency with the style guide, and language parity. Expect questions; they are part of making the guide reliable, not a judgment of your work. Small fixes are usually merged quickly. Larger changes may take a few rounds.
+A maintainer reviews every pull request for accuracy, clarity, consistency with the style guide, and language parity.
 
 ## License
 

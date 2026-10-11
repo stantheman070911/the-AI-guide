@@ -68,8 +68,6 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 ### 7. 安全標頭 — 🟠 中
 
-成本很低，而大多數 vibecoded 應用程式上線時都沒有。
-
 * **修正**：全域設定 `Content-Security-Policy`（從 `default-src 'self'` 開始，避免 `unsafe-inline` 與 `unsafe-eval`）、在 CSP 中用 `frame-ancestors` 控制框架嵌入（`X-Frame-Options` 只為舊瀏覽器保留）、`Strict-Transport-Security`、`X-Content-Type-Options: nosniff`、`Referrer-Policy` 與 `Permissions-Policy`。不要加 `X-XSS-Protection`，它已經過時。CSP 先以 `Content-Security-Policy-Report-Only` 上線，再改為強制執行。
 * **驗證**：檢查正式環境的回應標頭（`curl -I`），而不是本機開發環境。
 
@@ -143,7 +141,7 @@ AI 打造的應用程式最常見的嚴重缺陷。Supabase 與 Firebase 的設�
 
 * **偵測**：搜尋以字串組成的 SQL，以及 ORM 的逃生口（`$queryRawUnsafe`、`sequelize.literal`、用 template string 呼叫原始 `execute`），包括資料庫函式中的 SQL。
 * **修正**：使用參數化查詢或 ORM 的安全查詢產生器。應用程式的資料庫使用者採最小權限。
-* **驗證**：對每一個動態查詢用 `' OR 1=1 --` 與引號字元做單元測試。在獲得授權的情況下，可用 `sqlmap` 等掃描工具對預備環境的副本確認。
+* **驗證**：對每一個動態查詢用 `' OR 1=1 --` 與引號字元做單元測試。可用 `sqlmap` 對預備環境的副本確認。
 
 ### 17. 跨站腳本攻擊（XSS）— 🔴 高
 

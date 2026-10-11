@@ -2,8 +2,6 @@
 
 # The Holy Trinity + 1
 
-*A documentation system for AI coding agents.*
-
 A reusable documentation system for AI-assisted coding projects: three documents that
 answer *what*, *how*, and *now* — the "holy trinity" — plus the constitution that
 governs them. A fifth, optional document (the runbook) carries operational procedure
@@ -40,7 +38,8 @@ The split also creates a control property large instruction files don't have:
 must be true; PLAN.md defines how; LOG.md records whether it actually is. As long as
 those stay separate, a coding agent can't paper over a failing acceptance test by
 loosening the acceptance criteria in the same breath — the two facts live in different
-files with different owners.
+files with different owners. [CONSTITUTION.md Law II](CONSTITUTION.md#law-ii--document-authority-is-asymmetric)
+sets who may change each one.
 
 ### Make each document sharp, not vague
 
@@ -60,31 +59,15 @@ files with different owners.
   already has the detailed history — LOG.md carries the *semantic* summary that Git
   can't: what's actually verified, what's blocking, what's next.
 
-## Document authority is asymmetric — on purpose
-
-Don't let an agent freely edit all four documents. If it can, a hard requirement gets
-"solved" by editing the requirement instead of the code, and nobody notices until
-production.
-
-- **CONSTITUTION.md** — human-controlled. An agent may propose a change; it never
-  applies one unasked.
-- **BRIEF.md** — human-approved. An agent may flag a product ambiguity it discovers
-  during implementation, but doesn't merge the resolution itself.
-- **PLAN.md** — human + agent, collaboratively. This is the normal working surface
-  during implementation.
-- **LOG.md** — mostly agent-maintained. Current state is updated in place; session
-  entries are appended, never rewritten.
-
-## The missing piece most doc systems skip: verification
+## Verification
 
 The natural workflow is *intent → implementation → memory*. That's missing a step. It
 needs to be *intent → implementation → verification → memory* — otherwise "the agent
 says it's done" is the only signal anyone has, and that signal is exactly the one that
 fails silently.
 
-You don't need a sixth document for this. Verification lives in tests, CI, and
-PLAN.md's verification matrix; LOG.md just records the results. A working session loop
-looks like:
+Verification lives in tests, CI, and PLAN.md's verification matrix; LOG.md records the
+results. A working session loop:
 
 1. Read CONSTITUTION.md, BRIEF.md, PLAN.md, LOG.md, and recent Git state.
 2. Confirm the app currently works before changing it.
@@ -108,43 +91,8 @@ was the right one. Don't ask "have we finished everything?" Ask instead:
 > BRIEF.md against the repository and provide evidence that it's satisfied. Any
 > criterion without evidence is incomplete.
 
-Run that as a separate pass after a milestone, before declaring it done:
-
-```
-BRIEF → PLAN → IMPLEMENT → TEST → AUDIT (brief vs. code)
-                                     │
-                          gap found ─┴─ no gap
-                                │           │
-                     add PLAN item     milestone complete
-```
-
-Gaps become new PLAN.md items and the cycle repeats until none turn up.
-
-## Two risk modes, same documents
-
-A local prototype with no real users can move fast and loose — genuine "vibe coding"
-is fine there. The moment real users, real data, payments, or credentials are
-involved, the operating mode has to change: unrestricted agent permissions,
-unreviewed AI-authored tests, and out-of-scope edits stop being cheap mistakes and
-start being incidents.
-
-CONSTITUTION.md (Law V) defines the two modes; LOG.md records which mode each
-surface of the project is currently in. That decides how much latitude an agent gets: fast
-experimentation in vibe mode; mandatory acceptance criteria, tests, security review,
-and full diff review in engineering mode. Same documents, same agent, different risk
-budget.
-
-## What to call this
-
-Not just "vibe coding." Once tests, acceptance criteria, and a completion audit are
-part of the loop, a more accurate name is **spec-guided agentic development** —
-or, less formally, **structured vibecoding**:
-
-- Humans own intent and judgment.
-- Agents own implementation throughput.
-- Tests own verification.
-- Git owns history.
-- These documents keep all four aligned with each other.
+Run that as a separate pass after each milestone, before declaring it done. Gaps become
+new PLAN.md items; repeat until none turn up.
 
 ## Using this folder
 
@@ -156,8 +104,7 @@ or, less formally, **structured vibecoding**:
 3. Write `BRIEF.md` first, with testable acceptance criteria and an explicit
    out-of-scope list.
 4. Let `PLAN.md`'s work queue grow one bounded slice at a time, not all at once.
-5. Keep `LOG.md` current every session — it's the only reason a fresh session isn't
-   starting from zero.
+5. Keep `LOG.md` current every session.
 6. Point the project's `AGENTS.md` or `CLAUDE.md` at these files, so every session
    reads them first ([Working with Coding Agents](../03-working-with-coding-agents.md#context-engineering)).
 

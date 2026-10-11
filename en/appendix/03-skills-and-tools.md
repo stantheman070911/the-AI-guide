@@ -2,9 +2,9 @@
 
 # Appendix C: Skills and Tools I Use
 
-My running list of the Claude Code skills, plugins, and command-line tools I have installed. It is less polished than the rest of the guide and changes as I learn.
+My running list of the Claude Code skills, plugins, and command-line tools I have installed.
 
-Skill names are listed exactly as they appear in the tools, so they are not translated. Groups follow where each skill came from. This is a personal inventory, not a recommendation; [Appendix D](04-evaluating-tools-and-skills.md) covers how to vet a tool before installing it.
+Groups follow where each skill came from. This is a personal inventory, not a recommendation; [Appendix D](04-evaluating-tools-and-skills.md) covers how to vet a tool before installing it.
 
 ## Claude Code / config
 
@@ -102,7 +102,7 @@ Explains any topic, code, or error for a specific audience (age, grade level, jo
 
 ## open-slide
 
-A command-line tool, not a skill. It scaffolds a slides workspace with Claude Code skills preconfigured. Install it globally with `npm install -g @open-slide/cli`, then run `npx @open-slide/cli init <name>` to scaffold a new workspace. Website: [open-slide.dev](https://open-slide.dev).
+A command-line tool, not a skill. It scaffolds a slides workspace with Claude Code skills preconfigured. Run `npx @open-slide/cli init <name>` to scaffold a new workspace. Website: [open-slide.dev](https://open-slide.dev).
 
 ---
 

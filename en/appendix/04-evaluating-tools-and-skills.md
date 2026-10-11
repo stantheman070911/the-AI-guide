@@ -2,9 +2,9 @@
 
 # Appendix D: Evaluating Tools and Skills
 
-How to decide whether a tool, agent skill, or MCP server is worth installing, and which ones passed for common jobs. Popularity, sponsorship, and launch videos are not evidence of quality. No product here paid for placement.
+How to decide whether a tool, agent skill, or MCP server is worth installing, and which ones passed for common jobs. Popularity, sponsorship, and launch videos are not evidence of quality.
 
-> Last verified: 2026-10-11. Tools in this space change monthly; re-check maintenance before adopting.
+> Last verified: 2026-10-11.
 
 ## Trust tiers
 
@@ -57,8 +57,6 @@ CodeRabbit and Greptile are the most widely compared AI reviewers. Published com
 | Database policies | Supabase Security Advisor |
 | Authorized dynamic testing | ZAP; `nmap` and `sqlmap` against your own staging systems only |
 
-Out of scope for this guide: wireless and password cracking, exploitation frameworks, and social-engineering kits. Skipfish has not been maintained since 2012. To practise offensive techniques legally, use a training platform such as TryHackMe.
-
 ### Databases
 
 Choose the database with the [Stack Decision](../part-1-build/01-stack-decision.md). If you connect an agent to Supabase through its official MCP server, scope it to one project, use read-only mode, and point it at a development project; read-only mode still lets readable rows enter the model's context, and prompt injection remains the main risk ([Supabase](https://supabase.com/docs/guides/ai-tools/mcp)).
@@ -74,10 +72,6 @@ Impeccable is a community skill that adds design critique and polish commands fo
 ### LLM app builders
 
 Dify is an open-source visual builder for LLM workflows, good for internal tools and prototypes. For product features, prefer code you own and can test.
-
-### Context and cost tools
-
-Headroom (context compression) and OpenViking (agent context database) are experimental. 9Router is not recommended: it sends your code and credentials through many third-party providers.
 
 ### Persona packs
 
