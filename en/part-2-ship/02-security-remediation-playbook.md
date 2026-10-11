@@ -68,8 +68,6 @@ Any feature that fetches a URL the user controls: link previews, image imports, 
 
 ### 7. Security headers — 🟠 Medium
 
-Cheap to add, and most vibecoded apps ship without them.
-
 * **Fix:** Set globally: `Content-Security-Policy` (start with `default-src 'self'`, avoid `unsafe-inline` and `unsafe-eval`), `frame-ancestors` in the CSP to control framing (keep `X-Frame-Options` only for old browsers), `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, and `Permissions-Policy`. Do not add `X-XSS-Protection`; it is obsolete. Ship the CSP as `Content-Security-Policy-Report-Only` first, then enforce.
 * **Verify:** Inspect production response headers (`curl -I`), not local dev.
 
@@ -143,7 +141,7 @@ Tokens in query strings end up in browser history and CDN logs. Full request dum
 
 * **Detect:** Search for string-built SQL and ORM escape hatches (`$queryRawUnsafe`, `sequelize.literal`, raw `execute` with template strings), including SQL inside database functions.
 * **Fix:** Use parameterized queries or the ORM's safe builder. Run the app's database user with least privilege.
-* **Verify:** Unit-test each dynamic query with `' OR 1=1 --` and quote characters. Authorized scanners such as `sqlmap` can confirm against a staging copy.
+* **Verify:** Unit-test each dynamic query with `' OR 1=1 --` and quote characters. `sqlmap` can confirm against a staging copy.
 
 ### 17. Cross-site scripting (XSS) — 🔴 High
 

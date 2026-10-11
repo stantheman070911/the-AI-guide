@@ -4,9 +4,9 @@
 
 The smallest stack that can safely ship and scale a SaaS for a solo founder or small team, when to add more, and what to skip.
 
-> **Recommendation.** Start with eight services: one coding agent, GitHub, Vercel, Supabase, Stripe, Resend, Cloudflare, and PostHog. Treat everything else as an upgrade you add when a measured need appears. The principles below are durable; the tables are time-sensitive.
+> **Recommendation.** Start with eight services: one coding agent, GitHub, Vercel, Supabase, Stripe, Resend, Cloudflare, and PostHog. Treat everything else as an upgrade you add when a measured need appears.
 
-> Last verified: 2026-10-11. Prices and plan limits change; check the linked pages before deciding.
+> Last verified: 2026-10-11.
 
 ## Principles
 
@@ -78,11 +78,10 @@ Promising, young, or with benefits so far reported only by their makers.
 * **Gemini CLI** — no longer served on free and personal Google AI plans; Google points those users to Antigravity CLI.
 * **9Router** — routes your code and credentials through dozens of third-party providers, including free tiers. The data and terms-of-service risk outweighs the token savings.
 * **Shared PHP hosting** for this stack — the wrong runtime model for a Next.js and Postgres app.
-* **Adding Pinecone, Clerk, Redis, or Sentry by default** — each solves a problem you may not have yet.
 
 ## 6. Background jobs
 
-Async execution matters more than another database. Typical work: Stripe webhooks, email, embeddings, file conversion, scheduled cleanup, external syncs, and long-running AI tasks.
+Typical work: Stripe webhooks, email, embeddings, file conversion, scheduled cleanup, external syncs, and long-running AI tasks.
 
 | Need | Use first |
 | --- | --- |
@@ -90,8 +89,6 @@ Async execution matters more than another database. Typical work: Stripe webhook
 | Database-driven async work | Supabase Queues |
 | Long-running or multi-step workflow | Vercel Workflows |
 | Cache, rate limiting, ephemeral state | Upstash Redis |
-
-> **Operating rule.** Add a vendor only when it removes a measured constraint, or creates a product advantage larger than its ongoing operational cost.
 
 ---
 

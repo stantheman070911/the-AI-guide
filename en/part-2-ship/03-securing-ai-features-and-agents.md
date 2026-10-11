@@ -10,7 +10,7 @@ Two attack surfaces: the LLM features you ship to users, and the coding agents y
 
 A model reads instructions and data in the same channel. Text inside a web page, email, PDF, issue, or tool result can redirect it. No filter reliably stops this; OWASP describes foolproof prevention as unclear given how models work ([LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/)), and guardrail models can themselves be injected ([cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)).
 
-So design for the case where injection succeeds. The question is not "can the model be tricked?" but "what can it do once it is?"
+So design for the case where injection succeeds.
 
 ## The lethal trifecta
 

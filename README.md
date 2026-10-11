@@ -4,10 +4,6 @@
 
 Practical, opinionated notes for shipping real products with AI-assisted ("vibecoded") development — what stack to use, how to know a site is actually production-ready, how to close the security gaps AI coding tools tend to leave open, and how to make AI-assisted design and writing not look AI-generated.
 
-This repo won't teach you how to prompt a model. It's the stuff that comes *after* the AI writes the code: the decisions, checklists, and taste calls that turn a working prototype into something you'd trust in front of real users and real attackers.
-
-The guide is written in English and Traditional Chinese (繁體中文). Both versions carry the same content.
-
 ## Who this is for
 
 * **Solo founders and small teams** who build with AI coding tools and want to ship something real.
@@ -41,7 +37,7 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 
 * [A. Core Writing Principles](en/appendix/01-writing-principles.md) — the writing rules I give AI tools when asking them to write or edit prose.
 * [B. CLAUDE.md Preset — Rules for Coding](en/appendix/02-claude-md-coding-rules.md) — a starting `CLAUDE.md` with one prime directive and twelve coding rules.
-* [C. Skills and Tools I Use](en/appendix/03-skills-and-tools.md) — my running personal notes on the skills and tools I use. Less polished than the rest, updated as I learn.
+* [C. Skills and Tools I Use](en/appendix/03-skills-and-tools.md) — my running list of the skills and tools I use.
 * [D. Evaluating Tools and Skills](en/appendix/04-evaluating-tools-and-skills.md) — trust tiers, a vetting checklist, and vetted choices by use case.
 
 ## Suggested reading paths
@@ -79,13 +75,12 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 ## How this guide is organized
 
 * English pages live in [`en/`](en/) and Chinese pages in [`zh-TW/`](zh-TW/), at the same paths. Every chapter links to its other-language version at the top.
-* Each part has a short introduction, and each chapter stands alone. Read it in order like a book, or jump straight to a topic.
 * Chapters with product details carry a "Last verified" date. Principles come first; time-sensitive tables come after.
-* Parts 1–3 are meant to be a fairly settled reference. Appendix C is where I keep looser, evolving notes. Open questions are tracked in the [research backlog](RESEARCH_BACKLOG.md).
+* Open questions are tracked in the [research backlog](RESEARCH_BACKLOG.md).
 
 ## Contributing
 
-Disagree with something, spotted an error, or have a sharper way to say it? Issues and pull requests are very welcome, in English or Chinese.
+Issues and pull requests are welcome in English or Chinese.
 
 * [Contributing guide](CONTRIBUTING.md) — how to propose changes, add a chapter, and keep translations in sync.
 * [Style guide](STYLE_GUIDE.md) and [glossary](GLOSSARY.md) — writing and translation conventions.

@@ -4,7 +4,7 @@
 
 Decisions for shipping LLM features: which model, how to call it, how to ground it in your data, what it costs, and how to know it works. Security for these features is in [Securing AI Features and Coding Agents](../part-2-ship/03-securing-ai-features-and-agents.md).
 
-> Last verified: 2026-10-11. Model names and prices change monthly, so this chapter names none. Check your provider's pricing page.
+> Last verified: 2026-10-11. Model names and prices change monthly, so this chapter names none.
 
 ## Start simpler than you think
 
@@ -56,7 +56,7 @@ Log, for each call: prompt version, model, input and output tokens, latency, cos
 
 ## Local models
 
-Worth it when data cannot leave the machine, when you need offline use, or for predictable cost at high volume. [Ollama](https://ollama.com) is the easiest way to run open-weight models locally. Expect lower quality than frontier hosted models on complex reasoning, and memory to limit model size. Run your evaluation set before deciding.
+Worth it when data cannot leave the machine, when you need offline use, or for predictable cost at high volume. [Ollama](https://ollama.com) is the easiest way to run open-weight models locally. Expect lower quality than frontier hosted models on complex reasoning, and memory to limit model size.
 
 ## Agents in production
 
