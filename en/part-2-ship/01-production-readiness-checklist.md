@@ -1,4 +1,6 @@
-# Part 2: Website Production Readiness Checklist
+[Contents](../../README.md#contents) › [Part 2: Ship](README.md) · **English** | [繁體中文](../../zh-TW/part-2-ship/01-production-readiness-checklist.md)
+
+# Website Production Readiness Checklist
 
 A consolidated checklist for shipping a "vibecoded" website — one built quickly, often with heavy AI assistance — to production. Overlapping items (favicon, 404 handling, titles, meta descriptions, `robots.txt`, alt text, mobile overflow, etc.) have been merged so each point appears once.
 
@@ -166,7 +168,7 @@ Vibecoded sites frequently perform well on the developer's MacBook and poorly on
 
 One of the highest-risk vibecoding mistakes is asking an AI to integrate an API and then accidentally shipping the secret into the client bundle.
 
-*See [Part 3](03-security-remediation-playbook.md#secrets--keys) for detailed remediation steps on hard-coded credentials and exposed client-side keys.*
+*See the [Security Remediation Playbook](02-security-remediation-playbook.md#secrets--keys) for detailed remediation steps on hard-coded credentials and exposed client-side keys.*
 
 ## 19. Authentication & Authorization
 
@@ -177,7 +179,7 @@ One of the highest-risk vibecoding mistakes is asking an AI to integrate an API 
 
 **Critical principle:** a button hidden from the user does not mean permission denied. The server/database must enforce authorization.
 
-*See [Part 3](03-security-remediation-playbook.md#authentication--authorization) for detailed remediation steps on client-side auth, IDOR, broken access controls, session handling, and auth bypass paths.*
+*See the [Security Remediation Playbook](02-security-remediation-playbook.md#authentication--authorization) for detailed remediation steps on client-side auth, IDOR, broken access controls, session handling, and auth bypass paths.*
 
 ## 20. Database Security
 
@@ -196,7 +198,7 @@ For Supabase in particular, a very common vibecoding mistake is building the UI 
 * Validate IDs and object ownership; reject unexpected input and limit payload sizes
 * Avoid blindly rendering AI- or user-generated HTML; escape output appropriately
 
-*See [Part 3](03-security-remediation-playbook.md#injection-vulnerabilities) for detailed remediation steps on SQL injection, XSS, and command injection.*
+*See the [Security Remediation Playbook](02-security-remediation-playbook.md#injection-vulnerabilities) for detailed remediation steps on SQL injection, XSS, and command injection.*
 
 ## 22. Abuse Prevention & Cost Protection
 
@@ -209,7 +211,7 @@ Particularly important for AI products.
 
 An AI endpoint without rate limiting can turn a $20/month infrastructure bill into a $2,000 surprise bill very quickly.
 
-*See [Part 3, item 16](03-security-remediation-playbook.md#security-headers--protections) for a detailed remediation plan.*
+*See [Security Remediation Playbook, item 16](02-security-remediation-playbook.md#16-missing-rate-limiting---high) for a detailed remediation plan.*
 
 ## 23. File Upload Security
 
@@ -227,7 +229,7 @@ An AI endpoint without rate limiting can turn a $20/month infrastructure bill in
 * Check CORS configuration; avoid `Access-Control-Allow-Origin: *` for sensitive APIs
 * Add CSRF protection where the authentication architecture requires it
 
-*See [Part 3](03-security-remediation-playbook.md#security-headers--protections) for detailed remediation steps on security headers and CSRF.*
+*See the [Security Remediation Playbook](02-security-remediation-playbook.md#security-headers--protections) for detailed remediation steps on security headers and CSRF.*
 
 ## 25. Deployment & Production Configuration
 
@@ -261,4 +263,8 @@ Treat the checklist across three severity levels:
 * **P1 — Functionality / conversion:** broken links, forms, buttons, mobile, errors, CTAs, 404s.
 * **P2 — Discoverability / polish:** SEO, schema, favicon, OG images, titles, metadata, case studies, FAQs.
 
-P0 items correspond to the 🚨 Critical / 🔴 High entries in [Part 3](03-security-remediation-playbook.md).
+P0 items correspond to the 🚨 Critical / 🔴 High entries in the [Security Remediation Playbook](02-security-remediation-playbook.md).
+
+---
+
+[← The Holy Trinity + 1](../part-1-build/02-holy-trinity-plus-one/README.md) · [Part 2: Ship](README.md) · [Contents](../../README.md#contents) · [Security Remediation Playbook →](02-security-remediation-playbook.md)

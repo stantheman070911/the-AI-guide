@@ -1,8 +1,10 @@
-# Part 3: Security Remediation Playbook
+[Contents](../../README.md#contents) › [Part 2: Ship](README.md) · **English** | [繁體中文](../../zh-TW/part-2-ship/02-security-remediation-playbook.md)
 
-Detailed, actionable guidance for the highest-risk items in [Part 2](02-website-production-readiness-checklist.md)'s checklist. Each entry lists the risk, the fix approach, and a verification checklist.
+# Security Remediation Playbook
 
-Severity legend: 🚨 Critical (fix before shipping) · 🔴 High (fix soon after) · 🟠 Medium (schedule it). These map onto Part 2's P0/P1/P2 scale — 🚨 and 🔴 items here are P0.
+Detailed, actionable guidance for the highest-risk items in the [Production Readiness Checklist](01-production-readiness-checklist.md). Each entry lists the risk, the fix approach, and a verification checklist.
+
+Severity legend: 🚨 Critical (fix before shipping) · 🔴 High (fix soon after) · 🟠 Medium (schedule it). These map onto the checklist's P0/P1/P2 scale — 🚨 and 🔴 items here are P0.
 
 ## Authentication & Authorization
 
@@ -344,4 +346,27 @@ A further layer of controls, worth adding once the base playbook above is covere
 
 ## Additional Vulnerability Classes to Audit
 
-Beyond the detailed entries above, also check for: cross-site scripting, cross-site request forgery, insecure file uploads, path traversal vulnerabilities, server-side request forgery, broken password reset flows, weak session management, vulnerable JWT secrets, overly permissive CORS, missing rate limits, exposed test or staging environments, default credentials left unchanged, webhook endpoints without signature verification, payment or subscription checks done only on the front end, IDOR and role escalation, API endpoints trusting user-controlled input, logs containing sensitive information, and exposed source maps.
+Also audit for the following. Classes already covered in detail above link to their entry.
+
+* Cross-site scripting — see [item 9](#9-cross-site-scripting-xss---high)
+* Cross-site request forgery — see [item 15](#15-no-csrf-protection---high)
+* Insecure file uploads
+* Path traversal vulnerabilities
+* Server-side request forgery
+* Broken password reset flows
+* Weak session management — see [item 4](#4-weak-session-handling---high)
+* Vulnerable JWT secrets
+* Overly permissive CORS
+* Missing rate limits — see [item 16](#16-missing-rate-limiting---high)
+* Exposed test or staging environments
+* Default credentials left unchanged
+* Webhook endpoints without signature verification
+* Payment or subscription checks done only on the front end
+* IDOR and role escalation — see [items 2–3](#2-missing-authorization-checks-idor---critical)
+* API endpoints trusting user-controlled input
+* Logs containing sensitive information — see [item 13](#13-sensitive-data-in-urls-and-logs---medium)
+* Exposed source maps
+
+---
+
+[← Production Readiness Checklist](01-production-readiness-checklist.md) · [Part 2: Ship](README.md) · [Contents](../../README.md#contents) · [How to Not Look AI-Generated →](../part-3-craft/01-how-to-not-look-ai-generated.md)

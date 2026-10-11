@@ -1,4 +1,6 @@
-# Part 4: How to Not Look AI-Generated
+[Contents](../../README.md#contents) › [Part 3: Craft](README.md) · **English** | [繁體中文](../../zh-TW/part-3-craft/01-how-to-not-look-ai-generated.md)
+
+# How to Not Look AI-Generated
 
 *A designer's guide to avoiding generic AI aesthetics and preserving authorship.*
 
@@ -200,3 +202,7 @@ AI naturally produces orderly hierarchy, consistent components, balanced spacing
 Increase the number of decisions that originate in the specific idea.
 
 > Authorship means: the work could not have looked exactly this way if it had been about something else. That is the standard.
+
+---
+
+[← Security Remediation Playbook](../part-2-ship/02-security-remediation-playbook.md) · [Part 3: Craft](README.md) · [Contents](../../README.md#contents) · [Copywriting Guide →](02-copywriting-guide.md)

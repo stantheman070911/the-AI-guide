@@ -1,4 +1,8 @@
-# Part 1: Stack Decision
+[Contents](../../README.md#contents) › [Part 1: Build](README.md) · **English** | [繁體中文](../../zh-TW/part-1-build/01-stack-decision.md)
+
+# Stack Decision
+
+A compact, opinionated default stack for a solo founder or small team, and when it is actually worth adding more.
 
 > **Executive conclusion.** The current stack is already strong. The better optimization is consolidation: keep the systems that compound development velocity, remove overlapping services, and treat Redis, dedicated vector search, deep observability, and dedicated feedback tooling as optional layers rather than defaults.
 
@@ -81,3 +85,7 @@ Async execution is more important than another database. Typical workloads inclu
 * R2 — object-storage economics
 
 > **Operating rule.** Start with the smallest stack that can safely ship the product. Add a vendor only when it removes a measured constraint or creates a product advantage larger than its ongoing operational cost.
+
+---
+
+[Part 1: Build](README.md) · [Contents](../../README.md#contents) · [The Holy Trinity + 1 →](02-holy-trinity-plus-one/README.md)
