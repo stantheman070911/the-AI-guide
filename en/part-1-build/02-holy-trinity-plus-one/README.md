@@ -1,4 +1,8 @@
+[Contents](../../../README.md#contents) › [Part 1: Build](../README.md) · **English** | [繁體中文](../../../zh-TW/part-1-build/02-holy-trinity-plus-one/README.md)
+
 # The Holy Trinity + 1
+
+*A documentation system for AI coding agents.*
 
 A reusable documentation system for AI-assisted coding projects: three documents that
 answer *what*, *how*, and *now* — the "holy trinity" — plus the constitution that
@@ -153,3 +157,7 @@ or, less formally, **structured vibecoding**:
 4. Let `PLAN.md`'s work queue grow one bounded slice at a time, not all at once.
 5. Keep `LOG.md` current every session — it's the only reason a fresh session isn't
    starting from zero.
+
+---
+
+[← Stack Decision](../01-stack-decision.md) · [Part 1: Build](../README.md) · [Contents](../../../README.md#contents) · [Production Readiness Checklist →](../../part-2-ship/01-production-readiness-checklist.md)

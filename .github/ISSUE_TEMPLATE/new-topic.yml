@@ -1,0 +1,44 @@
+name: New topic or chapter · 新主題或章節
+description: Propose something the guide should cover. 提議本指南應該涵蓋的內容。
+labels: ["new-topic"]
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: Topic · 主題
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it belong here? · 為什麼適合放在這裡？
+      description: What problem does it solve for someone shipping with AI? 它為用 AI 交付產品的人解決什麼問題？
+    validations:
+      required: true
+  - type: dropdown
+    id: part
+    attributes:
+      label: Where should it go? · 應該放在哪裡？
+      options:
+        - "Part 1: Build · 第一部：打造"
+        - "Part 2: Ship · 第二部：上線"
+        - "Part 3: Craft · 第三部：打磨"
+        - "Appendix · 附錄"
+        - "A new part · 新的一部"
+        - "Not sure · 不確定"
+  - type: textarea
+    id: outline
+    attributes:
+      label: Outline · 大綱
+      description: A few bullet points are enough. 幾個條列重點即可。
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources · 來源
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Can you help? · 你能協助嗎？
+      options:
+        - label: I can write the English version. 我可以撰寫英文版。
+        - label: I can write the Chinese version. 我可以撰寫中文版。

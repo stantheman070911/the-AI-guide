@@ -1,0 +1,30 @@
+name: Translation issue · 翻譯問題
+description: A missing, out-of-sync, inaccurate, or unnatural translation. 缺少、未同步、不準確或不自然的翻譯。
+labels: ["translation"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page · 頁面
+      placeholder: zh-TW/part-3-craft/02-copywriting-guide.md
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Problem · 問題類型
+      options:
+        - Missing translation · 缺少翻譯
+        - Out of sync with the other language · 與另一種語言版本不同步
+        - Inaccurate meaning · 意思不準確
+        - Unnatural wording · 用字不自然
+        - Terminology · 術語
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details · 詳細說明
+      description: Quote both versions if you can, and suggest better wording. 可以的話引用兩個版本，並提出更好的寫法。
+    validations:
+      required: true

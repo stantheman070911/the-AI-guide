@@ -1,0 +1,38 @@
+name: Error or outdated content · 錯誤或過時內容
+description: Report something wrong, unclear, or out of date. 回報錯誤、不清楚或過時的內容。
+labels: ["content"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page · 頁面
+      description: Link or path to the page, and the section if possible. 頁面連結或路徑，可以的話註明段落。
+      placeholder: en/part-2-ship/02-security-remediation-playbook.md#15-no-csrf-protection---high
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language version · 語言版本
+      options:
+        - English
+        - 繁體中文
+        - Both · 兩者皆是
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong? · 哪裡有問題？
+      description: Quote the text and explain the problem. 引用原文並說明問題。
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: Suggested fix · 建議修正
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources · 來源
+      description: Links that support the correction, if any. 支持此修正的連結（如有）。
