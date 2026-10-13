@@ -46,13 +46,13 @@ AI-generated and template-driven posts frequently use small labels such as `MARK
 
 Headline. Explanation. Three bullets. Then a box repeating the same three ideas as "key takeaways." Then a final sentence restating them again.
 
-> **Principle:** Every section should advance the argument. Repetition should be intentional — used for rhetoric, memory, or rhythm — not because the composition appears incomplete without a concluding box.
+> **Principle:** Every section should advance the argument. Repeat only for rhetoric, memory, or rhythm, never to fill a concluding box.
 
 ## 5. Avoid putting every idea into a container
 
-Boxes, cards, pills, and grids become a problem when they replace composition. If every thought receives a rounded rectangle, every piece of information receives equal visual status, and the page begins to resemble a component library rather than an authored communication.
+Boxes, cards, pills, and grids become a problem when they replace composition. If every thought receives a rounded rectangle, every piece of information receives equal visual status, and the page begins to resemble a component library.
 
-> **Principle:** Containment should express a real relationship. Use a box because certain things belong together — not because empty space feels uncomfortable. Whitespace itself can perform the separation.
+> **Principle:** Containment should express a real relationship. Use a box because certain things belong together — not because empty space feels uncomfortable. Whitespace can do the separating.
 
 ## 6. Treat typography as evidence of authorship
 
@@ -99,19 +99,19 @@ Empty space is not unfinished.
 
 A chart should represent real data whose structure matters. Do not add a line chart merely to imply growth. Do not add a radar chart to give five adjectives the appearance of measurement. Do not turn a simple percentage into an elaborate dashboard.
 
-> **Principle:** Use visualization when the relationship in the data is easier to perceive visually than verbally. A chart is an explanatory instrument, not a sophistication texture.
+> **Principle:** Use visualization when the relationship in the data is easier to perceive visually than verbally.
 
 ## 12. Avoid the statistical-average aesthetic
 
 Broad prompts encourage dominant patterns and defaults: *"Modern fintech website," "Premium wellness brand," "Futuristic AI company," "Minimal creative agency."* Each phrase already contains a visual average. If the prompt is only a category, expect a category average.
 
-> **Principle:** Define what makes this project an exception to its category. Do not merely specify what the design should resemble — specify what it should refuse to resemble.
+> **Principle:** Define what makes this project an exception to its category, and what it should refuse to resemble.
 
 ## 13. Build references from outside the same visual feedback loop
 
 If every reference comes from the same design feeds, the output becomes increasingly similar. Look beyond contemporary interface galleries and social-post templates — look at editorial design, film titles, industrial objects, architecture, signage, packaging, old technical manuals, vernacular graphics, maps, museum catalogues, subcultures, historical advertising, physical materials, and the visual language of the subject itself.
 
-> **Principle:** Research the world around the topic, not merely other designs about the topic. This creates visual decisions that originate in subject matter rather than design trends.
+> **Principle:** Research the world around the topic, not merely other designs about the topic.
 
 ## 14. Introduce productive friction
 
@@ -135,7 +135,7 @@ Artificially distressing everything simply replaces one formula with another. Do
 
 Give the model the actual system: real components, design tokens, project files, constraints, and context. A design system answers *"How does our organization express this?"* — it should not answer *"What should we say?"*
 
-> **Principle:** Let the system preserve identity after the idea exists. Do not let the system substitute for the idea.
+> **Principle:** Let the system preserve identity after the idea exists.
 
 ## 18. Use AI in narrow, reversible stages
 
@@ -153,7 +153,7 @@ Generic copy can make a thoughtful design feel generated. Watch for language tha
 
 Identity is recognizability across variation. Template dependency is recognizability because nothing meaningfully changes: same headline treatment, same cards, same icon position, same rhythm, same information density, same closing slide, same composition with a different noun.
 
-> **Principle:** Build a recognizable point of view rather than a recognizable template. A strong identity should survive different compositions.
+> **Principle:** Build a recognizable point of view rather than a recognizable template.
 
 ## 21. Eliminate template artifacts
 

@@ -102,7 +102,7 @@ Skill 名稱保留工具中顯示的原樣，因此不翻譯。分組依照每�
 
 ## open-slide
 
-這是命令列工具，不是 skill。它會建立一個預先設定好 Claude Code skills 的簡報工作區。執行 `npx @open-slide/cli init <name>` 建立新的工作區。網站：[open-slide.dev](https://open-slide.dev)。
+這是命令列工具，不是 skill。執行 `npx @open-slide/cli init <name>`，會建立一個預先設定好 Claude Code skills 的簡報工作區。網站：[open-slide.dev](https://open-slide.dev)。
 
 ---
 
