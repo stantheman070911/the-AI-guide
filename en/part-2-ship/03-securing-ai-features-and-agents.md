@@ -88,6 +88,7 @@ The MCP specification states that tools "represent arbitrary code execution" and
 * **Tool poisoning:** hidden instructions in a tool description that the model reads and the user never sees.
 * **Rug pulls:** a server changes a tool's description after you approved it ([Invariant Labs](https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks)).
 * **Cross-server flows:** one server's output steering calls to another, which can assemble the lethal trifecta from individually harmless servers.
+* **Malicious marketplace skills:** in February 2026, Koi Security found 341 malicious skills among the 2,857 on ClawHub, the skill marketplace for the OpenClaw assistant ([The Hacker News](https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html)).
 
 Install servers and skills from publishers you can identify, pin versions, read tool descriptions and any bundled scripts before enabling them, and give each server only the credentials its job needs. The NSA's May 2026 guidance on MCP covers the same ground for larger deployments ([NSA](https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/Article/4496698/nsa-releases-security-design-considerations-for-ai-driven-automation-leveraging/)). [Appendix D](../appendix/04-evaluating-tools-and-skills.md) has a vetting checklist.
 

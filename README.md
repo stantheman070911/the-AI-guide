@@ -2,15 +2,16 @@
 
 # The AI Guide
 
-Practical, opinionated notes for shipping real products with AI-assisted ("vibecoded") development — what stack to use, how to know a site is actually production-ready, how to close the security gaps AI coding tools tend to leave open, and how to make AI-assisted design and writing not look AI-generated.
+Practical, opinionated notes for shipping real products with AI-assisted ("vibecoded") development — what stack to use, how to know a site is actually production-ready, how to close the security gaps AI coding tools tend to leave open, and how to make AI-assisted design and writing not look AI-generated. Part 4 covers using AI to learn, think, and work.
 
 ## Who this is for
 
 * **Solo founders and small teams** who build with AI coding tools and want to ship something real.
 * **Anyone reviewing or inheriting a vibecoded project** who needs a list of what to check.
 * **Designers and writers** who use AI and want the result to still feel authored.
+* **Students and anyone new to AI** who want to learn, think, and work with it.
 
-Part 2 assumes some familiarity with web development. Part 3 and the appendix do not.
+Part 2 assumes some familiarity with web development. Parts 3 and 4 and the appendix do not.
 
 ## Contents
 
@@ -33,6 +34,15 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 2. [Copywriting Guide](en/part-3-craft/02-copywriting-guide.md) — ten classic copywriting lessons, eight additions for the AI and social era, and a pre-publish checklist.
 3. [Writing with AI](en/part-3-craft/03-writing-with-ai.md) — an editing workflow for AI-drafted prose and research without invented sources.
 
+### [Part 4: Learn and Think](en/part-4-learn-think/README.md)
+
+1. [AI Fundamentals](en/part-4-learn-think/01-ai-fundamentals.md) — outcome and context, models, tools, MCP, skills, and agents.
+2. [Learning with AI](en/part-4-learn-think/02-learning-with-ai.md) — active production, the research evidence, ten roles for AI as a learning coach, and spaced repetition.
+3. [Thinking with AI](en/part-4-learn-think/03-thinking-with-ai.md) — judgment, the jagged frontier, hallucination and sycophancy, and cross-checking AI output.
+4. [Creating with AI](en/part-4-learn-think/04-creating-with-ai.md) — a Second Brain, agent permissions, verification, and choosing what to build.
+5. [Living with AI](en/part-4-learn-think/05-living-with-ai.md) — four dimensions of life, a skill stack, one craft, focus and rest.
+6. [The Impact of AI](en/part-4-learn-think/06-impact-of-ai.md) — work, new hires, startups, academic integrity, data security, and society.
+
 ### [Appendix](en/appendix/README.md)
 
 * [A. Core Writing Principles](en/appendix/01-writing-principles.md) — the writing rules I give AI tools when asking them to write or edit prose.
@@ -45,6 +55,7 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 | If you are… | Read |
 | --- | --- |
 | New to shipping with AI | The whole guide in order, Part 1 through Part 3 |
+| New to AI | [AI Fundamentals](en/part-4-learn-think/01-ai-fundamentals.md), then [Learning with AI](en/part-4-learn-think/02-learning-with-ai.md) and [Thinking with AI](en/part-4-learn-think/03-thinking-with-ai.md) |
 | Launching soon | [Checklist](en/part-2-ship/01-production-readiness-checklist.md) (P0 items first), then the [Security Playbook](en/part-2-ship/02-security-remediation-playbook.md) |
 | Starting a project with an AI coding agent | [Working with Coding Agents](en/part-1-build/03-working-with-coding-agents.md), [The Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/README.md), then [Appendix B](en/appendix/02-claude-md-coding-rules.md) |
 | Adding an AI feature to a product | [Building with LLMs](en/part-1-build/04-building-with-llms.md), then [Securing AI Features and Coding Agents](en/part-2-ship/03-securing-ai-features-and-agents.md) |
@@ -71,6 +82,10 @@ Part 2 assumes some familiarity with web development. Part 3 and the appendix do
 | Accessibility | [Design §23](en/part-3-craft/01-how-to-not-look-ai-generated.md#23-treat-accessibility-as-a-design-constraint) |
 | Testing whether a design looks generic | [Three final tests](en/part-3-craft/01-how-to-not-look-ai-generated.md#three-final-tests) |
 | Headlines, offers, and proof | [Copywriting Guide](en/part-3-craft/02-copywriting-guide.md) |
+| Learning with AI without depending on it | [Learning with AI](en/part-4-learn-think/02-learning-with-ai.md) |
+| Checking AI answers and agent work | [Thinking with AI §5](en/part-4-learn-think/03-thinking-with-ai.md#5-two-kinds-of-error-wrong-answers-and-wrong-actions) |
+| A personal knowledge base (Second Brain) | [Creating with AI §1](en/part-4-learn-think/04-creating-with-ai.md#1-build-your-own-second-brain) |
+| Academic integrity and disclosing AI use | [The Impact of AI §8](en/part-4-learn-think/06-impact-of-ai.md#8-academic-integrity-follow-the-specific-rules-first) |
 
 ## How this guide is organized
 

@@ -46,4 +46,4 @@ Then list the five weakest remaining sentences and say why.
 
 ---
 
-[← 文案寫作指南](02-copywriting-guide.md) · [第三部：打磨](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 A：核心撰寫原則 →](../appendix/01-writing-principles.md)
+[← 文案寫作指南](02-copywriting-guide.md) · [第三部：打磨](README.md) · [目錄](../../README.zh-TW.md#目錄) · [AI 基礎 →](../part-4-learn-think/01-ai-fundamentals.md)

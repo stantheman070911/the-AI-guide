@@ -13,4 +13,4 @@ Reusable prompts and the author's running notes. The prompts are meant to be cop
 
 ---
 
-[← Part 3: Craft](../part-3-craft/README.md) · [Contents](../../README.md#contents)
+[← Part 4: Learn and Think](../part-4-learn-think/README.md) · [Contents](../../README.md#contents)

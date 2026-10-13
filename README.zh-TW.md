@@ -2,15 +2,16 @@
 
 # AI 指南
 
-用 AI 輔助（「vibecoded」）開發、交付真正產品的實用筆記，帶有明確觀點——該用什麼技術堆疊、如何判斷網站是否真的可以上線、如何補上 AI 程式工具常常留下的資安漏洞，以及如何讓 AI 輔助的設計與寫作看起來不像 AI 生成。
+用 AI 輔助（「vibecoded」）開發、交付真正產品的實用筆記，帶有明確觀點——該用什麼技術堆疊、如何判斷網站是否真的可以上線、如何補上 AI 程式工具常常留下的資安漏洞，以及如何讓 AI 輔助的設計與寫作看起來不像 AI 生成。第四部談如何用 AI 學習、思考與工作。
 
 ## 適合誰閱讀
 
 * **個人創業者與小團隊**：用 AI 程式工具打造產品，並想交付真正能用的東西。
 * **審查或接手 vibecoded 專案的人**：需要一份該檢查什麼的清單。
 * **設計師與寫作者**：使用 AI，但希望成果依然有作者的痕跡。
+* **學生與剛開始使用 AI 的人**：想用 AI 學習、思考與工作。
 
-第二部假設讀者對網頁開發有基本認識；第三部與附錄則不需要。
+第二部假設讀者對網頁開發有基本認識；第三部、第四部與附錄則不需要。
 
 ## 目錄
 
@@ -33,6 +34,15 @@
 2. [文案寫作指南](zh-TW/part-3-craft/02-copywriting-guide.md)——十堂經典文案課、八項 AI 與社群時代的補充，以及一份發布前檢查清單。
 3. [用 AI 寫作](zh-TW/part-3-craft/03-writing-with-ai.md)——編修 AI 起草文字的流程，以及不捏造來源的研究方法。
 
+### [第四部：學習與思考](zh-TW/part-4-learn-think/README.md)
+
+1. [AI 基礎](zh-TW/part-4-learn-think/01-ai-fundamentals.md)——Outcome 與 Context、模型、tools、MCP、skills 與 agent。
+2. [用 AI 學習](zh-TW/part-4-learn-think/02-learning-with-ai.md)——active production、研究證據、讓 AI 當學習教練的十種角色，以及間隔複習。
+3. [用 AI 思考](zh-TW/part-4-learn-think/03-thinking-with-ai.md)——判斷、鋸齒狀的能力邊界、幻覺與討好，以及交叉檢查 AI 產出。
+4. [用 AI 創造](zh-TW/part-4-learn-think/04-creating-with-ai.md)——Second Brain、agent 授權、驗收，以及選對要做的東西。
+5. [與 AI 一起生活](zh-TW/part-4-learn-think/05-living-with-ai.md)——四個生命維度、skill stack、一門 craft、專注與休息。
+6. [AI 的影響](zh-TW/part-4-learn-think/06-impact-of-ai.md)——工作、新人、新創、學術誠信、資料安全與社會。
+
 ### [附錄](zh-TW/appendix/README.md)
 
 * [A. 核心撰寫原則](zh-TW/appendix/01-writing-principles.md)——我請 AI 工具撰寫或編修文字時提供的寫作規則。
@@ -45,6 +55,7 @@
 | 如果你是…… | 建議閱讀 |
 | --- | --- |
 | 第一次用 AI 交付產品 | 依序讀完整本指南，從第一部到第三部 |
+| 剛開始使用 AI | [AI 基礎](zh-TW/part-4-learn-think/01-ai-fundamentals.md)，接著讀[用 AI 學習](zh-TW/part-4-learn-think/02-learning-with-ai.md)與[用 AI 思考](zh-TW/part-4-learn-think/03-thinking-with-ai.md) |
 | 即將上線 | [檢查清單](zh-TW/part-2-ship/01-production-readiness-checklist.md)（先處理 P0 項目），接著讀[資安修補手冊](zh-TW/part-2-ship/02-security-remediation-playbook.md) |
 | 正要和 AI 程式代理一起開始新專案 | [與程式代理協作](zh-TW/part-1-build/03-working-with-coding-agents.md)、[神聖三位一體 + 1](zh-TW/part-1-build/02-holy-trinity-plus-one/README.md)，接著讀[附錄 B](zh-TW/appendix/02-claude-md-coding-rules.md) |
 | 要在產品中加入 AI 功能 | [用 LLM 打造功能](zh-TW/part-1-build/04-building-with-llms.md)，接著讀[保護 AI 功能與程式代理](zh-TW/part-2-ship/03-securing-ai-features-and-agents.md) |
@@ -71,6 +82,10 @@
 | 無障礙 | [設計第 23 節](zh-TW/part-3-craft/01-how-to-not-look-ai-generated.md#23-把無障礙當成設計限制) |
 | 檢驗設計是否太通用 | [三個最終測試](zh-TW/part-3-craft/01-how-to-not-look-ai-generated.md#三個最終測試) |
 | 標題、offer 與證據 | [文案寫作指南](zh-TW/part-3-craft/02-copywriting-guide.md) |
+| 用 AI 學習而不依賴它 | [用 AI 學習](zh-TW/part-4-learn-think/02-learning-with-ai.md) |
+| 檢查 AI 的回答與 agent 的工作 | [用 AI 思考 §5](zh-TW/part-4-learn-think/03-thinking-with-ai.md#5-辨識兩種錯誤模型答錯與-agent-做錯) |
+| 個人知識庫（Second Brain） | [用 AI 創造 §1](zh-TW/part-4-learn-think/04-creating-with-ai.md#1-建立自己的-second-brain) |
+| 學術誠信與揭露 AI 的使用 | [AI 的影響 §8](zh-TW/part-4-learn-think/06-impact-of-ai.md#8-學術誠信先遵守具體規範) |
 
 ## 本指南的組織方式
 

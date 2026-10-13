@@ -15,6 +15,7 @@ English ↔ Traditional Chinese (Taiwan) terms used in this guide. Use these whe
 | Part 1: Build | 第一部：打造 | |
 | Part 2: Ship | 第二部：上線 | |
 | Part 3: Craft | 第三部：打磨 | |
+| Part 4: Learn and Think | 第四部：學習與思考 | |
 | Appendix | 附錄 | |
 | Contents | 目錄 | |
 | chapter | 章節、章 | |
@@ -100,6 +101,22 @@ English ↔ Traditional Chinese (Taiwan) terms used in this guide. Use these whe
 | vulnerability | 漏洞 | |
 | XSS (cross-site scripting) | 跨站腳本攻擊（XSS） | |
 | 🚨 Critical / 🔴 High / 🟠 Medium | 🚨 嚴重／🔴 高／🟠 中 | Severity levels in the playbook. |
+
+## Learning and thinking · 學習與思考
+
+Part 4 was written in Chinese and keeps agent, context, prompt, and skill in English, as the author wrote them. · 第四部以中文撰寫，依作者原文保留 agent、context、prompt、skill 等英文用語。
+
+| English | 繁體中文 | Notes · 說明 |
+| --- | --- | --- |
+| active production / passive consumption | 主動產出／被動吸收 | |
+| compaction | 脈絡壓縮 | |
+| desirable difficulties | 有益的困難 | |
+| hallucination | 幻覺 | |
+| jagged frontier | 鋸齒狀的能力邊界 | |
+| pre-mortem | 事前驗屍 | |
+| Second Brain | 第二大腦 | |
+| spaced repetition | 間隔複習 | |
+| sycophancy | 討好 | |
 
 ## Web and design · 網頁與設計
 
