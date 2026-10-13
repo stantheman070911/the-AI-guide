@@ -12,4 +12,4 @@
 
 ---
 
-[← 第二部：上線](../part-2-ship/README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 →](../appendix/README.md)
+[← 第二部：上線](../part-2-ship/README.md) · [目錄](../../README.zh-TW.md#目錄) · [第四部：學習與思考 →](../part-4-learn-think/README.md)

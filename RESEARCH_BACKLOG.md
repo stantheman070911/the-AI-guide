@@ -12,6 +12,11 @@ Last reviewed: 2026-10-11.
 * **Shai-Hulud 2.0.** A second wave in November 2025 is reported by vendors, not by CISA.
 * **Codex network default.** Sandbox modes (`read-only`, `workspace-write`, `danger-full-access`) and approval policies (`on-request`, `never`) are documented at [learn.chatgpt.com/docs/sandboxing](https://learn.chatgpt.com/docs/sandboxing); the default for network access is not stated.
 * **Copywriting Guide quotes.** Lessons are labeled as paraphrases because no primary source was found for Halbert's offer line (lesson 1), the Caples headline line (lesson 9), or "people don't buy products; they buy better versions of themselves" (lesson 10). A book and page would let the quotes return.
+* **ClawHub malicious-skill totals.** Koi Security's count of 341 malicious skills out of 2,857 (February 2026) is verified. A figure of more than 1,100 malicious skills attributed to IBM X-Force could not be found; Antiy CERT reports at least 1,184 historically and Securelist more than 1,100 malicious accounts.
+* **AI Index 2026 clock-reading baseline.** The best model's 50.1% is widely reported; a human baseline of 90.1% appears only in secondary coverage.
+* **REA rebuild of macOS Preview.** A demo comparing an agent with and without REA rebuilding Preview could not be traced to a source.
+* **Anthropic growth marketing team size.** Anthropic's report does not say the team was one person with no dedicated engineer.
+* **Video sources for Part 4.** The videos The Digital Renaissance and How to Use AI to Learn Anything Faster, which Part 4 paraphrases, have not been traced to a creator or URL.
 
 ## Not yet evaluated
 

@@ -136,4 +136,4 @@ A meta-correction must not recursively generate another rule.
 
 ---
 
-[← 用 AI 寫作](../part-3-craft/03-writing-with-ai.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 B：CLAUDE.md 預設範本 →](02-claude-md-coding-rules.md)
+[← AI 的影響](../part-4-learn-think/06-impact-of-ai.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 B：CLAUDE.md 預設範本 →](02-claude-md-coding-rules.md)

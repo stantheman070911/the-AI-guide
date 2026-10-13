@@ -34,6 +34,10 @@
 
 選一個並把它用熟。Claude Code 與 Codex 是預設的終端代理（[技術堆疊決策](../part-1-build/01-stack-decision.md#1-預設技術堆疊)）。Cursor 與 GitHub Copilot 適合以編輯器為中心的工作；JetBrains Junie 適合 IntelliJ 使用者；[OpenHands](https://github.com/OpenHands/OpenHands) 是自行託管代理的開源選擇。自 2026 年 6 月起，Gemini CLI 不再為免費與個人 Google AI 方案提供服務；取代它的 Antigravity CLI 仍屬實驗性。
 
+### 個人助理代理
+
+[OpenClaw](https://github.com/openclaw/openclaw) 與 Nous Research 的 [Hermes Agent](https://github.com/NousResearch/hermes-agent) 是開源、自行託管的助理，能接上訊息平台、保存記憶並執行 skills，兩者都屬於實驗性。會讀你的訊息、以你名義行動的助理，是高價值的攻擊目標：2026 年 2 月的一次稽核發現，OpenClaw 的 ClawHub 市集上 2,857 個 skills 中有 341 個是惡意的（[The Hacker News](https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html)）。只給它剛好夠用的權限，每個 skill 都先跑過上面的審查清單（[用 AI 創造](../part-4-learn-think/04-creating-with-ai.md#3-授權是一道光譜)）。
+
 ### 規劃
 
 [神聖三位一體文件](../part-1-build/02-holy-trinity-plus-one/README.md)不需要任何工具。Traycer 是專為代理設計的規劃層，屬於實驗性。

@@ -13,4 +13,4 @@
 
 ---
 
-[← 第三部：打磨](../part-3-craft/README.md) · [目錄](../../README.zh-TW.md#目錄)
+[← 第四部：學習與思考](../part-4-learn-think/README.md) · [目錄](../../README.zh-TW.md#目錄)

@@ -28,6 +28,7 @@ en/                            English pages
   part-1-build/                Part 1: Build
   part-2-ship/                 Part 2: Ship
   part-3-craft/                Part 3: Craft
+  part-4-learn-think/          Part 4: Learn and Think
   appendix/                    Prompts and notes
 zh-TW/                         Traditional Chinese pages, same paths as en/
 scripts/check_docs.py          Link and language-parity checker
@@ -42,7 +43,7 @@ Every page exists in English and Traditional Chinese (繁體中文).
 
 * **Pages in `en/` and `zh-TW/` mirror each other.** The same file name at the same path, with the same headings in the same order.
 * **Root files use a suffix.** `README.md` pairs with `README.zh-TW.md`, `CONTRIBUTING.md` with `CONTRIBUTING.zh-TW.md`, and so on. `GLOSSARY.md` is a single bilingual file. `LICENSE` and `LICENSE-CODE` stay in English only.
-* **English is the source language**, except for pages marked otherwise at the top. [Appendix A](en/appendix/01-writing-principles.md) was written in Chinese, so the Chinese version is authoritative there.
+* **English is the source language**, except for pages marked otherwise at the top. [Appendix A](en/appendix/01-writing-principles.md) and [Part 4](en/part-4-learn-think/README.md) were written in Chinese, so the Chinese versions are authoritative there.
 * **Both versions must say the same thing.** They may phrase it differently, but they must carry the same facts, claims, degree of certainty, and structure.
 
 ### Keeping translations in sync

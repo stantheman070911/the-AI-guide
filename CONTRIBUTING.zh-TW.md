@@ -28,6 +28,7 @@ en/                            英文頁面
   part-1-build/                第一部：打造
   part-2-ship/                 第二部：上線
   part-3-craft/                第三部：打磨
+  part-4-learn-think/          第四部：學習與思考
   appendix/                    提示詞與筆記
 zh-TW/                         繁體中文頁面，路徑與 en/ 相同
 scripts/check_docs.py          連結與雙語對應檢查工具
@@ -42,7 +43,7 @@ scripts/check_docs.py          連結與雙語對應檢查工具
 
 * **`en/` 與 `zh-TW/` 中的頁面互相對應。** 相同的路徑、相同的檔名，標題相同且順序一致。
 * **根目錄的檔案使用後綴。** `README.md` 對應 `README.zh-TW.md`，`CONTRIBUTING.md` 對應 `CONTRIBUTING.zh-TW.md`，以此類推。`GLOSSARY.md` 是單一的雙語檔案。`LICENSE` 與 `LICENSE-CODE` 只保留英文。
-* **英文是來源語言**，除非頁面頂端另有標示。[附錄 A](zh-TW/appendix/01-writing-principles.md) 原本以中文撰寫，因此該頁以中文版為準。
+* **英文是來源語言**，除非頁面頂端另有標示。[附錄 A](zh-TW/appendix/01-writing-principles.md) 與[第四部](zh-TW/part-4-learn-think/README.md)原本以中文撰寫，因此這些頁面以中文版為準。
 * **兩個版本必須說同樣的事。** 措辭可以不同，但事實、主張、確定程度與結構必須一致。
 
 ### 保持翻譯同步

@@ -12,4 +12,4 @@ The taste calls that keep AI-assisted design and writing from looking generated.
 
 ---
 
-[← Part 2: Ship](../part-2-ship/README.md) · [Contents](../../README.md#contents) · [Appendix →](../appendix/README.md)
+[← Part 2: Ship](../part-2-ship/README.md) · [Contents](../../README.md#contents) · [Part 4: Learn and Think →](../part-4-learn-think/README.md)

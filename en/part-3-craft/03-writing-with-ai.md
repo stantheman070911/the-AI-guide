@@ -44,4 +44,4 @@ Ask for changes as a list or diff with reasons, so you can accept them one by on
 
 ---
 
-[← Copywriting Guide](02-copywriting-guide.md) · [Part 3: Craft](README.md) · [Contents](../../README.md#contents) · [Appendix A: Core Writing Principles →](../appendix/01-writing-principles.md)
+[← Copywriting Guide](02-copywriting-guide.md) · [Part 3: Craft](README.md) · [Contents](../../README.md#contents) · [AI Fundamentals →](../part-4-learn-think/01-ai-fundamentals.md)

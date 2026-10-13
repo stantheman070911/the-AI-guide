@@ -88,6 +88,7 @@ MCP 規格指出，工具「代表任意程式碼的執行」，而且除非來�
 * **工具投毒**：藏在工具描述中的指令，模型會讀到，使用者卻看不到。
 * **Rug pull**：伺服器在你核准之後修改工具描述（[Invariant Labs](https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks)）。
 * **跨伺服器流程**：一個伺服器的輸出操控對另一個伺服器的呼叫，可能用各自無害的伺服器拼湊出致命三要素。
+* **市集裡的惡意 skills**：2026 年 2 月，Koi Security 在 OpenClaw 助理的 skill 市集 ClawHub 的 2,857 個 skills 中，找到 341 個惡意 skills（[The Hacker News](https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html)）。
 
 只安裝你能辨識發布者的伺服器與 skills，固定版本，啟用前閱讀工具描述與附帶的腳本，並只給每個伺服器完成工作所需的憑證。NSA 於 2026 年 5 月發布的 MCP 指引，從較大型部署的角度涵蓋了同樣的內容（[NSA](https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/Article/4496698/nsa-releases-security-design-considerations-for-ai-driven-automation-leveraging/)）。[附錄 D](../appendix/04-evaluating-tools-and-skills.md) 有一份審查清單。
 

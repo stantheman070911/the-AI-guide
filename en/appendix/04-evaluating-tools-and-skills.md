@@ -34,6 +34,10 @@ Before installing a skill, MCP server, or agent plugin:
 
 Pick one and learn it. Claude Code and Codex are the default terminal agents ([Stack Decision](../part-1-build/01-stack-decision.md#1-default-stack)). Cursor and GitHub Copilot suit editor-centered work; JetBrains Junie suits IntelliJ users; [OpenHands](https://github.com/OpenHands/OpenHands) is the open-source option for self-hosted agents. Gemini CLI no longer serves free and personal Google AI plans as of June 2026; Google's replacement for those plans, Antigravity CLI, is experimental.
 
+### Personal assistant agents
+
+[OpenClaw](https://github.com/openclaw/openclaw) and [Hermes Agent](https://github.com/NousResearch/hermes-agent) (Nous Research) are open-source, self-hosted assistants that connect to messaging apps, keep memory, and run skills. Both are experimental. An assistant that reads your messages and acts in your name is a high-value target: in a February 2026 audit, 341 of the 2,857 skills on OpenClaw's ClawHub marketplace were malicious ([The Hacker News](https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html)). Give it the least access that works and run every skill through the checklist above ([Creating with AI](../part-4-learn-think/04-creating-with-ai.md#3-permission-is-a-spectrum)).
+
 ### Planning
 
 The [Holy Trinity documents](../part-1-build/02-holy-trinity-plus-one/README.md) need no tool. Traycer, a dedicated planning layer for agents, is experimental.
