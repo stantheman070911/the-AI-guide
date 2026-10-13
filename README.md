@@ -54,7 +54,7 @@ Part 2 assumes some familiarity with web development. Parts 3 and 4 and the appe
 
 | If you are… | Read |
 | --- | --- |
-| New to shipping with AI | The whole guide in order, Part 1 through Part 3 |
+| New to shipping with AI | Part 1 through Part 3, in order |
 | New to AI | [AI Fundamentals](en/part-4-learn-think/01-ai-fundamentals.md), then [Learning with AI](en/part-4-learn-think/02-learning-with-ai.md) and [Thinking with AI](en/part-4-learn-think/03-thinking-with-ai.md) |
 | Launching soon | [Checklist](en/part-2-ship/01-production-readiness-checklist.md) (P0 items first), then the [Security Playbook](en/part-2-ship/02-security-remediation-playbook.md) |
 | Starting a project with an AI coding agent | [Working with Coding Agents](en/part-1-build/03-working-with-coding-agents.md), [The Holy Trinity + 1](en/part-1-build/02-holy-trinity-plus-one/README.md), then [Appendix B](en/appendix/02-claude-md-coding-rules.md) |
