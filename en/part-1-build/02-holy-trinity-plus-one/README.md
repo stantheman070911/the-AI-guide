@@ -21,10 +21,9 @@ placeholders, and delete what doesn't apply.
 | [`RUNBOOK.md`](RUNBOOK.md) | How do we release, activate, and recover it? | Operational procedure |
 | Code + tests + Git | What actually exists? | **Machine truth** |
 
-That last row is the one rule everything else defers to. The documents *control* the
-work — they tell an agent what to build next and what "done" means — but they must
-never be allowed to override what the repository, the tests, and Git history actually
-demonstrate. When a document and the code disagree, the code is right.
+That last row is the one rule everything else defers to. The documents tell an agent
+what to build next and what "done" means. When a document and the code disagree, the
+code is right.
 
 ## Why separate documents and not one giant instruction file
 
@@ -48,11 +47,11 @@ sets who may change each one.
   revealing whether the account exists" does. Convert every must-have into acceptance
   criteria before implementation starts — and write down what's explicitly **out of
   scope**, because models embellish, and the brief is the only place that says no.
-- **PLAN.md** is not just an architecture description — it's the executable work
-  queue. A task without a stopping condition ("done when these acceptance criteria
-  pass") invites an agent to keep "improving" it indefinitely. Plan the architecture
-  broadly; plan only the next few tasks precisely, and re-plan the next slice once the
-  current one lands rather than trying to predict the whole project up front.
+- **PLAN.md** is the executable work queue. A task without a stopping condition ("done
+  when these acceptance criteria pass") invites an agent to keep "improving" it
+  indefinitely. Plan the architecture broadly; plan only the next few tasks precisely,
+  and re-plan the next slice once the current one lands rather than trying to predict
+  the whole project up front.
 - **LOG.md** is what makes a fresh agent session productive after 30 seconds of
   reading, instead of re-deriving state from scratch. Keep it operational: current-state
   sections are rewritten in place, session entries are appended. Don't narrate the journey. Git

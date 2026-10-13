@@ -102,7 +102,7 @@ Explains any topic, code, or error for a specific audience (age, grade level, jo
 
 ## open-slide
 
-A command-line tool, not a skill. It scaffolds a slides workspace with Claude Code skills preconfigured. Run `npx @open-slide/cli init <name>` to scaffold a new workspace. Website: [open-slide.dev](https://open-slide.dev).
+A command-line tool, not a skill. It scaffolds a slides workspace with Claude Code skills preconfigured: `npx @open-slide/cli init <name>`. Website: [open-slide.dev](https://open-slide.dev).
 
 ---
 
