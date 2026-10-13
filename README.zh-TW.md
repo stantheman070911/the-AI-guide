@@ -54,7 +54,7 @@
 
 | 如果你是…… | 建議閱讀 |
 | --- | --- |
-| 第一次用 AI 交付產品 | 依序讀完整本指南，從第一部到第三部 |
+| 第一次用 AI 交付產品 | 依序讀第一部到第三部 |
 | 剛開始使用 AI | [AI 基礎](zh-TW/part-4-learn-think/01-ai-fundamentals.md)，接著讀[用 AI 學習](zh-TW/part-4-learn-think/02-learning-with-ai.md)與[用 AI 思考](zh-TW/part-4-learn-think/03-thinking-with-ai.md) |
 | 即將上線 | [檢查清單](zh-TW/part-2-ship/01-production-readiness-checklist.md)（先處理 P0 項目），接著讀[資安修補手冊](zh-TW/part-2-ship/02-security-remediation-playbook.md) |
 | 正要和 AI 程式代理一起開始新專案 | [與程式代理協作](zh-TW/part-1-build/03-working-with-coding-agents.md)、[神聖三位一體 + 1](zh-TW/part-1-build/02-holy-trinity-plus-one/README.md)，接著讀[附錄 B](zh-TW/appendix/02-claude-md-coding-rules.md) |
