@@ -83,4 +83,4 @@ Collections of agent "personas", such as The Agency, add role descriptions rathe
 
 ---
 
-[← Appendix C: Skills and Tools I Use](03-skills-and-tools.md) · [Appendix](README.md) · [Contents](../../README.md#contents)
+[← Appendix C: Skills and Tools I Use](03-skills-and-tools.md) · [Appendix](README.md) · [Contents](../../README.md#contents) · [Appendix E: Codebase Audit Prompt →](05-codebase-audit-prompt.md)
