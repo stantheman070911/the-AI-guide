@@ -11,6 +11,7 @@
 * [附錄 C：我使用的 Skills 與工具](03-skills-and-tools.md)——我持續更新的 Claude Code skills、外掛與命令列工具清單。
 * [附錄 D：評估工具與 Skills](04-evaluating-tools-and-skills.md)——信任等級、審查清單，以及依使用情境整理、通過審查的選擇。
 * [附錄 E：程式碼庫稽核提示詞](05-codebase-audit-prompt.md)——一份只做審查的提示詞，請代理找出最少、但值得進行的修改。
+* [附錄 F：PR 審查提示詞](06-pr-review-prompt.md)——一份只做審查的提示詞，對照所修改的程式碼庫檢查一個 pull request。
 
 ---
 
