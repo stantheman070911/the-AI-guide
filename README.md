@@ -50,6 +50,9 @@ Part 2 assumes some familiarity with web development. Parts 3 and 4 and the appe
 * [C. Skills and Tools I Use](en/appendix/03-skills-and-tools.md) — my running list of the skills and tools I use.
 * [D. Evaluating Tools and Skills](en/appendix/04-evaluating-tools-and-skills.md) — trust tiers, a vetting checklist, and vetted choices by use case.
 * [E. Codebase Audit Prompt](en/appendix/05-codebase-audit-prompt.md) — a review-only prompt that asks an agent for the smallest set of changes worth making.
+* [F. PR Review Prompt](en/appendix/06-pr-review-prompt.md) — a review-only prompt that checks a pull request against the codebase it changes.
+* [G. Codebase Onboarding Prompt](en/appendix/07-codebase-onboarding-prompt.md) — a prompt that has an agent study a codebase and report back before a feature session.
+* [H. Spec Implementation Prompt](en/appendix/08-spec-implementation-prompt.md) — a prompt that has an agent build from a product specification and flag what it cannot decide.
 
 ## Suggested reading paths
 
@@ -80,6 +83,9 @@ Part 2 assumes some familiarity with web development. Parts 3 and 4 and the appe
 | Supply chain and CI/CD | [Playbook](en/part-2-ship/02-security-remediation-playbook.md#a03-software-supply-chain-failures) |
 | Prompt injection | [Securing AI Features and Coding Agents](en/part-2-ship/03-securing-ai-features-and-agents.md#the-lethal-trifecta) |
 | Auditing an existing codebase | [Appendix E](en/appendix/05-codebase-audit-prompt.md) |
+| Reviewing a pull request with an agent | [Appendix F](en/appendix/06-pr-review-prompt.md) |
+| Starting a feature session on an existing codebase | [Appendix G](en/appendix/07-codebase-onboarding-prompt.md) |
+| Having an agent build from a spec | [Appendix H](en/appendix/08-spec-implementation-prompt.md) |
 | Vetting a skill or MCP server | [Appendix D](en/appendix/04-evaluating-tools-and-skills.md#vetting-checklist) |
 | Accessibility | [Design §23](en/part-3-craft/01-how-to-not-look-ai-generated.md#23-treat-accessibility-as-a-design-constraint) |
 | Testing whether a design looks generic | [Three final tests](en/part-3-craft/01-how-to-not-look-ai-generated.md#three-final-tests) |

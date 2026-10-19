@@ -82,4 +82,4 @@ The objective is not to find as many problems as possible. It is to identify the
 
 ---
 
-[← Appendix D: Evaluating Tools and Skills](04-evaluating-tools-and-skills.md) · [Appendix](README.md) · [Contents](../../README.md#contents)
+[← Appendix D: Evaluating Tools and Skills](04-evaluating-tools-and-skills.md) · [Appendix](README.md) · [Contents](../../README.md#contents) · [Appendix F: PR Review Prompt →](06-pr-review-prompt.md)

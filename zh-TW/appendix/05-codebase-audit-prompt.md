@@ -82,4 +82,4 @@
 
 ---
 
-[← 附錄 D：評估工具與 Skills](04-evaluating-tools-and-skills.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄)
+[← 附錄 D：評估工具與 Skills](04-evaluating-tools-and-skills.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 F：PR 審查提示詞 →](06-pr-review-prompt.md)
