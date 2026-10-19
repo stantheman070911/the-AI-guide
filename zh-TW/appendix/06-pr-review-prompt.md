@@ -37,4 +37,4 @@
 
 ---
 
-[← 附錄 E：程式碼庫稽核提示詞](05-codebase-audit-prompt.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄)
+[← 附錄 E：程式碼庫稽核提示詞](05-codebase-audit-prompt.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 G：熟悉程式碼庫提示詞 →](07-codebase-onboarding-prompt.md)

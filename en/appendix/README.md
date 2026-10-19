@@ -12,6 +12,7 @@ Reusable prompts and the author's running notes. The prompts are meant to be cop
 * [Appendix D: Evaluating Tools and Skills](04-evaluating-tools-and-skills.md) — trust tiers, a vetting checklist, and vetted choices by use case.
 * [Appendix E: Codebase Audit Prompt](05-codebase-audit-prompt.md) — a review-only prompt that asks an agent for the smallest set of changes worth making.
 * [Appendix F: PR Review Prompt](06-pr-review-prompt.md) — a review-only prompt that checks a pull request against the codebase it changes.
+* [Appendix G: Codebase Onboarding Prompt](07-codebase-onboarding-prompt.md) — a prompt that has an agent study a codebase and report back before a feature session.
 
 ---
 

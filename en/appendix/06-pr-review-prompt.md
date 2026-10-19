@@ -37,4 +37,4 @@ Use your understanding of the codebase as the foundation for subsequent developm
 
 ---
 
-[← Appendix E: Codebase Audit Prompt](05-codebase-audit-prompt.md) · [Appendix](README.md) · [Contents](../../README.md#contents)
+[← Appendix E: Codebase Audit Prompt](05-codebase-audit-prompt.md) · [Appendix](README.md) · [Contents](../../README.md#contents) · [Appendix G: Codebase Onboarding Prompt →](07-codebase-onboarding-prompt.md)
