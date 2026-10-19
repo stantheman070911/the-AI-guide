@@ -83,4 +83,4 @@ Dify 是開源的視覺化 LLM 工作流程建構工具，適合內部工具與�
 
 ---
 
-[← 附錄 C：我使用的 Skills 與工具](03-skills-and-tools.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄)
+[← 附錄 C：我使用的 Skills 與工具](03-skills-and-tools.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 E：程式碼庫稽核提示詞 →](05-codebase-audit-prompt.md)

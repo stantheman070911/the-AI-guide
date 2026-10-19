@@ -49,6 +49,7 @@
 * [B. CLAUDE.md 預設範本——程式開發規則](zh-TW/appendix/02-claude-md-coding-rules.md)——一份起始 `CLAUDE.md`，包含一條首要指令與十二條程式開發規則。
 * [C. 我使用的 Skills 與工具](zh-TW/appendix/03-skills-and-tools.md)——我持續更新的清單，記錄我使用的 skills 與工具。
 * [D. 評估工具與 Skills](zh-TW/appendix/04-evaluating-tools-and-skills.md)——信任等級、審查清單，以及依使用情境整理、通過審查的選擇。
+* [E. 程式碼庫稽核提示詞](zh-TW/appendix/05-codebase-audit-prompt.md)——一份只做審查的提示詞，請代理找出最少、但值得進行的修改。
 
 ## 建議閱讀路徑
 
@@ -78,6 +79,7 @@
 | 速率限制與支出上限 | [檢查清單 §22](zh-TW/part-2-ship/01-production-readiness-checklist.md#22-濫用防範與成本保護) · [修補手冊第 19 項](zh-TW/part-2-ship/02-security-remediation-playbook.md#19-缺少速率限制與支出控制---高) |
 | 供應鏈與 CI/CD | [修補手冊](zh-TW/part-2-ship/02-security-remediation-playbook.md#a03-軟體供應鏈失效) |
 | 提示詞注入 | [保護 AI 功能與程式代理](zh-TW/part-2-ship/03-securing-ai-features-and-agents.md#致命三要素) |
+| 稽核既有的程式碼庫 | [附錄 E](zh-TW/appendix/05-codebase-audit-prompt.md) |
 | 審查 skill 或 MCP 伺服器 | [附錄 D](zh-TW/appendix/04-evaluating-tools-and-skills.md#審查清單) |
 | 無障礙 | [設計第 23 節](zh-TW/part-3-craft/01-how-to-not-look-ai-generated.md#23-把無障礙當成設計限制) |
 | 檢驗設計是否太通用 | [三個最終測試](zh-TW/part-3-craft/01-how-to-not-look-ai-generated.md#三個最終測試) |
