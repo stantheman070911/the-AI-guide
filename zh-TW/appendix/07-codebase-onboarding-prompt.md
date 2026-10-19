@@ -29,4 +29,4 @@
 
 ---
 
-[← 附錄 F：PR 審查提示詞](06-pr-review-prompt.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄)
+[← 附錄 F：PR 審查提示詞](06-pr-review-prompt.md) · [附錄](README.md) · [目錄](../../README.zh-TW.md#目錄) · [附錄 H：依規格實作提示詞 →](08-spec-implementation-prompt.md)

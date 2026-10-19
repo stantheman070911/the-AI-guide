@@ -29,4 +29,4 @@ Use this understanding as the foundation for all subsequent development work in 
 
 ---
 
-[← Appendix F: PR Review Prompt](06-pr-review-prompt.md) · [Appendix](README.md) · [Contents](../../README.md#contents)
+[← Appendix F: PR Review Prompt](06-pr-review-prompt.md) · [Appendix](README.md) · [Contents](../../README.md#contents) · [Appendix H: Spec Implementation Prompt →](08-spec-implementation-prompt.md)

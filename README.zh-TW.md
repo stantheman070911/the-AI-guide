@@ -52,6 +52,7 @@
 * [E. 程式碼庫稽核提示詞](zh-TW/appendix/05-codebase-audit-prompt.md)——一份只做審查的提示詞，請代理找出最少、但值得進行的修改。
 * [F. PR 審查提示詞](zh-TW/appendix/06-pr-review-prompt.md)——一份只做審查的提示詞，對照所修改的程式碼庫檢查一個 pull request。
 * [G. 熟悉程式碼庫提示詞](zh-TW/appendix/07-codebase-onboarding-prompt.md)——一份提示詞，讓代理在新增功能的工作階段開始前研究程式碼庫並回報。
+* [H. 依規格實作提示詞](zh-TW/appendix/08-spec-implementation-prompt.md)——一份提示詞，讓代理依產品規格開發，並標出它無法決定的部分。
 
 ## 建議閱讀路徑
 
@@ -84,6 +85,7 @@
 | 稽核既有的程式碼庫 | [附錄 E](zh-TW/appendix/05-codebase-audit-prompt.md) |
 | 用代理審查 pull request | [附錄 F](zh-TW/appendix/06-pr-review-prompt.md) |
 | 在既有程式碼庫上開始新增功能 | [附錄 G](zh-TW/appendix/07-codebase-onboarding-prompt.md) |
+| 讓代理依規格開發 | [附錄 H](zh-TW/appendix/08-spec-implementation-prompt.md) |
 | 審查 skill 或 MCP 伺服器 | [附錄 D](zh-TW/appendix/04-evaluating-tools-and-skills.md#審查清單) |
 | 無障礙 | [設計第 23 節](zh-TW/part-3-craft/01-how-to-not-look-ai-generated.md#23-把無障礙當成設計限制) |
 | 檢驗設計是否太通用 | [三個最終測試](zh-TW/part-3-craft/01-how-to-not-look-ai-generated.md#三個最終測試) |
